@@ -1,0 +1,442 @@
+<S421:Dataset xmlns:S421="http://www.iho.int/S421/gml/cs0/1.0" xmlns:S100="http://www.iho.int/s100gml/1.0" xmlns:S100_profile="http://www.iho.int/S-100/profile/s100_gmlProfile" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" gml:id="S421.TST.GFULL.00001" xsi:schemaLocation="http://www.iho.int/S421/gml/cs0/1.0../schemas/S421/FMT/1.0.0/20210319/S421.xsd">
+  <member>
+    <S421:Route gml:id="RTE">
+      <routeFormatVersion>1.0</routeFormatVersion>
+      <routeID/>
+      <routeEditionNo>0</routeEditionNo>
+      <routeInfo xlink:arcrole="routeInfo" xlink:href="#RTE.INFO"/>
+      <routeWaypoints xlink:arcrole="routeWaypoint" xlink:href="#RTE.WPTS"/>
+      <routeSchedules xlink:arcrole="routeSchedules" xlink:href="#RTE.SCHEDS"/>
+      <routeActionPoints xlink:arcrole="routeActionPoints" xlink:href="#RTE.APTS"/>
+      <routeExtensions>
+        <routeExtensionsNote>{manufacturer=Norwegian Coastal Administration, fullName=Stavanger - Feistein Outbound, productinfo=See information on www.routeinfo.no before use of this Reference Route for Navigation. The Reference Routes from NCA can be used as base in route planning. For routes with no comments on vessel size, 150 meter length and 9 meter draught has been used to quality assure the routes. Limitations in size of vessel may vary along the route caused by regulation or depths., routeNumber=NO-320003, StmDirection=OUT, StmRelativeToShortestDistance=1.5, StmPointDistanceLimitPilotRoute=1000, StmPointDistanceRtz=5000, StmMaxBearingDistance=45}</routeExtensionsNote>
+      </routeExtensions>
+    </S421:Route>
+  </member>
+  <member>
+    <S421:RouteWaypoints gml:id="RTE">
+      <routeWaypointsCollection xlink:href="RTE"/>
+      <routeWaypoint xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/consistsOfRouteWaypoint" xlink:href="#RTE.WPTS.WPT.1"/>
+      <routeWaypoint xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/consistsOfRouteWaypoint" xlink:href="#RTE.WPTS.WPT.2"/>
+      <routeWaypoint xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/consistsOfRouteWaypoint" xlink:href="#RTE.WPTS.WPT.3"/>
+      <routeWaypoint xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/consistsOfRouteWaypoint" xlink:href="#RTE.WPTS.WPT.4"/>
+      <routeWaypoint xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/consistsOfRouteWaypoint" xlink:href="#RTE.WPTS.WPT.5"/>
+      <routeWaypoint xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/consistsOfRouteWaypoint" xlink:href="#RTE.WPTS.WPT.6"/>
+      <routeWaypoint xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/consistsOfRouteWaypoint" xlink:href="#RTE.WPTS.WPT.7"/>
+      <routeWaypoint xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/consistsOfRouteWaypoint" xlink:href="#RTE.WPTS.WPT.8"/>
+      <routeWaypoint xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/consistsOfRouteWaypoint" xlink:href="#RTE.WPTS.WPT.9"/>
+      <routeWaypoint xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/consistsOfRouteWaypoint" xlink:href="#RTE.WPTS.WPT.10"/>
+      <routeWaypoint xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/consistsOfRouteWaypoint" xlink:href="#RTE.WPTS.WPT.11"/>
+    </S421:RouteWaypoints>
+  </member>
+  <member>
+    <S421:RouteWaypoint gml:id="RTE.WPT.1">
+      <geometry>
+        <S100:pointProperty>
+          <S100:Point gml:id="RTE.WPT.1.PT" srsName="EPSG:4258">
+            <gml:pos>58.97756611 5.72598921</gml:pos>
+          </S100:Point>
+        </S100:pointProperty>
+      </geometry>
+      <routeWaypointID>1</routeWaypointID>
+      <routeWaypointName>Stavanger</routeWaypointName>
+      <routeWaypointExternalReferenceID/>
+      <routeWaypointFixed>false</routeWaypointFixed>
+      <routeWaypointTurnRadius>0.3</routeWaypointTurnRadius>
+      <routeWaypointCollection xlink:arcrole="routeWaypointCollection" xlink:href="RTE"/>
+      <routeWaypointLeg xlink:arcrole="routeWaypointLeg" xlink:href="#RTE.WPT.LEG.1"/>
+    </S421:RouteWaypoint>
+  </member>
+  <member>
+    <S421:RouteWaypointLeg gml:id="RTE.WPT.LEG.1">
+      <routeWaypointLegPortXTDL>185.2</routeWaypointLegPortXTDL>
+      <routeWaypointLegStarboardXTDL>185.2</routeWaypointLegStarboardXTDL>
+      <routeWaypointLegSafetyContour>20.0</routeWaypointLegSafetyContour>
+      <routeWaypointLegSafetyDepth>20.0</routeWaypointLegSafetyDepth>
+      <routeWaypointLegGeometryType>1</routeWaypointLegGeometryType>
+      <routeWaypointLegDraftMax>0.0</routeWaypointLegDraftMax>
+      <routeWaypointLegAirDraftMax>0.0</routeWaypointLegAirDraftMax>
+      <routeWaypointLegLengthMax>0.0</routeWaypointLegLengthMax>
+      <routeWaypointLegNote/>
+      <routeWaypointLegIssue/>
+      <routeWaypointLegExtensions/>
+    </S421:RouteWaypointLeg>
+  </member>
+  <member>
+    <S421:RouteWaypoint gml:id="RTE.WPT.2">
+      <geometry>
+        <S100:pointProperty>
+          <S100:Point gml:id="RTE.WPT.2.PT" srsName="EPSG:4258">
+            <gml:pos>58.98633212 5.71134896</gml:pos>
+          </S100:Point>
+        </S100:pointProperty>
+      </geometry>
+      <routeWaypointID>2</routeWaypointID>
+      <routeWaypointName>Ulsnesgrunnen</routeWaypointName>
+      <routeWaypointExternalReferenceID/>
+      <routeWaypointFixed>false</routeWaypointFixed>
+      <routeWaypointTurnRadius>0.3</routeWaypointTurnRadius>
+      <routeWaypointCollection xlink:arcrole="routeWaypointCollection" xlink:href="RTE"/>
+      <routeWaypointLeg xlink:arcrole="routeWaypointLeg" xlink:href="#RTE.WPT.LEG.2"/>
+    </S421:RouteWaypoint>
+  </member>
+  <member>
+    <S421:RouteWaypointLeg gml:id="RTE.WPT.LEG.2">
+      <routeWaypointLegPortXTDL>37.04</routeWaypointLegPortXTDL>
+      <routeWaypointLegStarboardXTDL>37.04</routeWaypointLegStarboardXTDL>
+      <routeWaypointLegSafetyContour>20.0</routeWaypointLegSafetyContour>
+      <routeWaypointLegSafetyDepth>20.0</routeWaypointLegSafetyDepth>
+      <routeWaypointLegGeometryType>1</routeWaypointLegGeometryType>
+      <routeWaypointLegDraftMax>0.0</routeWaypointLegDraftMax>
+      <routeWaypointLegAirDraftMax>0.0</routeWaypointLegAirDraftMax>
+      <routeWaypointLegLengthMax>0.0</routeWaypointLegLengthMax>
+      <routeWaypointLegNote/>
+      <routeWaypointLegIssue/>
+      <routeWaypointLegExtensions/>
+    </S421:RouteWaypointLeg>
+  </member>
+  <member>
+    <S421:RouteWaypoint gml:id="RTE.WPT.3">
+      <geometry>
+        <S100:pointProperty>
+          <S100:Point gml:id="RTE.WPT.3.PT" srsName="EPSG:4258">
+            <gml:pos>59.0034202 5.69128408</gml:pos>
+          </S100:Point>
+        </S100:pointProperty>
+      </geometry>
+      <routeWaypointID>3</routeWaypointID>
+      <routeWaypointName>Dusaviga</routeWaypointName>
+      <routeWaypointExternalReferenceID/>
+      <routeWaypointFixed>false</routeWaypointFixed>
+      <routeWaypointTurnRadius>0.3</routeWaypointTurnRadius>
+      <routeWaypointCollection xlink:arcrole="routeWaypointCollection" xlink:href="RTE"/>
+      <routeWaypointLeg xlink:arcrole="routeWaypointLeg" xlink:href="#RTE.WPT.LEG.3"/>
+    </S421:RouteWaypoint>
+  </member>
+  <member>
+    <S421:RouteWaypointLeg gml:id="RTE.WPT.LEG.3">
+      <routeWaypointLegPortXTDL>92.6</routeWaypointLegPortXTDL>
+      <routeWaypointLegStarboardXTDL>92.6</routeWaypointLegStarboardXTDL>
+      <routeWaypointLegSafetyContour>20.0</routeWaypointLegSafetyContour>
+      <routeWaypointLegSafetyDepth>20.0</routeWaypointLegSafetyDepth>
+      <routeWaypointLegGeometryType>1</routeWaypointLegGeometryType>
+      <routeWaypointLegDraftMax>0.0</routeWaypointLegDraftMax>
+      <routeWaypointLegAirDraftMax>0.0</routeWaypointLegAirDraftMax>
+      <routeWaypointLegLengthMax>0.0</routeWaypointLegLengthMax>
+      <routeWaypointLegNote/>
+      <routeWaypointLegIssue/>
+      <routeWaypointLegExtensions/>
+    </S421:RouteWaypointLeg>
+  </member>
+  <member>
+    <S421:RouteWaypoint gml:id="RTE.WPT.4">
+      <geometry>
+        <S100:pointProperty>
+          <S100:Point gml:id="RTE.WPT.4.PT" srsName="EPSG:4258">
+            <gml:pos>59.03169439 5.62475297</gml:pos>
+          </S100:Point>
+        </S100:pointProperty>
+      </geometry>
+      <routeWaypointID>4</routeWaypointID>
+      <routeWaypointName>Mekjarvik</routeWaypointName>
+      <routeWaypointExternalReferenceID/>
+      <routeWaypointFixed>false</routeWaypointFixed>
+      <routeWaypointTurnRadius>0.3</routeWaypointTurnRadius>
+      <routeWaypointCollection xlink:arcrole="routeWaypointCollection" xlink:href="RTE"/>
+      <routeWaypointLeg xlink:arcrole="routeWaypointLeg" xlink:href="#RTE.WPT.LEG.4"/>
+    </S421:RouteWaypoint>
+  </member>
+  <member>
+    <S421:RouteWaypointLeg gml:id="RTE.WPT.LEG.4">
+      <routeWaypointLegPortXTDL>185.2</routeWaypointLegPortXTDL>
+      <routeWaypointLegStarboardXTDL>185.2</routeWaypointLegStarboardXTDL>
+      <routeWaypointLegSafetyContour>20.0</routeWaypointLegSafetyContour>
+      <routeWaypointLegSafetyDepth>20.0</routeWaypointLegSafetyDepth>
+      <routeWaypointLegGeometryType>1</routeWaypointLegGeometryType>
+      <routeWaypointLegDraftMax>0.0</routeWaypointLegDraftMax>
+      <routeWaypointLegAirDraftMax>0.0</routeWaypointLegAirDraftMax>
+      <routeWaypointLegLengthMax>0.0</routeWaypointLegLengthMax>
+      <routeWaypointLegNote/>
+      <routeWaypointLegIssue/>
+      <routeWaypointLegExtensions/>
+    </S421:RouteWaypointLeg>
+  </member>
+  <member>
+    <S421:RouteWaypoint gml:id="RTE.WPT.5">
+      <geometry>
+        <S100:pointProperty>
+          <S100:Point gml:id="RTE.WPT.5.PT" srsName="EPSG:4258">
+            <gml:pos>59.05087647 5.56832327</gml:pos>
+          </S100:Point>
+        </S100:pointProperty>
+      </geometry>
+      <routeWaypointID>5</routeWaypointID>
+      <routeWaypointName>Bragen</routeWaypointName>
+      <routeWaypointExternalReferenceID/>
+      <routeWaypointFixed>false</routeWaypointFixed>
+      <routeWaypointTurnRadius>0.3</routeWaypointTurnRadius>
+      <routeWaypointCollection xlink:arcrole="routeWaypointCollection" xlink:href="RTE"/>
+      <routeWaypointLeg xlink:arcrole="routeWaypointLeg" xlink:href="#RTE.WPT.LEG.5"/>
+    </S421:RouteWaypoint>
+  </member>
+  <member>
+    <S421:RouteWaypointLeg gml:id="RTE.WPT.LEG.5">
+      <routeWaypointLegPortXTDL>185.2</routeWaypointLegPortXTDL>
+      <routeWaypointLegStarboardXTDL>185.2</routeWaypointLegStarboardXTDL>
+      <routeWaypointLegSafetyContour>20.0</routeWaypointLegSafetyContour>
+      <routeWaypointLegSafetyDepth>20.0</routeWaypointLegSafetyDepth>
+      <routeWaypointLegGeometryType>1</routeWaypointLegGeometryType>
+      <routeWaypointLegDraftMax>0.0</routeWaypointLegDraftMax>
+      <routeWaypointLegAirDraftMax>0.0</routeWaypointLegAirDraftMax>
+      <routeWaypointLegLengthMax>0.0</routeWaypointLegLengthMax>
+      <routeWaypointLegNote/>
+      <routeWaypointLegIssue/>
+      <routeWaypointLegExtensions/>
+    </S421:RouteWaypointLeg>
+  </member>
+  <member>
+    <S421:RouteWaypoint gml:id="RTE.WPT.6">
+      <geometry>
+        <S100:pointProperty>
+          <S100:Point gml:id="RTE.WPT.6.PT" srsName="EPSG:4258">
+            <gml:pos>59.04046662 5.54193725</gml:pos>
+          </S100:Point>
+        </S100:pointProperty>
+      </geometry>
+      <routeWaypointID>6</routeWaypointID>
+      <routeWaypointName>Bragen</routeWaypointName>
+      <routeWaypointExternalReferenceID/>
+      <routeWaypointFixed>false</routeWaypointFixed>
+      <routeWaypointTurnRadius>0.3</routeWaypointTurnRadius>
+      <routeWaypointCollection xlink:arcrole="routeWaypointCollection" xlink:href="RTE"/>
+      <routeWaypointLeg xlink:arcrole="routeWaypointLeg" xlink:href="#RTE.WPT.LEG.6"/>
+    </S421:RouteWaypoint>
+  </member>
+  <member>
+    <S421:RouteWaypointLeg gml:id="RTE.WPT.LEG.6">
+      <routeWaypointLegPortXTDL>185.2</routeWaypointLegPortXTDL>
+      <routeWaypointLegStarboardXTDL>185.2</routeWaypointLegStarboardXTDL>
+      <routeWaypointLegSafetyContour>20.0</routeWaypointLegSafetyContour>
+      <routeWaypointLegSafetyDepth>20.0</routeWaypointLegSafetyDepth>
+      <routeWaypointLegGeometryType>1</routeWaypointLegGeometryType>
+      <routeWaypointLegDraftMax>0.0</routeWaypointLegDraftMax>
+      <routeWaypointLegAirDraftMax>0.0</routeWaypointLegAirDraftMax>
+      <routeWaypointLegLengthMax>0.0</routeWaypointLegLengthMax>
+      <routeWaypointLegNote/>
+      <routeWaypointLegIssue/>
+      <routeWaypointLegExtensions/>
+    </S421:RouteWaypointLeg>
+  </member>
+  <member>
+    <S421:RouteWaypoint gml:id="RTE.WPT.7">
+      <geometry>
+        <S100:pointProperty>
+          <S100:Point gml:id="RTE.WPT.7.PT" srsName="EPSG:4258">
+            <gml:pos>58.99109975 5.54542381</gml:pos>
+          </S100:Point>
+        </S100:pointProperty>
+      </geometry>
+      <routeWaypointID>7</routeWaypointID>
+      <routeWaypointName>Bjornaflua</routeWaypointName>
+      <routeWaypointExternalReferenceID/>
+      <routeWaypointFixed>false</routeWaypointFixed>
+      <routeWaypointTurnRadius>0.3</routeWaypointTurnRadius>
+      <routeWaypointCollection xlink:arcrole="routeWaypointCollection" xlink:href="RTE"/>
+      <routeWaypointLeg xlink:arcrole="routeWaypointLeg" xlink:href="#RTE.WPT.LEG.7"/>
+    </S421:RouteWaypoint>
+  </member>
+  <member>
+    <S421:RouteWaypointLeg gml:id="RTE.WPT.LEG.7">
+      <routeWaypointLegPortXTDL>185.2</routeWaypointLegPortXTDL>
+      <routeWaypointLegStarboardXTDL>185.2</routeWaypointLegStarboardXTDL>
+      <routeWaypointLegSafetyContour>20.0</routeWaypointLegSafetyContour>
+      <routeWaypointLegSafetyDepth>20.0</routeWaypointLegSafetyDepth>
+      <routeWaypointLegGeometryType>1</routeWaypointLegGeometryType>
+      <routeWaypointLegDraftMax>0.0</routeWaypointLegDraftMax>
+      <routeWaypointLegAirDraftMax>0.0</routeWaypointLegAirDraftMax>
+      <routeWaypointLegLengthMax>0.0</routeWaypointLegLengthMax>
+      <routeWaypointLegNote/>
+      <routeWaypointLegIssue/>
+      <routeWaypointLegExtensions/>
+    </S421:RouteWaypointLeg>
+  </member>
+  <member>
+    <S421:RouteWaypoint gml:id="RTE.WPT.8">
+      <geometry>
+        <S100:pointProperty>
+          <S100:Point gml:id="RTE.WPT.8.PT" srsName="EPSG:4258">
+            <gml:pos>58.97770422 5.54814694</gml:pos>
+          </S100:Point>
+        </S100:pointProperty>
+      </geometry>
+      <routeWaypointID>8</routeWaypointID>
+      <routeWaypointName>Dalhaugflua</routeWaypointName>
+      <routeWaypointExternalReferenceID/>
+      <routeWaypointFixed>false</routeWaypointFixed>
+      <routeWaypointTurnRadius>0.3</routeWaypointTurnRadius>
+      <routeWaypointCollection xlink:arcrole="routeWaypointCollection" xlink:href="RTE"/>
+      <routeWaypointLeg xlink:arcrole="routeWaypointLeg" xlink:href="#RTE.WPT.LEG.8"/>
+    </S421:RouteWaypoint>
+  </member>
+  <member>
+    <S421:RouteWaypointLeg gml:id="RTE.WPT.LEG.8">
+      <routeWaypointLegPortXTDL>185.2</routeWaypointLegPortXTDL>
+      <routeWaypointLegStarboardXTDL>185.2</routeWaypointLegStarboardXTDL>
+      <routeWaypointLegSafetyContour>20.0</routeWaypointLegSafetyContour>
+      <routeWaypointLegSafetyDepth>20.0</routeWaypointLegSafetyDepth>
+      <routeWaypointLegGeometryType>1</routeWaypointLegGeometryType>
+      <routeWaypointLegDraftMax>0.0</routeWaypointLegDraftMax>
+      <routeWaypointLegAirDraftMax>0.0</routeWaypointLegAirDraftMax>
+      <routeWaypointLegLengthMax>0.0</routeWaypointLegLengthMax>
+      <routeWaypointLegNote/>
+      <routeWaypointLegIssue/>
+      <routeWaypointLegExtensions/>
+    </S421:RouteWaypointLeg>
+  </member>
+  <member>
+    <S421:RouteWaypoint gml:id="RTE.WPT.9">
+      <geometry>
+        <S100:pointProperty>
+          <S100:Point gml:id="RTE.WPT.9.PT" srsName="EPSG:4258">
+            <gml:pos>58.93021954 5.54502271</gml:pos>
+          </S100:Point>
+        </S100:pointProperty>
+      </geometry>
+      <routeWaypointID>9</routeWaypointID>
+      <routeWaypointName>Midtfjaera</routeWaypointName>
+      <routeWaypointExternalReferenceID/>
+      <routeWaypointFixed>false</routeWaypointFixed>
+      <routeWaypointTurnRadius>0.3</routeWaypointTurnRadius>
+      <routeWaypointCollection xlink:arcrole="routeWaypointCollection" xlink:href="RTE"/>
+      <routeWaypointLeg xlink:arcrole="routeWaypointLeg" xlink:href="#RTE.WPT.LEG.9"/>
+    </S421:RouteWaypoint>
+  </member>
+  <member>
+    <S421:RouteWaypointLeg gml:id="RTE.WPT.LEG.9">
+      <routeWaypointLegPortXTDL>185.2</routeWaypointLegPortXTDL>
+      <routeWaypointLegStarboardXTDL>185.2</routeWaypointLegStarboardXTDL>
+      <routeWaypointLegSafetyContour>20.0</routeWaypointLegSafetyContour>
+      <routeWaypointLegSafetyDepth>20.0</routeWaypointLegSafetyDepth>
+      <routeWaypointLegGeometryType>1</routeWaypointLegGeometryType>
+      <routeWaypointLegDraftMax>0.0</routeWaypointLegDraftMax>
+      <routeWaypointLegAirDraftMax>0.0</routeWaypointLegAirDraftMax>
+      <routeWaypointLegLengthMax>0.0</routeWaypointLegLengthMax>
+      <routeWaypointLegNote/>
+      <routeWaypointLegIssue/>
+      <routeWaypointLegExtensions/>
+    </S421:RouteWaypointLeg>
+  </member>
+  <member>
+    <S421:RouteWaypoint gml:id="RTE.WPT.10">
+      <geometry>
+        <S100:pointProperty>
+          <S100:Point gml:id="RTE.WPT.10.PT" srsName="EPSG:4258">
+            <gml:pos>58.86141213 5.50703709</gml:pos>
+          </S100:Point>
+        </S100:pointProperty>
+      </geometry>
+      <routeWaypointID>10</routeWaypointID>
+      <routeWaypointName>Sorskot</routeWaypointName>
+      <routeWaypointExternalReferenceID/>
+      <routeWaypointFixed>false</routeWaypointFixed>
+      <routeWaypointTurnRadius>0.3</routeWaypointTurnRadius>
+      <routeWaypointCollection xlink:arcrole="routeWaypointCollection" xlink:href="RTE"/>
+      <routeWaypointLeg xlink:arcrole="routeWaypointLeg" xlink:href="#RTE.WPT.LEG.10"/>
+    </S421:RouteWaypoint>
+  </member>
+  <member>
+    <S421:RouteWaypointLeg gml:id="RTE.WPT.LEG.10">
+      <routeWaypointLegPortXTDL>185.2</routeWaypointLegPortXTDL>
+      <routeWaypointLegStarboardXTDL>185.2</routeWaypointLegStarboardXTDL>
+      <routeWaypointLegSafetyContour>20.0</routeWaypointLegSafetyContour>
+      <routeWaypointLegSafetyDepth>20.0</routeWaypointLegSafetyDepth>
+      <routeWaypointLegGeometryType>1</routeWaypointLegGeometryType>
+      <routeWaypointLegDraftMax>0.0</routeWaypointLegDraftMax>
+      <routeWaypointLegAirDraftMax>0.0</routeWaypointLegAirDraftMax>
+      <routeWaypointLegLengthMax>0.0</routeWaypointLegLengthMax>
+      <routeWaypointLegNote/>
+      <routeWaypointLegIssue/>
+      <routeWaypointLegExtensions/>
+    </S421:RouteWaypointLeg>
+  </member>
+  <member>
+    <S421:RouteWaypoint gml:id="RTE.WPT.11">
+      <geometry>
+        <S100:pointProperty>
+          <S100:Point gml:id="RTE.WPT.11.PT" srsName="EPSG:4258">
+            <gml:pos>58.7985905 5.38983562</gml:pos>
+          </S100:Point>
+        </S100:pointProperty>
+      </geometry>
+      <routeWaypointID>11</routeWaypointID>
+      <routeWaypointName>Skotemedgrunnen</routeWaypointName>
+      <routeWaypointExternalReferenceID/>
+      <routeWaypointFixed>false</routeWaypointFixed>
+      <routeWaypointTurnRadius>0.3</routeWaypointTurnRadius>
+      <routeWaypointCollection xlink:arcrole="routeWaypointCollection" xlink:href="RTE"/>
+      <routeWaypointLeg xlink:arcrole="routeWaypointLeg" xlink:href="#RTE.WPT.LEG.11"/>
+    </S421:RouteWaypoint>
+  </member>
+  <member>
+    <S421:RouteWaypointLeg gml:id="RTE.WPT.LEG.11">
+      <routeWaypointLegPortXTDL>185.2</routeWaypointLegPortXTDL>
+      <routeWaypointLegStarboardXTDL>185.2</routeWaypointLegStarboardXTDL>
+      <routeWaypointLegSafetyContour>20.0</routeWaypointLegSafetyContour>
+      <routeWaypointLegSafetyDepth>20.0</routeWaypointLegSafetyDepth>
+      <routeWaypointLegGeometryType>1</routeWaypointLegGeometryType>
+      <routeWaypointLegDraftMax>0.0</routeWaypointLegDraftMax>
+      <routeWaypointLegAirDraftMax>0.0</routeWaypointLegAirDraftMax>
+      <routeWaypointLegLengthMax>0.0</routeWaypointLegLengthMax>
+      <routeWaypointLegNote/>
+      <routeWaypointLegIssue/>
+      <routeWaypointLegExtensions/>
+    </S421:RouteWaypointLeg>
+  </member>
+  <imember>
+    <S421:RouteInfo gml:id="RTE.INFO">
+      <routeInfoName>NCA_Stavanger_Feistein_Out_20240322</routeInfoName>
+      <routeInfoAuthor/>
+      <routeInfoEditionTime>2024-03-22T01:00:00+01:00</routeInfoEditionTime>
+      <routeInfoDescription/>
+      <routeInfoStatus>1</routeInfoStatus>
+      <routeInfoValidityStart>2024-03-22T01:00:00+01:00</routeInfoValidityStart>
+      <routeInfoValidityEnd>2025-08-15T02:00:00+02:00</routeInfoValidityEnd>
+      <routeInfoDeparturePortID1/>
+      <routeInfoDeparturePortID2/>
+      <routeInfoDeparturePortCall/>
+      <routeInfoArrivalPortID1/>
+      <routeInfoArrivalPortID2/>
+      <routeInfoArrivalPortCall/>
+      <routeInfoReferencePrevRoute/>
+      <routeInfoReferenceNextRoute/>
+      <routeInfoVesselType/>
+      <routeInfoVesselName>Norwegian Coastal Administration</routeInfoVesselName>
+      <routeInfoVesselMMSI>0</routeInfoVesselMMSI>
+      <routeInfoVesselCallsign/>
+      <routeInfoVesselIMO>0</routeInfoVesselIMO>
+      <routeInfoVesselVoyage>NO-320003</routeInfoVesselVoyage>
+      <routeInfoVesselHeight>0.0</routeInfoVesselHeight>
+      <routeInfoVesselLength>0.0</routeInfoVesselLength>
+      <routeInfoVesselBeam>0.0</routeInfoVesselBeam>
+      <routeInfoDraftMax>0.0</routeInfoDraftMax>
+      <routeInfoAirDraftMax>0.0</routeInfoAirDraftMax>
+      <routeInfoBeamMax>0.0</routeInfoBeamMax>
+      <routeInfoLengthMax>0.0</routeInfoLengthMax>
+    </S421:RouteInfo>
+  </imember>
+  <imember>
+    <S421:RouteSchedules gml:id="RTE.SCHED">
+      <routeSchedule xlink:arcrole="routeSchedule" xlink:href="#RTE.SCHED.1"/>
+    </S421:RouteSchedules>
+  </imember>
+  <imember>
+    <S421:RouteSchedule gml:id="RTE.SCHEDS.1">
+      <routeScheduleCollection xlink:arcrole="routeScheduleCollection" xlink:href="#RTE.SCHEDS"/>
+      <routeScheduleID>0</routeScheduleID>
+      <routeScheduleName>Base Calculation</routeScheduleName>
+      <routeScheduleManual xlink:arcrole="routeScheduleManual" xlink:href="#RTE.SCHED.1.MAN"/>
+      <routeScheduleCalculated xlink:arcrole="routeScheduleCalculated" xlink:href="#RTE.SCHED.1.CAL"/>
+      <routeScheduleRecommended/>
+    </S421:RouteSchedule>
+  </imember>
+</S421:Dataset>

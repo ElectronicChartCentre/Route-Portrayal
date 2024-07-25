@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<route xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
+  <routeInfo routeName="NCA_Ardal_Skudefjorden_Out_20240322" validityPeriodStart="2024-03-22T01:00:00+01:00" validityPeriodStop="2025-08-15T02:00:00+02:00" vesselName="Norwegian Coastal Administration" vesselVoyage="NO-320010" />
+  <waypoints>
+    <defaultWaypoint radius="0.30">
+      <leg starboardXTD="0.10" portsideXTD="0.10" safetyContour="20" safetyDepth="20" geometryType="Loxodrome" staticUKC="0.00" dynamicUKC="0.00" />
+    </defaultWaypoint>
+    <waypoint id="1" name="Ardal">
+      <position lat="59.14432287" lon="6.1542135" />
+      <leg legInfo="" />
+    </waypoint>
+    <waypoint id="2" name="Kvannholmen" radius="0.10">
+      <position lat="59.14189573" lon="6.08508445" />
+      <leg starboardXTD="0.04" portsideXTD="0.04" legInfo="" />
+    </waypoint>
+    <waypoint id="3" name="Smaskjaerene" radius="0.10">
+      <position lat="59.13572616" lon="6.08322484" />
+      <leg starboardXTD="0.07" portsideXTD="0.07" legInfo="" />
+    </waypoint>
+    <waypoint id="4" name="Laksaneset">
+      <position lat="59.13425233" lon="6.07438025" />
+      <leg starboardXTD="0.03" portsideXTD="0.03" legInfo="" />
+    </waypoint>
+    <waypoint id="5" name="Skoraneset">
+      <position lat="59.13486161" lon="6.0533883" />
+      <leg starboardXTD="0.03" portsideXTD="0.03" legInfo="" />
+    </waypoint>
+    <waypoint id="6" name="Hoylandsklubben">
+      <position lat="59.12548181" lon="5.96774707" />
+      <leg legInfo="" />
+    </waypoint>
+    <waypoint id="7" name="Adnaskjeret">
+      <position lat="59.10432295" lon="5.91071023" />
+      <leg legInfo="" />
+    </waypoint>
+    <waypoint id="8" name="Tade">
+      <position lat="59.09783332" lon="5.89431951" />
+      <leg legInfo="" />
+    </waypoint>
+    <waypoint id="9" name="Tadeflua">
+      <position lat="59.10047399" lon="5.87663505" />
+      <leg legInfo="" />
+    </waypoint>
+    <waypoint id="10" name="Fjellbergoyna">
+      <position lat="59.12068931" lon="5.86127904" />
+      <leg legInfo="" />
+    </waypoint>
+    <waypoint id="11" name="Nordboflu">
+      <position lat="59.13933327" lon="5.70170789" />
+      <leg legInfo="" />
+    </waypoint>
+    <waypoint id="12" name="Galteskjeret">
+      <position lat="59.15200826" lon="5.60858713" />
+      <leg legInfo="" />
+    </waypoint>
+    <waypoint id="13" name="Boknafjorden">
+      <position lat="59.15233491" lon="5.5242429" />
+      <leg legInfo="" />
+    </waypoint>
+    <waypoint id="14" name="Arsgrunnen">
+      <position lat="59.12696861" lon="5.45767242" />
+      <leg legInfo="" />
+    </waypoint>
+    <waypoint id="15" name="Skudefjorden">
+      <position lat="59.08656929" lon="5.3225162" />
+      <leg legInfo="" />
+    </waypoint>
+  </waypoints>
+  <schedules>
+    <schedule id="0" name="Base Calculation" />
+  </schedules>
+  <extensions>
+    <extension manufacturer="Norwegian Coastal Administration" fullName="Ardal - Skudefjorden Outbound" productinfo="See information on www.routeinfo.no before use of this Reference Route for Navigation. The Reference Routes from NCA can be used as base in route planning. For routes with no comments on vessel size, 150 meter length and 9 meter draught has been used to quality assure the routes. Limitations in size of vessel may vary along the route caused by regulation or depths." routeNumber="NO-320010" StmDirection="OUT" StmRelativeToShortestDistance="1.5" StmPointDistanceLimitPilotRoute="1000" StmPointDistanceRtz="5000" StmMaxBearingDistance="45" xmlns="" />
+  </extensions>
+</route>

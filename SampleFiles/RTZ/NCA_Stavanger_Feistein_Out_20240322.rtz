@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<route xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
+  <routeInfo routeName="NCA_Stavanger_Feistein_Out_20240322" validityPeriodStart="2024-03-22T01:00:00+01:00" validityPeriodStop="2025-08-15T02:00:00+02:00" vesselName="Norwegian Coastal Administration" vesselVoyage="NO-320003" />
+  <waypoints>
+    <defaultWaypoint radius="0.30">
+      <leg starboardXTD="0.10" portsideXTD="0.10" safetyContour="20" safetyDepth="20" geometryType="Loxodrome" staticUKC="0.00" dynamicUKC="0.00" />
+    </defaultWaypoint>
+    <waypoint id="1" name="Stavanger">
+      <position lat="58.97756611" lon="5.72598921" />
+      <leg legInfo="" />
+    </waypoint>
+    <waypoint id="2" name="Ulsnesgrunnen">
+      <position lat="58.98633212" lon="5.71134896" />
+      <leg starboardXTD="0.02" portsideXTD="0.02" legInfo="" />
+    </waypoint>
+    <waypoint id="3" name="Dusaviga">
+      <position lat="59.0034202" lon="5.69128408" />
+      <leg starboardXTD="0.05" portsideXTD="0.05" legInfo="" />
+    </waypoint>
+    <waypoint id="4" name="Mekjarvik">
+      <position lat="59.03169439" lon="5.62475297" />
+      <leg legInfo="" />
+    </waypoint>
+    <waypoint id="5" name="Bragen">
+      <position lat="59.05087647" lon="5.56832327" />
+      <leg legInfo="" />
+    </waypoint>
+    <waypoint id="6" name="Bragen">
+      <position lat="59.04046662" lon="5.54193725" />
+      <leg legInfo="" />
+    </waypoint>
+    <waypoint id="7" name="Bjornaflua">
+      <position lat="58.99109975" lon="5.54542381" />
+      <leg legInfo="" />
+    </waypoint>
+    <waypoint id="8" name="Dalhaugflua">
+      <position lat="58.97770422" lon="5.54814694" />
+      <leg legInfo="" />
+    </waypoint>
+    <waypoint id="9" name="Midtfjaera">
+      <position lat="58.93021954" lon="5.54502271" />
+      <leg legInfo="" />
+    </waypoint>
+    <waypoint id="10" name="Sorskot">
+      <position lat="58.86141213" lon="5.50703709" />
+      <leg legInfo="" />
+    </waypoint>
+    <waypoint id="11" name="Skotemedgrunnen">
+      <position lat="58.7985905" lon="5.38983562" />
+      <leg legInfo="" />
+    </waypoint>
+  </waypoints>
+  <schedules>
+    <schedule id="0" name="Base Calculation" />
+  </schedules>
+  <extensions>
+    <extension manufacturer="Norwegian Coastal Administration" fullName="Stavanger - Feistein Outbound" productinfo="See information on www.routeinfo.no before use of this Reference Route for Navigation. The Reference Routes from NCA can be used as base in route planning. For routes with no comments on vessel size, 150 meter length and 9 meter draught has been used to quality assure the routes. Limitations in size of vessel may vary along the route caused by regulation or depths." routeNumber="NO-320003" StmDirection="OUT" StmRelativeToShortestDistance="1.5" StmPointDistanceLimitPilotRoute="1000" StmPointDistanceRtz="5000" StmMaxBearingDistance="45" xmlns="" />
+  </extensions>
+</route>

@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Based on schema version 20200226 (document number 2007) -->
+<S421:Dataset xmlns:S421="http://www.iho.int/S421/gml/cs0/1.0"
+	xsi:schemaLocation="http://www.iho.int/S421/gml/cs0/1.0 ../../../../schemas/S421/FMT/1.0.0/20210319/S421.xsd" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:gml="http://www.opengis.net/gml/3.2"
+	xmlns:S100="http://www.iho.int/s100gml/1.0" 
+	xmlns:xlink="http://www.w3.org/1999/xlink"  gml:id="S421.TST.SAMPL.00001">
+	
+  <gml:boundedBy>
+    <gml:Envelope srsName="EPSG:4326">
+      <gml:lowerCorner>-6.0000 40.0000</gml:lowerCorner>
+      <gml:upperCorner>45.0000 65.0000</gml:upperCorner>
+    </gml:Envelope>
+  </gml:boundedBy>
+
+  <member>
+		<S421:Route gml:id="RTE">
+			<routeFormatVersion>1.0</routeFormatVersion>
+			<routeID>SAMPL.00001</routeID>
+			<routeEditionNo>1</routeEditionNo>
+			<routeInfo xlink:href="#RTE.INFO" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeInfo" />
+			<routeWaypoints xlink:href="#RTE.WPTS" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeWaypoints"/>
+			<routeSchedules  xlink:href="#RTE.SCHEDS" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeSchedules"/>
+			<routeActionPoints xlink:href="#RTE.APTS" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeActionPoints"/>
+			<routeExtensions gml:id="RTE.EXT.1" 
+			 routeExtensionsManufacturerId="ACME" 
+			 routeExtensionsName="marpol_objects"  
+			 routeExtensionsVersion="1.0" >
+				<routeExtensionsNote> object id=”17”
+					name="Oil for an oil tanker (International Convention
+					Areas (MARPOL))"
+					info="Areas in which the adoption of special mandatory methods for
+					the prevention of sea pollution by oil or oil waters is required" 
+				</routeExtensionsNote >
+							<routeExtensionsNote> object id=”5”
+					name="Not comminuted or disinfected sewage (International Convention
+					Areas (MARPOL))"
+					info="Areas in which the adoption of special mandatory methods for
+					the prevention of sea pollution by Not comminuted or disinfected
+					sewage is required" 
+				</routeExtensionsNote >
+			</routeExtensions>
+		</S421:Route>
+	</member>	
+  
+  <imember>
+    <S421:RouteInfo gml:id="RTE.INFO">
+		<routeInfoName>AAA</routeInfoName>
+		<routeInfoAuthor>Mikael</routeInfoAuthor>
+		<routeInfoEditionTime>2019-10-18T12:49:00Z</routeInfoEditionTime>
+		<routeInfoDescription>Simple Test Data </routeInfoDescription>
+		<routeInfoStatus>3</routeInfoStatus>
+		<routeInfoValidityStart>2019-10-18T12:49:00Z</routeInfoValidityStart>
+		<routeInfoValidityEnd>2020-10-18T12:49:00Z</routeInfoValidityEnd>
+		<routeInfoVesselType>10</routeInfoVesselType>
+		<routeInfoVesselMMSI>265425000</routeInfoVesselMMSI>
+		<routeInfoVesselIMO>1234567</routeInfoVesselIMO>
+		<routeInfoExtensions gml:id="RTE.INFO.EXT.1" routeExtensionsManufacturerId="AAA" routeExtensionsName="RouteInfoExt" routeExtensionsVersion="1.0">
+			<routeExtensionsNote>position 10.40 20.20</routeExtensionsNote>
+		</routeInfoExtensions>
+	</S421:RouteInfo> 
+  </imember>
+   
+    <member>
+		<S421:RouteWaypoints gml:id="RTE.WPTS">
+			<routeWaypointsCollection xlink:href="#RTE" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeWaypointsCollection"/>
+			<routeWaypoint xlink:href="#RTE.WPT.1" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/consistsOfRouteWaypoint"/>
+			<routeWaypoint  xlink:href="#RTE.WPT.2" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/consistsOfRouteWaypoint"/>
+			<routeWaypoint  xlink:href="#RTE.WPT.3" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/consistsOfRouteWaypoint"/>
+		</S421:RouteWaypoints>
+	</member>
+	
+	
+	<member>
+		<S421:RouteWaypoint gml:id="RTE.WPT.1">
+			<geometry>
+				<S100:pointProperty>
+					<S100:Point gml:id="RTE.WPT.1.PT">
+					<gml:pos>53.000595 0.251287</gml:pos>
+					</S100:Point> 
+				</S100:pointProperty>
+			</geometry>
+			<routeWaypointID>1</routeWaypointID>
+			<routeWaypointName>WP Name 1</routeWaypointName>
+			<routeWaypointFixed>true</routeWaypointFixed>
+			<routeWaypointTurnRadius>0.7</routeWaypointTurnRadius>
+			<routeWaypointCollection xlink:href="#RTE.WPTS" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeWaypointCollection"/>
+			<routeWaypointExtensions gml:id="RTE.WPT.1.EXT.1" 
+				routeExtensionsManufacturerId="ACME" 
+				routeExtensionsName="ref_points"  
+				routeExtensionsVersion="1.0" >
+				<routeExtensionsNote> refName=”Sommers Light House”</routeExtensionsNote >
+				<routeExtensionsNote> position lat=”59.94708” lon=”27.09999”</routeExtensionsNote >
+			</routeWaypointExtensions>
+		</S421:RouteWaypoint> 
+	</member>
+	
+	<member>
+		<S421:RouteWaypoint gml:id="RTE.WPT.2">
+			<geometry>
+				<S100:pointProperty>
+					<S100:Point gml:id="RTE.WPT.2.PT">
+					<gml:pos>55.441282 4.085683</gml:pos>
+					</S100:Point> 
+				</S100:pointProperty>
+			</geometry>
+			<routeWaypointID>2</routeWaypointID>
+			<routeWaypointName>WP Name 2</routeWaypointName>
+			<routeWaypointFixed>true</routeWaypointFixed>
+			<routeWaypointTurnRadius>5.00</routeWaypointTurnRadius>
+			<routeWaypointCollection xlink:href="#RTE.WPTS" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeWaypointCollection"/>
+			<routeWaypointLeg xlink:href="#RTE.WPT.LEG.1" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeWaypointLeg"/>				
+		</S421:RouteWaypoint>
+	</member>
+
+	<member>
+		<S421:RouteWaypoint gml:id="RTE.WPT.3">
+			<geometry>
+				<S100:pointProperty>
+					<S100:Point gml:id="RTE.WPT.3.PT">
+					<gml:pos>57.592398 8.145643</gml:pos>
+					</S100:Point> 
+				</S100:pointProperty>
+			</geometry>
+			<routeWaypointID>3</routeWaypointID>
+			<routeWaypointName>WP Name 3</routeWaypointName>
+			<routeWaypointFixed>true</routeWaypointFixed>
+			<routeWaypointTurnRadius>4.9</routeWaypointTurnRadius>
+			<routeWaypointCollection xlink:href="#RTE.WPTS" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeWaypointCollection"/>
+			<routeWaypointLeg xlink:href="#RTE.WPT.LEG.2" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeWaypointLeg"/>				
+		</S421:RouteWaypoint>
+	</member>
+    <member>
+		<S421:RouteWaypointLeg gml:id="RTE.WPT.LEG.1">
+			<geometry>
+				<S100:curveProperty>
+					<S100:Curve gml:id="RTE.WPT.LEG.1.CV">
+						<gml:segments>
+							<gml:LineStringSegment>
+								<gml:pos>53.000595 0.251287</gml:pos>
+								<gml:pos>55.441282 4.085683</gml:pos>
+							</gml:LineStringSegment>
+						</gml:segments>
+					</S100:Curve>
+				</S100:curveProperty>
+			</geometry>
+			<routeWaypointLegStarboardXTDL>1</routeWaypointLegStarboardXTDL>
+			<routeWaypointLegPortXTDL>1</routeWaypointLegPortXTDL>
+			<routeWaypointLegStarboardCL>10</routeWaypointLegStarboardCL>
+			<routeWaypointLegPortCL>10</routeWaypointLegPortCL>
+			<routeWaypointLegSafetyContour>11.20000000</routeWaypointLegSafetyContour>
+			<routeWaypointLegSafetyDepth>22.20000000</routeWaypointLegSafetyDepth>
+			<routeWaypointLegGeometryType>1</routeWaypointLegGeometryType>
+			<routeWaypointLegCollection xlink:href="#RTE.WPT.2" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeWaypointLegCollection"/>
+		</S421:RouteWaypointLeg> 
+    </member>
+    <member>
+		<S421:RouteWaypointLeg gml:id="RTE.WPT.LEG.2">
+			<geometry>
+				<S100:curveProperty>
+					<S100:Curve gml:id="RTE.WPT.LEG.2.CV">
+						<gml:segments>
+							<gml:LineStringSegment>
+								<gml:pos>55.441282 4.085683</gml:pos>
+								<gml:pos>57.592398 8.145643</gml:pos>
+							</gml:LineStringSegment>
+						</gml:segments>
+					</S100:Curve>
+				</S100:curveProperty>
+			</geometry>	
+						<routeWaypointLegStarboardXTDL>1</routeWaypointLegStarboardXTDL>
+						<routeWaypointLegPortXTDL>1</routeWaypointLegPortXTDL>
+						<routeWaypointLegStarboardCL>10</routeWaypointLegStarboardCL>
+						<routeWaypointLegPortCL>10</routeWaypointLegPortCL>
+						<routeWaypointLegSafetyContour>11.20000000</routeWaypointLegSafetyContour>
+						<routeWaypointLegSafetyDepth>22.20000000</routeWaypointLegSafetyDepth>
+						<routeWaypointLegGeometryType>1</routeWaypointLegGeometryType>
+						<routeWaypointLegCollection xlink:href="#RTE.WPT.3" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeWaypointLegCollection"/>
+		</S421:RouteWaypointLeg> 
+    </member>
+
+	<member>
+		<S421:RouteActionPoints gml:id="RTE.APTS">
+			<routeActionPointsCollection xlink:href="#RTE" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeActionPointsCollection"/>
+			<routeActionPoint xlink:href="#RTE.APT.1" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeActionPoint"/>
+		</S421:RouteActionPoints>
+			
+	</member>
+	
+	<member>
+		<S421:RouteActionPoint gml:id="RTE.APT.1">
+			<geometry>
+				<S100:pointProperty> <S100:Point gml:id="RTE.APT.1.PT">
+						<gml:pos>55.441282 4.085683</gml:pos>
+				</S100:Point></S100:pointProperty>
+			</geometry>
+			<routeActionPointID>1</routeActionPointID>
+			<routeActionPointRadius>1.0</routeActionPointRadius>
+			<routeActionPointTimeToAct>12</routeActionPointTimeToAct>
+			<routeActionPointRequiredAction>1</routeActionPointRequiredAction>
+			<routeActionPointRequiredActionDescription>Act Now</routeActionPointRequiredActionDescription>
+			<routeActionPointCollection xlink:href="#APTS" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeActionPointCollection"/>
+			<routeActionPointExtensions gml:id="APT.1.EXT.1" 
+				routeExtensionsManufacturerId="ACME" 
+				routeExtensionsName="astronomical_event" 
+				routeExtensionsVersion="1.0" >
+				<routeExtensionsNote>astronomical_event 
+					eventType="sunrise" 
+					moonPhase="lastQuarter" 
+					time="2016-10-22T10:24:00Z" 
+				</routeExtensionsNote>
+			</routeActionPointExtensions>
+		</S421:RouteActionPoint>	
+	</member>
+	
+	<imember>
+		<S421:RouteSchedules gml:id="RTE.SCHEDS">
+			<routeSchedule xlink:href="#RTE.SCHED.1" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/route/routeSchedules"/>
+		</S421:RouteSchedules>
+	</imember>	
+	
+	<imember>
+		<S421:RouteSchedule gml:id="RTE.SCHED.1">
+			<routeScheduleID>1</routeScheduleID>
+			<routeScheduleCollection xlink:href="#RTE.SCHEDS" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeScheduleCollection"/>
+			<routeScheduleManual xlink:href="#RTE.SCHED.1.MAN" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeScheduleManual"/>
+			<routeScheduleCalculated xlink:href="#RTE.SCHED.1.CAL" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeScheduleCalculated"/>
+			<routeScheduleRecommended xlink:href="#RTE.SCHED.1.REC" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeScheduleRecommended"/>
+		</S421:RouteSchedule>
+	</imember>
+	
+	<imember>
+		<S421:RouteScheduleManual gml:id="RTE.SCHED.1.MAN">
+			<routeScheduleCollection xlink:href="#RTE.SCHED.1" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeScheduleCollection"/>
+			<routeScheduleElement xlink:href="#RTE.SCHED.1.MAN.ELEMENT.1" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeScheduleElement"/>
+		</S421:RouteScheduleManual>
+	</imember>
+	
+	<imember>
+		<S421:RouteScheduleElement gml:id="RTE.SCHED.1.MAN.ELEMENT.1">
+			<routeWaypointId>1</routeWaypointId>
+			<routeScheduleElementETD>2019-09-02T14:00:00Z</routeScheduleElementETD>
+			<routeScheduleElementNote>Manually set by operator</routeScheduleElementNote>
+			<routeScheduleElementManualCollection xlink:href="#RTE.SCHED.1.MAN" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeScheduleElementManualCollection"/>
+		</S421:RouteScheduleElement>
+	</imember>
+	
+	<imember>
+		<S421:RouteScheduleCalculated gml:id="RTE.SCHED.1.CAL">
+			<routeScheduleCollection xlink:href="#RTE.SCHED.1" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeScheduleCollection"/>
+			<routeScheduleElement xlink:href="#RTE.SCHED.1.CAL.ELEMENT.1" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeScheduleElement"/>
+			<routeScheduleElement xlink:href="#RTE.SCHED.1.CAL.ELEMENT.2" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeScheduleElement"/>
+		</S421:RouteScheduleCalculated>
+	</imember>
+	<imember>
+		<S421:RouteScheduleElement gml:id="RTE.SCHED.1.CAL.ELEMENT.1">
+			<routeWaypointId>1</routeWaypointId>
+			<routeScheduleElementETD>2019-09-02T14:00:00Z</routeScheduleElementETD>
+			<routeScheduleElementCalculatedCollection xlink:href="#RTE.SCHED.1.CAL" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeScheduleElementCalculatedCollection"/>
+		</S421:RouteScheduleElement>
+	</imember>
+	<imember>
+		<S421:RouteScheduleElement gml:id="RTE.SCHED.1.CAL.ELEMENT.2">
+			<routeWaypointId>2</routeWaypointId>
+			<routeScheduleElementPlanSOG>15</routeScheduleElementPlanSOG>
+			<routeScheduleElementETA>2019-09-02T20:39:46Z</routeScheduleElementETA>
+			<routeScheduleElementCalculatedCollection xlink:href="#RTE.SCHED.1.CAL" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeScheduleElementCalculatedCollection"/>
+		</S421:RouteScheduleElement>
+	</imember>
+
+	<imember>
+		<S421:RouteScheduleRecommended gml:id="RTE.SCHED.1.REC">
+			<routeScheduleCollection xlink:href="#RTE.SCHED.1" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeScheduleCollection"/>
+			<routeScheduleElement xlink:href="#RTE.SCHED.1.REC.ELEMENT.1" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeScheduleElement"/>
+		    <routeScheduleRecommendedExtensions gml:id="RTE.SCHED.1.REC.EXT.1" routeExtensionsManufacturerId="AAA" routeExtensionsName="Test" routeExtensionsVersion="1">
+				<routeExtensionsNote>check schedule</routeExtensionsNote>
+		    </routeScheduleRecommendedExtensions>
+		</S421:RouteScheduleRecommended>
+	</imember>
+	
+	<imember>
+		<S421:RouteScheduleElement gml:id="RTE.SCHED.1.REC.ELEMENT.1">
+			<routeWaypointId>2</routeWaypointId>
+			<routeScheduleElementPlanSOG>21.0</routeScheduleElementPlanSOG>
+			<routeScheduleElementETD>2019-10-20T04:15:00Z</routeScheduleElementETD>
+			<routeScheduleElementETA>2019-10-21T10:30:00</routeScheduleElementETA>
+			<routeScheduleElementETAWindowBefore>60</routeScheduleElementETAWindowBefore>
+			<routeScheduleElementETAWindowAfter>60</routeScheduleElementETAWindowAfter>
+			<routeScheduleElementNote>Recommended from Port</routeScheduleElementNote>
+			<routeScheduleElementRecommendedCollection xlink:href="#RTE.SCHED.1.REC" xlink:arcrole="http://www.iho.int/S-421/gml/1.0/roles/routeScheduleElementRecommendedCollection"/>
+			<routeScheduleElementExtensions gml:id="RTE.SCHED.1.REC.ELEMENT.1.EXT.1" routeExtensionsManufacturerId="AAA" routeExtensionsName="Test" routeExtensionsVersion="1">
+				<routeExtensionsNote>check schedule element</routeExtensionsNote>
+			</routeScheduleElementExtensions>
+		</S421:RouteScheduleElement>
+	</imember>	
+	
+</S421:Dataset>

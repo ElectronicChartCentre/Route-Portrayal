@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S421 Route Exchange</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer type="module" src="script.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" />
+    <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+</head>
+<body>
+    <h1>S-421 Route Exchange</h1>
+
+    <div id="map"></div>
+    <div id="info"></div>
+    <form id="form">
+        <input type="file" id="file" accept=".s421,.gml,.xml,.rtz"/>
+        <label for="format-select">Format:</label>
+        <select name="format" id="format-select">
+            <option value="s421">S421</option>
+            <option value="rtz">RTZ</option>
+        </select>
+        <button type="submit" id="submit">Upload</button>
+    </form>
+    <br>
+    <input type="checkbox" id="chk-xtdl" name="chk" checked >
+    <label for="chk-xtdl">XTDL</label>
+    <input type="checkbox" id="chk-cl" name="chk" checked>
+    <label for="chk-cl">CL</label>
+    
+    
+</body>
+</html>
