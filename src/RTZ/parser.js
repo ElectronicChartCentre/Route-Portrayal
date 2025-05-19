@@ -12,26 +12,28 @@ class DefaultValues{
 }
 
 
-function generateRTZRouteWaypoint(waypoint, defaultValues){
+function generateRTZRouteWaypoint(waypoint, defaultValues, suggestedId){
+    let wpId = parseInt(waypoint._attributes?.id) || suggestedId;
     return new RouteWaypoint(
-        parseInt(waypoint._attributes.id),
-        'RTE.WPT.'+ waypoint._attributes.id,
+        wpId,
+        'RTE.WPT.'+ wpId,
         waypoint._attributes.name || '',
         [parseFloat(waypoint.position._attributes.lon), parseFloat(waypoint.position._attributes.lat)],
         false,
         parseFloat(waypoint._attributes.radius) || defaultValues.radius,
-        'RTE.WPT.LEG.' + waypoint._attributes.id,
+        'RTE.WPT.LEG.' + wpId,
         '',
         {}
     );
 }
 
 
-function generateRTZRouteWaypointLeg(waypoint, defaultValues){
+function generateRTZRouteWaypointLeg(waypoint, defaultValues, suggestedId){
+    let wpId = parseInt(waypoint._attributes?.id) || suggestedId;
     return new RouteWaypointLeg(
-        'RTE.WPT.LEG.' + waypoint._attributes.id,
+        'RTE.WPT.LEG.' + wpId,
         parseInt(parseFloat(waypoint.leg?._attributes?.starboardXTD) * 1852) || defaultValues.starboardXTD,
-        parseInt(parseFloat(waypoint.leg._attributes.portsideXTD) * 1852) || defaultValues.portsideXTD,
+        parseInt(parseFloat(waypoint.leg?._attributes?.portsideXTD) * 1852) || defaultValues.portsideXTD,
         0,0,
         parseInt(waypoint.leg?._attributes?.safetyContour) || defaultValues.safetyContour,
         parseInt(waypoint.leg?._attributes?.safetyDepth) || defaultValues.safetyDepth,
@@ -59,23 +61,24 @@ export function parseRTZtoJS(route){
     let defaultWaypoint = route.waypoints.defaultWaypoint;
     // Default values
     const defaultValues = new DefaultValues(
-        parseFloat(defaultWaypoint._attributes.radius) || 0.0,
-        parseFloat(defaultWaypoint.leg._attributes.starboardXTD) || 0.0,
-        parseFloat(defaultWaypoint.leg._attributes.portsideXTD) || 0.0,
-        parseInt(defaultWaypoint.leg._attributes.safetyContour) || 0,
-        parseInt(defaultWaypoint.leg._attributes.safetyDepth) || 0
+        parseFloat(defaultWaypoint?._attributes?.radius) || 0.0,
+        parseFloat(defaultWaypoint?.leg?._attributes?.starboardXTD) || 0.0,
+        parseFloat(defaultWaypoint?.leg?._attributes?.portsideXTD) || 0.0,
+        parseInt(defaultWaypoint?.leg?._attributes?.safetyContour) || 0,
+        parseInt(defaultWaypoint?.leg?._attributes?.safetyDepth) || 0
     );
-
-    for(let waypoint of route.waypoints.waypoint){
-        try{
-            let WP = generateRTZRouteWaypoint(waypoint, defaultValues);
+    let pId = 0;
+    for (let waypoint of route.waypoints.waypoint) {
+        try {
+            pId++;
+            let WP = generateRTZRouteWaypoint(waypoint, defaultValues, pId);
             if(WP !== null) waypoints.push(WP);
 
-            let leg = generateRTZRouteWaypointLeg(waypoint,defaultValues);
+            let leg = generateRTZRouteWaypointLeg(waypoint, defaultValues, pId);
             if(leg !== null) legs[leg.getId()] = leg;
             
 
-        }catch(err){
+        } catch(err) {
             console.log("Skipping waypoint due to: ",err);
         }
     }

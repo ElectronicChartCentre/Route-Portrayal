@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<route>
+	<routeInfo routeName="Åhus IN"/>
+	<waypoints>
+		<defaultWaypoint>
+			<leg portsideXTD="1.00000000" starboardXTD="1.00000000"/>
+		</defaultWaypoint>
+		<waypoint name="Åhus Pilot Boarding Ground" radius="0.30000000">
+			<position lat="55.91594370" lon="14.47977555"/>
+			<leg geometryType="Orthodrome"/>
+		</waypoint>
+		<waypoint name="Åhus Buoy No 2" radius="0.30000000">
+			<position lat="55.93329333" lon="14.39481563"/>
+			<leg portsideXTD="0.05000000" starboardXTD="0.05000000" geometryType="Orthodrome"/>
+		</waypoint>
+		<waypoint name="Åhus Buoy No 3" radius="0.30000000">
+			<position lat="55.92971507" lon="14.38175158"/>
+			<leg portsideXTD="0.02000000" starboardXTD="0.02000000" geometryType="Orthodrome"/>
+		</waypoint>
+		<waypoint name="Åhus Buoy No 5" radius="0.30000000">
+			<position lat="55.92565437" lon="14.36584855"/>
+			<leg portsideXTD="0.02000000" starboardXTD="0.02000000" geometryType="Orthodrome"/>
+		</waypoint>
+		<waypoint name="Åhus Harbour Inside Breakwater" radius="0.30000000">
+			<position lat="55.92761667" lon="14.32781667"/>
+			<leg portsideXTD="0.01000000" starboardXTD="0.01000000" geometryType="Orthodrome"/>
+		</waypoint>
+	</waypoints>
+</route>
