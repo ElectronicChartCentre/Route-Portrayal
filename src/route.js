@@ -32,9 +32,9 @@ export function RouteToGeoJSON(waypointLegs, waypoints, actionPoints) {
 
     // Create waypointleg curves
     for (let i = 1; i < waypoints.length - 1; i++) {
-        const [circleCenter, tanget1, tangent2] = curveWaypointLeg(waypoints[i - 1], waypoints[i], waypoints[i + 1]);
-        if (circleCenter != null) { 
-            waypointLegs[circleCenter.properties.routeWaypointLeg].setCoordinates([...circleCenter.geometry.coordinates]);
+        const [circleArc, tanget1, tangent2] = curveWaypointLeg(waypoints[i - 1], waypoints[i], waypoints[i + 1]);
+        if (circleArc != null) { 
+            waypointLegs[circleArc.properties.routeWaypointLeg].setCoordinates([...circleArc.geometry.coordinates]);
         } else {
             waypointLegs[waypoints[i].getRouteWaypointLeg()].setCoordinates([waypoints[i].getCoordinates()]);
         }
@@ -175,7 +175,7 @@ function curveWaypointLeg(W1, W2, W3) {
         "used": false
     };
     if(circleCenter == null){
-        return [circleCenter, tangent1, tangent2];
+        return [null, tangent1, tangent2];
     }
 
     // Calculate bearing from circle center to tangent points
