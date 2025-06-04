@@ -19,7 +19,7 @@ export class RouteWaypoint{
         this.coordinates = coordinates;
         this.routeWaypointName = routeWaypointName || '';
         this.routeWaypointFixed = routeWaypointFixed || false;
-        this.routeWaypointTurnRadius = routeWaypointTurnRadius || 0.0;
+        this.routeWaypointTurnRadius = parseFloat(routeWaypointTurnRadius) || 0.0;
         this.routeWaypointLeg = routeWaypointLeg || '';
         this.routeWaypointExternalReferenceID = routeWaypointExternalReferenceID || '';
         this.routeWaypointExtensions = routeWaypointExtensions;
@@ -66,7 +66,12 @@ export class RouteWaypoint{
                 type: this.type,
                 id: this.id,
                 radius: this.routeWaypointTurnRadius,
-                routeWaypointLeg: this.routeWaypointLeg
+                routeWaypointLeg: this.routeWaypointLeg,
+                name: this.routeWaypointName,
+                reference: this.reference,
+                externalReferenceID: this.routeWaypointExternalReferenceID,
+                fixed: this.routeWaypointFixed,
+                extensions: this.routeWaypointExtensions
             }
         )
     }
