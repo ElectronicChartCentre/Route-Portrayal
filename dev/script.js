@@ -28,7 +28,7 @@ import {createLayers, createCorridorLayers} from '../dist/routePortrayal.esm.mjs
 let geojson;
 
 try {
-    const response = await fetch('./route1.json')
+    const response = await fetch('./d1.json')
     if (!response.ok) {
         throw new Error('Network response was not ok');
     }
@@ -61,6 +61,19 @@ map.on('load', async () => {
             for (let layer of layers) {
                 map.addLayer(layer);
             }
+            map.addLayer({   // ROUTE LEG - LINE
+                        'id': 'route-leg-line-1',
+                        'type': 'line',
+                        'source': 'geojsonSource',
+                        'filter': ['==', 'type', 'route-leg1'],
+                        'layout': {
+                            'line-join': 'round',
+                            'line-cap': 'round'
+                        },
+                        'paint': {
+                            'line-color': '#11AA44',
+                        }
+                    },)
         }
     }
 });
