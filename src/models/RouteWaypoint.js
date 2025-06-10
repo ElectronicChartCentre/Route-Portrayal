@@ -55,6 +55,10 @@ export class RouteWaypoint{
         this.coordinates = coordinates;
     }
 
+    setRadius(radius){
+        this.routeWaypointTurnRadius = radius;
+    }
+
     
 
     // Ordinary methods

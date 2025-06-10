@@ -132,7 +132,7 @@ function createCorridors(starboard, port, polygons) {
 
 
 
-function curveWaypointLeg(W1, W2, W3) {
+export function curveWaypointLeg(W1, W2, W3) {
     // No curve is needed if the turn radius is 0 or less
     if (W2.getRadius() <= 0.0) {
         const t1 = point(W2.getCoordinates(), {
