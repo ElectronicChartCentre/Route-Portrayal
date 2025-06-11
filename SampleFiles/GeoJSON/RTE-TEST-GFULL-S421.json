@@ -25992,7 +25992,17 @@
                 "type": "waypoint",
                 "id": 1,
                 "radius": 0.7,
-                "routeWaypointLeg": ""
+                "routeWaypointLeg": "",
+                "name": "WP Name 1",
+                "reference": "RTE.WPT.1",
+                "externalReferenceID": "GSN1.10",
+                "fixed": false,
+                "extensions": {
+                    "manufacturerId": "AAA",
+                    "routeExtensionsName": "Test",
+                    "version": 1,
+                    "note": ""
+                }
             },
             "geometry": {
                 "type": "Point",
@@ -26008,7 +26018,17 @@
                 "type": "waypoint",
                 "id": 2,
                 "radius": 1,
-                "routeWaypointLeg": "RTE.WPT.LEG.1"
+                "routeWaypointLeg": "RTE.WPT.LEG.1",
+                "name": "WP Name 2",
+                "reference": "RTE.WPT.2",
+                "externalReferenceID": "GSN1.17",
+                "fixed": false,
+                "extensions": {
+                    "manufacturerId": "AAA",
+                    "routeExtensionsName": "Test",
+                    "version": 1,
+                    "note": " Be careful"
+                }
             },
             "geometry": {
                 "type": "Point",
@@ -26024,7 +26044,17 @@
                 "type": "waypoint",
                 "id": 3,
                 "radius": 1,
-                "routeWaypointLeg": "RTE.WPT.LEG.2"
+                "routeWaypointLeg": "RTE.WPT.LEG.2",
+                "name": "WP Name 3",
+                "reference": "RTE.WPT.3",
+                "externalReferenceID": "GSN1.1",
+                "fixed": true,
+                "extensions": {
+                    "manufacturerId": "AAA",
+                    "routeExtensionsName": "Test",
+                    "version": 1,
+                    "note": " Be careful"
+                }
             },
             "geometry": {
                 "type": "Point",
@@ -26040,7 +26070,17 @@
                 "type": "waypoint",
                 "id": 4,
                 "radius": 1,
-                "routeWaypointLeg": "RTE.WPT.LEG.3"
+                "routeWaypointLeg": "RTE.WPT.LEG.3",
+                "name": "WP Name 4",
+                "reference": "RTE.WPT.4",
+                "externalReferenceID": "GSN1.3",
+                "fixed": false,
+                "extensions": {
+                    "manufacturerId": "AAA",
+                    "routeExtensionsName": "Test",
+                    "version": 1,
+                    "note": " Be careful"
+                }
             },
             "geometry": {
                 "type": "Point",
@@ -26056,7 +26096,17 @@
                 "type": "waypoint",
                 "id": 5,
                 "radius": 1,
-                "routeWaypointLeg": "RTE.WPT.LEG.4"
+                "routeWaypointLeg": "RTE.WPT.LEG.4",
+                "name": "WP Name 5",
+                "reference": "RTE.WPT.5",
+                "externalReferenceID": "GSN1.4",
+                "fixed": false,
+                "extensions": {
+                    "manufacturerId": "AAA",
+                    "routeExtensionsName": "Test",
+                    "version": 1,
+                    "note": " Be careful"
+                }
             },
             "geometry": {
                 "type": "Point",
@@ -26072,7 +26122,17 @@
                 "type": "waypoint",
                 "id": 6,
                 "radius": 1,
-                "routeWaypointLeg": "RTE.WPT.LEG.5"
+                "routeWaypointLeg": "RTE.WPT.LEG.5",
+                "name": "WP Name 6",
+                "reference": "RTE.WPT.6",
+                "externalReferenceID": "GSN1.17",
+                "fixed": false,
+                "extensions": {
+                    "manufacturerId": "AAA",
+                    "routeExtensionsName": "Test",
+                    "version": 1,
+                    "note": " Be careful"
+                }
             },
             "geometry": {
                 "type": "Point",
@@ -26088,7 +26148,17 @@
                 "type": "waypoint",
                 "id": 7,
                 "radius": 1,
-                "routeWaypointLeg": "RTE.WPT.LEG.6"
+                "routeWaypointLeg": "RTE.WPT.LEG.6",
+                "name": "WP Name 7",
+                "reference": "RTE.WPTS.WPT.7",
+                "externalReferenceID": "GSN1.8",
+                "fixed": false,
+                "extensions": {
+                    "manufacturerId": "AAA",
+                    "routeExtensionsName": "Test",
+                    "version": 1,
+                    "note": " Be careful"
+                }
             },
             "geometry": {
                 "type": "Point",
@@ -26104,7 +26174,17 @@
                 "type": "waypoint",
                 "id": 8,
                 "radius": 1,
-                "routeWaypointLeg": "RTE.WPT.LEG.7"
+                "routeWaypointLeg": "RTE.WPT.LEG.7",
+                "name": "WP Name 8",
+                "reference": "RTE.WPT.8",
+                "externalReferenceID": "GSN1.11",
+                "fixed": false,
+                "extensions": {
+                    "manufacturerId": "AAA",
+                    "routeExtensionsName": "Test",
+                    "version": 1,
+                    "note": " Be careful"
+                }
             },
             "geometry": {
                 "type": "Point",
@@ -26120,7 +26200,17 @@
                 "type": "waypoint",
                 "id": 9,
                 "radius": 1,
-                "routeWaypointLeg": "RTE.WPT.LEG.8"
+                "routeWaypointLeg": "RTE.WPT.LEG.8",
+                "name": "WP Name 9",
+                "reference": "RTE.WPT.9",
+                "externalReferenceID": "GSN1.12",
+                "fixed": false,
+                "extensions": {
+                    "manufacturerId": "AAA",
+                    "routeExtensionsName": "Test",
+                    "version": 1,
+                    "note": " Be careful"
+                }
             },
             "geometry": {
                 "type": "Point",
@@ -26136,7 +26226,17 @@
                 "type": "waypoint",
                 "id": 10,
                 "radius": 1,
-                "routeWaypointLeg": "RTE.WPT.LEG.9"
+                "routeWaypointLeg": "RTE.WPT.LEG.9",
+                "name": "WP Name 10",
+                "reference": "RTE.WPT.10",
+                "externalReferenceID": "GSN1.123456",
+                "fixed": false,
+                "extensions": {
+                    "manufacturerId": "AAA",
+                    "routeExtensionsName": "",
+                    "version": 0,
+                    "note": " Be careful"
+                }
             },
             "geometry": {
                 "type": "Point",

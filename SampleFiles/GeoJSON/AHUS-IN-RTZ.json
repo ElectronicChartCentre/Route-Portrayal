@@ -4535,7 +4535,12 @@
                 "type": "waypoint",
                 "id": 1,
                 "radius": 0.3,
-                "routeWaypointLeg": "RTE.WPT.LEG.1"
+                "routeWaypointLeg": "RTE.WPT.LEG.1",
+                "name": "Åhus Pilot Boarding Ground",
+                "reference": "RTE.WPT.1",
+                "externalReferenceID": "",
+                "fixed": false,
+                "extensions": {}
             },
             "geometry": {
                 "type": "Point",
@@ -4551,7 +4556,12 @@
                 "type": "waypoint",
                 "id": 2,
                 "radius": 0.3,
-                "routeWaypointLeg": "RTE.WPT.LEG.2"
+                "routeWaypointLeg": "RTE.WPT.LEG.2",
+                "name": "Åhus Buoy No 2",
+                "reference": "RTE.WPT.2",
+                "externalReferenceID": "",
+                "fixed": false,
+                "extensions": {}
             },
             "geometry": {
                 "type": "Point",
@@ -4567,7 +4577,12 @@
                 "type": "waypoint",
                 "id": 3,
                 "radius": 0.3,
-                "routeWaypointLeg": "RTE.WPT.LEG.3"
+                "routeWaypointLeg": "RTE.WPT.LEG.3",
+                "name": "Åhus Buoy No 3",
+                "reference": "RTE.WPT.3",
+                "externalReferenceID": "",
+                "fixed": false,
+                "extensions": {}
             },
             "geometry": {
                 "type": "Point",
@@ -4583,7 +4598,12 @@
                 "type": "waypoint",
                 "id": 4,
                 "radius": 0.3,
-                "routeWaypointLeg": "RTE.WPT.LEG.4"
+                "routeWaypointLeg": "RTE.WPT.LEG.4",
+                "name": "Åhus Buoy No 5",
+                "reference": "RTE.WPT.4",
+                "externalReferenceID": "",
+                "fixed": false,
+                "extensions": {}
             },
             "geometry": {
                 "type": "Point",
@@ -4599,7 +4619,12 @@
                 "type": "waypoint",
                 "id": 5,
                 "radius": 0.3,
-                "routeWaypointLeg": "RTE.WPT.LEG.5"
+                "routeWaypointLeg": "RTE.WPT.LEG.5",
+                "name": "Åhus Harbour Inside Breakwater",
+                "reference": "RTE.WPT.5",
+                "externalReferenceID": "",
+                "fixed": false,
+                "extensions": {}
             },
             "geometry": {
                 "type": "Point",
