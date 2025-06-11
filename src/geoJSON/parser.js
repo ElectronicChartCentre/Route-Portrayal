@@ -33,7 +33,7 @@ export function parseGeoJsonToJS(geojson){
 
 
 
-export function convertGeoJsonWaypointToRouteWaypoint(geojson) {
+function convertGeoJsonWaypointToRouteWaypoint(geojson) {
     if (!geojson || !geojson.properties || !geojson.geometry) {
         throw new Error('Invalid GeoJSON waypoint');
     }
