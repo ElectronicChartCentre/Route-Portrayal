@@ -1,4 +1,4 @@
-import { RouteWaypoint,RouteWaypointLeg } from '../models/index.js';
+import { createActionPoint, RouteWaypoint,RouteWaypointLeg } from '../models/index.js';
 
 
 
@@ -23,12 +23,10 @@ export function parseGeoJsonToJS(geojson){
             const waypoint = convertGeoJsonWaypointToRouteWaypoint(feature);
             waypoints.push(waypoint);
         }else if (feature.properties.type.includes('actionpoint')){
-            continue; // TODO: Implement parser for ActionPoints
+            actionpoints.push(convertGeoJsonActionPointToRouteActionPoint(feature));
         }
     }
-
     return [legs, waypoints, actionpoints];
-
 }
 
 
@@ -64,7 +62,7 @@ export function convertGeoJsonWaypointToRouteWaypoint(geojson) {
 
 }
 
-export function convertGeoJsonLegToRouteWaypointLeg(geojson){
+function convertGeoJsonLegToRouteWaypointLeg(geojson){
     if (!geojson || !geojson.properties || !geojson.geometry) {
         throw new Error('Invalid GeoJSON waypoint');
     }
@@ -108,3 +106,28 @@ export function convertGeoJsonLegToRouteWaypointLeg(geojson){
     
 }
 
+
+function convertGeoJsonActionPointToRouteActionPoint(geojson) {
+    if (!geojson || !geojson.properties || !geojson.geometry) {
+        throw new Error('Invalid GeoJSON action point');
+    }
+    const props = geojson?.properties;
+
+    const id = props?.id;
+    const routeActionPointID = props?.routeActionPointID || '';
+    const routeActionPointName = props?.routeActionPointName || '';
+    const routeActionPointRadius = parseFloat(props?.routeActionPointRadius) || 0.0;
+    const routeActionPointTimeToAct = parseFloat(props?.routeActionPointTimeToAct) || 0.0;
+    const routeActionPointRequiredAction = props?.routeActionPointRequiredAction || '';
+    const routeActionPointRequiredActionDescription = props?.routeActionPointRequiredActionDescription || '';
+    const routeActionPointExtensions = props?.routeActionPointExtensions || {};
+    const coordinates = geojson?.geometry?.coordinates;
+    const type = props?.type.split('-')[1];
+
+    return createActionPoint(
+        type, id, routeActionPointID, routeActionPointName, coordinates,
+        routeActionPointRadius, routeActionPointTimeToAct,
+        routeActionPointRequiredAction, routeActionPointRequiredActionDescription,
+        routeActionPointExtensions
+    );
+}
