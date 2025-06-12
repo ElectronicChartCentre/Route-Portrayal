@@ -81,7 +81,7 @@ export function RouteToGeoJSON(waypointLegs, waypoints, actionPoints) {
                 const [starboardXTDL,portXTDL] = leg.xtdlToGeoJson(leg.getStarboardXTDL());
                 xtdlStarboard.push(starboardXTDL);
                 xtdlPort.push(portXTDL);
-
+            }
             // if (leg.getStarboardXTDL() !== 0) xtdlStarboard.push(leg.starboardXTDLtoGeoJSON());
             // if (leg.getPortXTDL() !== 0) xtdlPort.push(leg.portXTDLtoGeoJSON());
             // if (leg.getStarboardCL() !== 0) clStarboard.push(leg.starboardCLtoGeoJSON());
@@ -95,9 +95,10 @@ export function RouteToGeoJSON(waypointLegs, waypoints, actionPoints) {
             //     const [s1,s2] = leg.xtdlToGeoJson();
             //     test.push(s1,s2);
             // }
-            }
+            
         }
     });
+    RouteWaypointLeg.updateLegCorridors1(xtdlStarboard,xtdlPort);
 
     
     // if (xtdlStarboard.length > 0 && xtdlStarboard.length === xtdlPort.length){

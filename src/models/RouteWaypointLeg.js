@@ -153,12 +153,6 @@ export class RouteWaypointLeg{
                         ...line.geometry.coordinates.slice(0,index+1)];
 
 
-
-        // const testP = point(line.geometry.coordinates[0]);
-        // testP.properties = {
-        //     type: 'actionpoint-point',
-        // }
-
         const fullLen = length(line);
 
         let starboard = lineSlice(dest1,dest3,line);
@@ -174,6 +168,7 @@ export class RouteWaypointLeg{
         if(portLen > (fullLen / 2)){
             port = lineSlice(dest2,dest4,lineString(coords));
         }
+        port.geometry.coordinates.reverse();
 
         starboard.properties ={
             type: "route-leg-XTDL",
@@ -289,6 +284,42 @@ export class RouteWaypointLeg{
             number = length-index-1;
             secondLast.geometry.coordinates.splice(index+1,number);
             last.geometry.coordinates[0] = secondLast.geometry.coordinates[secondLast.geometry.coordinates.length-1];
+        }
+    }
+
+    static updateLegCorridors1(sb,port){
+
+        for(let i = 0; i<sb.length; i++){
+            if(sb[i+1]){
+                if (sb[i].distance > sb[i+1].distance){
+                    const l = transformScale(lineString([sb[i].geometry.coordinates[sb[i].geometry.coordinates.length-1],
+                                                        port[i].geometry.coordinates[port[i].geometry.coordinates.length-1]]),2);
+                    const sbP = lineIntersect(sb[i+1], l);
+                    const portP = lineIntersect(port[i+1], l);
+                    if(sbP.features.length > 0){
+                        sb[i+1].geometry.coordinates[0] = sbP.features[0].geometry.coordinates;
+                    }
+                    if(portP.features.length > 0){
+                        port[i+1].geometry.coordinates[0] = portP.features[0].geometry.coordinates;
+                    }
+                }else{
+                    const l = transformScale(lineString([sb[i+1].geometry.coordinates[0],port[i+1].geometry.coordinates[0]]),2);
+                    const sbP = lineIntersect(sb[i], l);
+                    const portP = lineIntersect(port[i], l);
+                    if(sbP.features.length > 0){
+                        const nearest = nearestPointOnLine(sb[i], sbP.features[0].geometry.coordinates);
+                        const index = nearest.properties.index;
+                        sb[i].geometry.coordinates.splice(index+1,sb[i].geometry.coordinates.length-index-1);
+                    }
+                    if(portP.features.length > 0){
+                        const nearest = nearestPointOnLine(port[i], portP.features[0].geometry.coordinates);
+                        const index = nearest.properties.index;
+                        port[i].geometry.coordinates.splice(index+1,port[i].geometry.coordinates.length-index-1);
+                    } 
+                }
+                sb[i].geometry.coordinates.push(sb[i+1].geometry.coordinates[0]);
+                port[i].geometry.coordinates.push(port[i+1].geometry.coordinates[0]);
+            }
         }
     }
 
