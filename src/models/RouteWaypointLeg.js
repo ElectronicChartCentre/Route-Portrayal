@@ -1,6 +1,8 @@
 import {
     point, bearing, transformScale, transformTranslate,
-    lineString, polygon, lineIntersect, distance, nearestPointOnLine
+    lineString, polygon, lineIntersect, distance, nearestPointOnLine, buffer,
+    polygonToLine, lineSlice,clone, length,
+    destination
 } from '@turf/turf';
 
 export class RouteWaypointLeg{
@@ -125,6 +127,68 @@ export class RouteWaypointLeg{
             routeWaypointLegIssue: this.routeWaypointLegIssue,
             routeWaypointLegExtensions: this.routeWaypointLegExtensions
         });
+    }
+
+    xtdlToGeoJson(distance){
+        const buffers = buffer(lineString(this.legCoordinates), distance, {units: 'meters'});
+        const line = polygonToLine(buffers);
+
+        
+
+        const pStart = point(this.legCoordinates[0]);
+        const pEnd = point(this.legCoordinates[this.legCoordinates.length-1]);
+
+        const bearing1 = bearing(pStart,point(this.legCoordinates[1]));
+        const bearing2 = bearing(point(this.legCoordinates[this.legCoordinates.length-2]),pEnd);
+
+        const dest1 = destination(pStart, distance, bearing1 + 90, {units: 'meters'});
+        const dest2 = destination(pStart, distance, bearing1 - 90, {units: 'meters'});
+        const dest3 = destination(pEnd, distance, bearing2 + 90, {units: 'meters'});
+        const dest4 = destination(pEnd, distance, bearing2 - 90, {units: 'meters'});
+      
+
+        const p = nearestPointOnLine(line, dest1);
+        const index = line.geometry.coordinates.indexOf(p.geometry.coordinates);
+        const coords = [...line.geometry.coordinates.slice(index,line.geometry.coordinates.length-1),
+                        ...line.geometry.coordinates.slice(0,index+1)];
+
+
+
+        // const testP = point(line.geometry.coordinates[0]);
+        // testP.properties = {
+        //     type: 'actionpoint-point',
+        // }
+
+        const fullLen = length(line);
+
+        let starboard = lineSlice(dest1,dest3,line);
+        let port = lineSlice(dest2,dest4,line);
+
+        const starboardLen = length(starboard);
+        const portLen = length(port);
+
+        if(starboardLen > (fullLen / 2)){
+            starboard = lineSlice(dest1,dest3,lineString(coords));
+        }
+
+        if(portLen > (fullLen / 2)){
+            port = lineSlice(dest2,dest4,lineString(coords));
+        }
+
+        starboard.properties ={
+            type: "route-leg-XTDL",
+            routeLegID: this.id,
+            side: "starboard",
+            distance: distance
+        }
+        port.properties ={
+            type: "route-leg-XTDL",
+            routeLegID: this.id,
+            side: "port",
+            distance: distance
+        }
+
+        return [starboard,port];
     }
 
 

@@ -67,6 +67,7 @@ export function RouteToGeoJSON(waypointLegs, waypoints, actionPoints) {
 
     // Add features to feature collection
     const xtdlStarboard = [],
+    test=[],
         xtdlPort = [],
         clStarboard = [],
         clPort = [],
@@ -75,29 +76,39 @@ export function RouteToGeoJSON(waypointLegs, waypoints, actionPoints) {
     Object.values(waypointLegs).forEach(leg => {
         if (leg.getCoordinates()[0].length > 0) {
             geoJSON.features.push(leg.toGeoJSON());
+            
+            if(leg.getStarboardXTDL() !== 0 && leg.getStarboardXTDL() == leg.getPortXTDL()){
+                const [starboardXTDL,portXTDL] = leg.xtdlToGeoJson(leg.getStarboardXTDL());
+                xtdlStarboard.push(starboardXTDL);
+                xtdlPort.push(portXTDL);
 
-            if (leg.getStarboardXTDL() !== 0) xtdlStarboard.push(leg.starboardXTDLtoGeoJSON());
-            if (leg.getPortXTDL() !== 0) xtdlPort.push(leg.portXTDLtoGeoJSON());
-            if (leg.getStarboardCL() !== 0) clStarboard.push(leg.starboardCLtoGeoJSON());
-            if (leg.getPortCL() !== 0) clPort.push(leg.portCLtoGeoJSON());
+            // if (leg.getStarboardXTDL() !== 0) xtdlStarboard.push(leg.starboardXTDLtoGeoJSON());
+            // if (leg.getPortXTDL() !== 0) xtdlPort.push(leg.portXTDLtoGeoJSON());
+            // if (leg.getStarboardCL() !== 0) clStarboard.push(leg.starboardCLtoGeoJSON());
+            // if (leg.getPortCL() !== 0) clPort.push(leg.portCLtoGeoJSON());
 
-            if (xtdlStarboard.length > 1) RouteWaypointLeg.updateLegCorridors(xtdlStarboard);
-            if (xtdlPort.length > 1) RouteWaypointLeg.updateLegCorridors(xtdlPort);
-            if (clStarboard.length > 1) RouteWaypointLeg.updateLegCorridors(clStarboard);
-            if (clPort.length > 1) RouteWaypointLeg.updateLegCorridors(clPort);
+            // if (xtdlStarboard.length > 1) RouteWaypointLeg.updateLegCorridors(xtdlStarboard);
+            // if (xtdlPort.length > 1) RouteWaypointLeg.updateLegCorridors(xtdlPort);
+            // if (clStarboard.length > 1) RouteWaypointLeg.updateLegCorridors(clStarboard);
+            // if (clPort.length > 1) RouteWaypointLeg.updateLegCorridors(clPort);
+            // if(leg.getStarboardXTDL() !== 0 ){
+            //     const [s1,s2] = leg.xtdlToGeoJson();
+            //     test.push(s1,s2);
+            // }
+            }
         }
     });
 
     
-    if (xtdlStarboard.length > 0 && xtdlStarboard.length === xtdlPort.length){
-        createCorridors(xtdlStarboard, xtdlPort, xtdlPolygons);
-    }
+    // if (xtdlStarboard.length > 0 && xtdlStarboard.length === xtdlPort.length){
+    //     createCorridors(xtdlStarboard, xtdlPort, xtdlPolygons);
+    // }
 
-    if (clStarboard.length > 0 && clStarboard.length === clPort.length){
-        createCorridors(clStarboard, clPort, clPolygons);
-    }
+    // if (clStarboard.length > 0 && clStarboard.length === clPort.length){
+    //     createCorridors(clStarboard, clPort, clPolygons);
+    // }
 
-    geoJSON.features.push(...xtdlStarboard, ...xtdlPort, ...clStarboard, ...clPort, ...xtdlPolygons, ...clPolygons);
+    geoJSON.features.push(...xtdlStarboard, ...xtdlPort, ...clStarboard, ...clPort, ...xtdlPolygons, ...clPolygons,...test);
     waypoints.forEach(wp => geoJSON.features.push(wp.toGeoJSON()));
     geoJSON.features.push(...actionPoints);
     return geoJSON;
@@ -125,7 +136,11 @@ function createCorridors(starboard, port, polygons) {
                 back = false
             }
         }
-        polygons.push(RouteWaypointLeg.createCorridorPolygons(starboard[i], port[i], front, back));
+        try{
+            polygons.push(RouteWaypointLeg.createCorridorPolygons(starboard[i], port[i], front, back));
+        }catch (e) {
+            console.error("Feil");
+        }
     }
 
 }
