@@ -143,5 +143,5 @@ export function generateS421ActionPoint(object){
         type, id, routeActionPointID, routeActionPointName, coordinates, routeActionPointRadius,
         routeActionPointTimeToAct, routeActionPointRequiredAction, routeActionPointRequiredActionDescription,
         routeActionPointExtensions
-    ).toGeoJSON();
+    );
 }

@@ -129,7 +129,7 @@ export class RouteWaypointLeg{
         });
     }
 
-    xtdlToGeoJson(distance){
+    corridorToGeoJson(distance,type='XTDL'){
         const buffers = buffer(lineString(this.legCoordinates), distance, {units: 'meters'});
         const line = polygonToLine(buffers);
 
@@ -154,6 +154,10 @@ export class RouteWaypointLeg{
 
 
         const fullLen = length(line);
+        if(type==='CL'){
+            console.log(buffers)
+            console.log(line.geometry)
+        }
 
         let starboard = lineSlice(dest1,dest3,line);
         let port = lineSlice(dest2,dest4,line);
@@ -171,13 +175,13 @@ export class RouteWaypointLeg{
         port.geometry.coordinates.reverse();
 
         starboard.properties ={
-            type: "route-leg-XTDL",
+            type: type==='XTDL'? "route-leg-XTDL":"route-leg-CL",
             routeLegID: this.id,
             side: "starboard",
             distance: distance
         }
         port.properties ={
-            type: "route-leg-XTDL",
+            type: type==='XTDL'? "route-leg-XTDL":"route-leg-CL",
             routeLegID: this.id,
             side: "port",
             distance: distance
@@ -288,6 +292,7 @@ export class RouteWaypointLeg{
     }
 
     static updateLegCorridors1(sb,port){
+        const corridorPolygons = [];
 
         for(let i = 0; i<sb.length; i++){
             if(sb[i+1]){
@@ -302,6 +307,8 @@ export class RouteWaypointLeg{
                     if(portP.features.length > 0){
                         port[i+1].geometry.coordinates[0] = portP.features[0].geometry.coordinates;
                     }
+                    sb[i].geometry.coordinates.push(sb[i+1].geometry.coordinates[0]);
+                    port[i].geometry.coordinates.push(port[i+1].geometry.coordinates[0]);
                 }else{
                     const l = transformScale(lineString([sb[i+1].geometry.coordinates[0],port[i+1].geometry.coordinates[0]]),2);
                     const sbP = lineIntersect(sb[i], l);
@@ -316,11 +323,43 @@ export class RouteWaypointLeg{
                         const index = nearest.properties.index;
                         port[i].geometry.coordinates.splice(index+1,port[i].geometry.coordinates.length-index-1);
                     } 
+                    sb[i+1].geometry.coordinates.unshift(sb[i].geometry.coordinates[sb[i].geometry.coordinates.length-1]);
+                    port[i+1].geometry.coordinates.unshift(port[i].geometry.coordinates[port[i].geometry.coordinates.length-1]);
                 }
-                sb[i].geometry.coordinates.push(sb[i+1].geometry.coordinates[0]);
-                port[i].geometry.coordinates.push(port[i+1].geometry.coordinates[0]);
             }
+            // Create polygons for the corridor
+            corridorPolygons.push(RouteWaypointLeg.createCorridorPolygons1(sb[i],port[i]))
         }
+        return corridorPolygons;
+    }
+    static createCorridorPolygons1(starboardLine, portLine){
+        
+        const starboard = [...starboardLine.geometry.coordinates];
+        const port = [...portLine.geometry.coordinates];
+        // // If back is false, the back coordinates should be removed before
+        // // drawing the polygon.
+        // if(!back){
+        //     starboard.pop();
+        //     port.pop();
+        // }
+        // // If front has valid coordinates, they should be added to the front of the
+        // // starboard and port arrays before drawing the polygon.
+        // if(front?.starboard) starboard.unshift(front.starboard);
+        // if(front?.port) port.unshift(front.port);
+
+        const coordinates = [];
+        let reverseArray = [...port].reverse();
+        coordinates.push(...starboard)
+        coordinates.push(...reverseArray);
+        coordinates.push(starboard[0]);
+
+        let type = starboardLine.properties.type === "route-leg-XTDL" ? "route-leg-corridor-xtdl" : "route-leg-corridor-cl";
+        return polygon([coordinates],{
+            type: type,
+            routeLegID: portLine.properties.routeLegID,
+            starboardDistance: starboardLine.properties.distance,
+            portDistance: portLine.properties.distance
+        });
     }
 
     static createCorridorPolygons(starboardLine, portLine, front=null, back=true){
