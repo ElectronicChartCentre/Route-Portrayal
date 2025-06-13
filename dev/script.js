@@ -48,6 +48,7 @@ map.on('load', async () => {
 
 
     if (geojson) {
+        console.log(geojson)
         map.addSource('geojsonSource', {
             'type': 'geojson',
             'data': geojson
@@ -61,19 +62,6 @@ map.on('load', async () => {
             for (let layer of layers) {
                 map.addLayer(layer);
             }
-            map.addLayer({   // ROUTE LEG - LINE
-                        'id': 'route-leg-line-1',
-                        'type': 'line',
-                        'source': 'geojsonSource',
-                        'filter': ['==', 'type', 'route-leg1'],
-                        'layout': {
-                            'line-join': 'round',
-                            'line-cap': 'round'
-                        },
-                        'paint': {
-                            'line-color': '#11AA44',
-                        }
-                    },)
         }
     }
 });
