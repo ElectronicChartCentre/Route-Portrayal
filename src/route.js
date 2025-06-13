@@ -70,83 +70,33 @@ export function RouteToGeoJSON(waypointLegs, waypoints, actionPoints) {
         xtdlPort = [],
         clStarboard = [],
         clPort = [];
+    let xtdlPolygons = [],
+        clPolygons = [];
     Object.values(waypointLegs).forEach(leg => {
         if (leg.getCoordinates()[0].length > 0) {
             geoJSON.features.push(leg.toGeoJSON());
-            
-            if(leg.getStarboardXTDL() !== 0 && leg.getStarboardXTDL() == leg.getPortXTDL()){
-                const [starboardXTDL,portXTDL] = leg.corridorToGeoJson(leg.getStarboardXTDL(),'XTDL');
-                xtdlStarboard.push(starboardXTDL);
-                xtdlPort.push(portXTDL);
-            }
-            if(leg.getStarboardCL() !== 0 && leg.getStarboardCL() == leg.getPortCL()){
-                const [starboardCL,portCL] = leg.corridorToGeoJson(leg.getStarboardCL(),'CL');
-                clStarboard.push(starboardCL);
-                clPort.push(portCL);
-            }
-            // if (leg.getStarboardXTDL() !== 0) xtdlStarboard.push(leg.starboardXTDLtoGeoJSON());
-            // if (leg.getPortXTDL() !== 0) xtdlPort.push(leg.portXTDLtoGeoJSON());
-            // if (leg.getStarboardCL() !== 0) clStarboard.push(leg.starboardCLtoGeoJSON());
-            // if (leg.getPortCL() !== 0) clPort.push(leg.portCLtoGeoJSON());
 
-            // if (xtdlStarboard.length > 1) RouteWaypointLeg.updateLegCorridors(xtdlStarboard);
-            // if (xtdlPort.length > 1) RouteWaypointLeg.updateLegCorridors(xtdlPort);
-            // if (clStarboard.length > 1) RouteWaypointLeg.updateLegCorridors(clStarboard);
-            // if (clPort.length > 1) RouteWaypointLeg.updateLegCorridors(clPort);
-            // if(leg.getStarboardXTDL() !== 0 ){
-            //     const [s1,s2] = leg.xtdlToGeoJson();
-            //     test.push(s1,s2);
-            // }
-            
+            if (leg.getStarboardXTDL() !== 0) xtdlStarboard.push(leg.starboardXTDLtoGeoJSON());
+            if (leg.getPortXTDL() !== 0) xtdlPort.push(leg.portXTDLtoGeoJSON());
+            if (leg.getStarboardCL() !== 0) clStarboard.push(leg.starboardCLtoGeoJSON());
+            if (leg.getPortCL() !== 0) clPort.push(leg.portCLtoGeoJSON());
+
         }
     });
-    const xtdlPolygons = RouteWaypointLeg.updateLegCorridors1(xtdlStarboard,xtdlPort);
-    const clPolygons = RouteWaypointLeg.updateLegCorridors1(clStarboard,clPort);
-    
-    // if (xtdlStarboard.length > 0 && xtdlStarboard.length === xtdlPort.length){
-    //     createCorridors(xtdlStarboard, xtdlPort, xtdlPolygons);
-    // }
 
-    // if (clStarboard.length > 0 && clStarboard.length === clPort.length){
-    //     createCorridors(clStarboard, clPort, clPolygons);
-    // }
-
+    if(xtdlStarboard.length === xtdlPort.length && xtdlStarboard.length > 0){
+        xtdlPolygons = [...RouteWaypointLeg.updateLegCorridors(xtdlStarboard,xtdlPort)];
+    }
+    if(clStarboard.length === clPort.length && clStarboard.length > 0){
+        clPolygons = [...RouteWaypointLeg.updateLegCorridors(clStarboard,clPort)];
+    }
+   
     geoJSON.features.push(...xtdlStarboard, ...xtdlPort, ...clStarboard, ...clPort, ...xtdlPolygons, ...clPolygons);
     waypoints.forEach(wp => geoJSON.features.push(wp.toGeoJSON()));
     actionPoints.forEach(ap => geoJSON.features.push(ap.toGeoJSON()));
     return geoJSON;
 }
 
-// For now, this function assumes that the corridor distance is the
-// same for both starboard and port side. This is not always the case
-// and should be fixed in the future.
-function createCorridors(starboard, port, polygons) {
-    let front, back;
-    for(let i = 0; i < starboard.length; i++){
-        front = {
-            starboard: null,
-            port: null
-        };
-        back = true;
-        if(starboard[i-1]){
-            if(starboard[i-1].properties.distance < starboard[i].properties.distance){
-                front.starboard = starboard[i-1].geometry.coordinates[starboard[i-1].geometry.coordinates.length-2]
-                front.port = port[i-1].geometry.coordinates[port[i-1].geometry.coordinates.length-2]
-            }
-        }
-        if(starboard[i+1]){
-            if(starboard[i+1].properties.distance > starboard[i].properties.distance){
-                back = false
-            }
-        }
-        try{
-            polygons.push(RouteWaypointLeg.createCorridorPolygons(starboard[i], port[i], front, back));
-        }catch (e) {
-            console.error("Feil");
-        }
-    }
-
-}
 
 
 
@@ -325,6 +275,5 @@ export {
     calculateCircleCenterCoordinates as calculateCircleCenterCoordinates_TEST,
     determineBearingOrder as determineBearingOrder_TEST,
     curveWaypointLeg as curveWaypointLeg_TEST,
-    createCorridors as createCorridors_TEST,
     RouteToGeoJSON as RouteToGeoJSON_TEST
 };
