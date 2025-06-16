@@ -76,18 +76,21 @@ export function RouteToGeoJSON(waypointLegs, waypoints, actionPoints) {
         if (leg.getCoordinates()[0].length > 0) {
             geoJSON.features.push(leg.toGeoJSON());
 
-            if (leg.getStarboardXTDL() !== 0) xtdlStarboard.push(leg.starboardXTDLtoGeoJSON(index));
-            if (leg.getPortXTDL() !== 0) xtdlPort.push(leg.portXTDLtoGeoJSON(index));
-            if (leg.getStarboardCL() !== 0) clStarboard.push(leg.starboardCLtoGeoJSON(index));
-            if (leg.getPortCL() !== 0) clPort.push(leg.portCLtoGeoJSON(index));
-
+            if(leg.getStarboardXTDL() !== 0 && leg.getPortXTDL() !== 0){
+                xtdlStarboard.push(leg.starboardXTDLtoGeoJSON(index));
+                xtdlPort.push(leg.portXTDLtoGeoJSON(index));
+            }
+            if(leg.getStarboardCL() !== 0 && leg.getPortCL() !== 0){
+                clStarboard.push(leg.starboardCLtoGeoJSON(index));
+                clPort.push(leg.portCLtoGeoJSON(index));
+            }
         }
     });
 
-    if(xtdlStarboard.length === xtdlPort.length && xtdlStarboard.length > 0){
+    if(xtdlStarboard.length > 0){
         xtdlPolygons = [...RouteWaypointLeg.updateLegCorridors(xtdlStarboard,xtdlPort)];
     }
-    if(clStarboard.length === clPort.length && clStarboard.length > 0){
+    if(clStarboard.length > 0){
         clPolygons = [...RouteWaypointLeg.updateLegCorridors(clStarboard,clPort)];
     }
    
