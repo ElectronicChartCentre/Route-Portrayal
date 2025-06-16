@@ -72,14 +72,14 @@ export function RouteToGeoJSON(waypointLegs, waypoints, actionPoints) {
         clPort = [];
     let xtdlPolygons = [],
         clPolygons = [];
-    Object.values(waypointLegs).forEach(leg => {
+    Object.values(waypointLegs).forEach((leg, index) => {
         if (leg.getCoordinates()[0].length > 0) {
             geoJSON.features.push(leg.toGeoJSON());
 
-            if (leg.getStarboardXTDL() !== 0) xtdlStarboard.push(leg.starboardXTDLtoGeoJSON());
-            if (leg.getPortXTDL() !== 0) xtdlPort.push(leg.portXTDLtoGeoJSON());
-            if (leg.getStarboardCL() !== 0) clStarboard.push(leg.starboardCLtoGeoJSON());
-            if (leg.getPortCL() !== 0) clPort.push(leg.portCLtoGeoJSON());
+            if (leg.getStarboardXTDL() !== 0) xtdlStarboard.push(leg.starboardXTDLtoGeoJSON(index));
+            if (leg.getPortXTDL() !== 0) xtdlPort.push(leg.portXTDLtoGeoJSON(index));
+            if (leg.getStarboardCL() !== 0) clStarboard.push(leg.starboardCLtoGeoJSON(index));
+            if (leg.getPortCL() !== 0) clPort.push(leg.portCLtoGeoJSON(index));
 
         }
     });
