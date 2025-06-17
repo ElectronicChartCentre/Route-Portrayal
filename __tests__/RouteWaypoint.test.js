@@ -98,6 +98,9 @@ describe('RouteWaypoint tests', () => {
         waypoint.setRouteWaypointName("new name");
         expect(waypoint.routeWaypointName).toBe("new name");
 
+        waypoint.setRouteWaypointFixed(false);
+        expect(waypoint.routeWaypointFixed).toBe(false);
+
     });
 
     test('checkCoordinates method',()=>{

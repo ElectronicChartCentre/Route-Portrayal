@@ -239,8 +239,8 @@ export class RouteWaypointLeg{
         for(let i = 0; i<sb.length; i++){
             const sbBackCoord = sb[i].geometry.coordinates[sb[i].geometry.coordinates.length-1];
             const portBackCoord = port[i].geometry.coordinates[port[i].geometry.coordinates.length-1];
+            const angle = bearing(point(sbBackCoord), point(portBackCoord));
             if(sb[i+1] && sb[i+1].properties.index === sb[i].properties.index + 1){
-                const angle = bearing(point(sbBackCoord), point(portBackCoord));
                 // If the next corridor has the same distance
                 if(sb[i].properties.distance === sb[i+1].properties.distance){
                     sb[i+1].geometry.coordinates[0] = sbBackCoord;

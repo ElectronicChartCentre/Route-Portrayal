@@ -274,42 +274,28 @@ describe('RouteWaypointLeg tests', () => {
         expect(port[2].geometry.coordinates[0]).toEqual(port[1].geometry.coordinates[port[1].geometry.coordinates.length-1]);
 
 
+        starboard = [
+            lineString([[1,1],[2,1],[3,1]],{distance: 100, index: 0, routeLegID:'RTE.WPT.LEG.1', type: 'route-leg-XTDL'}),
+            lineString([[4,1],[5,1],[6,1]],{distance: 200, index: 2, routeLegID:'RTE.WPT.LEG.2', type: 'route-leg-XTDL'}),
+            lineString([[7,1],[8,1],[9,1]],{distance: 200, index: 4, routeLegID:'RTE.WPT.LEG.3', type: 'route-leg-XTDL'})
+        ]
 
+        port = [
+            lineString([[1,2],[2,2],[3,2]],{distance: 100, index: 0, routeLegID:'RTE.WPT.LEG.1', type: 'route-leg-XTDL'}),
+            lineString([[4,2],[5,2],[6,2]],{distance: 50, index: 2, routeLegID:'RTE.WPT.LEG.2', type: 'route-leg-XTDL'}),
+            lineString([[7,2],[8,2],[9,2]],{distance: 150, index: 4, routeLegID:'RTE.WPT.LEG.3', type: 'route-leg-XTDL'})
+        ]
 
-
-
-        // // The distance is different
-        // let leg1 = lineString([[1,1],[2,1],[3,1]],{distance: 100});
-        // let leg2 = lineString([[4,2],[5,2],[6,2]],{distance: 200});
-        // let list = [leg1,leg2];
-        // RouteWaypointLeg.updateLegCorridors(list);
-        // expect(leg1.geometry.coordinates).toEqual([[1,1],[2,1],[3,1],[4,2]]);
-        // expect(leg2.geometry.coordinates).toEqual([[4,2],[5,2],[6,2]]);
-
-        // leg1 = lineString([[1,1],[4,1],[3,1]],{distance: 100});
-        // list = [leg1,leg2];
-        // RouteWaypointLeg.updateLegCorridors(list);
-        // expect(leg1.geometry.coordinates).toEqual([[1,1],[4,1],[4,2]]);
-        // expect(leg2.geometry.coordinates).toEqual([[4,2],[5,2],[6,2]]);
-
-        // // The distance is the same
-        // leg1 = lineString([[1,1],[2,1],[3,1]],{distance: 100});
-        // leg2 = lineString([[4,2],[5,2],[6,2]],{distance: 100});
-        // list = [leg1,leg2];
-        // RouteWaypointLeg.updateLegCorridors(list);
-        // expect(leg1.geometry.coordinates).toEqual([[1,1],[2,1],[3,1]]);
-        // expect(leg2.geometry.coordinates).toEqual([[3,1],[5,2],[6,2]]);
-
-
-        // leg1 = lineString([[1,1],[4,1],[3,1]],{distance: 100});
-        // leg2 = lineString([[4,2],[5,2],[6,2]],{distance: 100});
-        // list = [leg1,leg2];
-        // RouteWaypointLeg.updateLegCorridors(list);
-        // expect(leg1.geometry.coordinates).toEqual([[1,1],[4,1]]);
-        // expect(leg2.geometry.coordinates).toEqual([[4,1],[5,2],[6,2]]);
-
-
-        
+        const polygons2 = RouteWaypointLeg.updateLegCorridors(starboard,port);
+        expect(polygons2.length).toBe(3);        
 
     });
+
+    test('normalizeLongitudeCoordinates method',()=>{
+        const coords = [[20,20],[-190,4],[5,4], [-100,30],[140,40],[-130,50]];
+
+        RouteWaypointLeg.normalizeLongitudeCoordinates(coords);
+
+        expect(coords).toEqual([[20,20],[170,4],[5,4], [-100,30],[-220,40],[-130,50]]);
+    })
 });
