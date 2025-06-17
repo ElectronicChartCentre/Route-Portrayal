@@ -74,6 +74,7 @@ export function RouteToGeoJSON(waypointLegs, waypoints, actionPoints) {
         clPolygons = [];
     Object.values(waypointLegs).forEach((leg, index) => {
         if (leg.getCoordinates()[0].length > 0) {
+            RouteWaypointLeg.normalizeLongitudeCoordinates(leg.getCoordinates());
             geoJSON.features.push(leg.toGeoJSON());
 
             if(leg.getStarboardXTDL() !== 0 && leg.getPortXTDL() !== 0){

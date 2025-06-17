@@ -1,7 +1,6 @@
 import {
     point, bearing, transformScale, transformTranslate,
-    lineString, polygon, lineIntersect, distance,
-    along, destination
+    lineString, polygon, lineIntersect, distance, destination
 } from '@turf/turf';
 
 export class RouteWaypointLeg{
@@ -90,9 +89,7 @@ export class RouteWaypointLeg{
             if(distance2 < distance1){
                 this.legCoordinates.reverse();
             }
-
         }
-        
         coordinates.splice(coordinates.length-1,1);
         this.legCoordinates.unshift(...coordinates);
     }
@@ -182,7 +179,7 @@ export class RouteWaypointLeg{
         if (distance < 0) distance = -distance;
     
         const offsetLines = [];
-        for (let i = 0; i < lineCoords.length - 1; i++) { 
+        for (let i = 0; i < lineCoords.length - 1; i++) {
             const angle = bearing(lineCoords[i], lineCoords[i + 1]) + transformAngle;
             const firstPoint = transformTranslate(point(lineCoords[i]), distance, angle, { units:'meters' })?.geometry.coordinates;
             const secondPoint = transformTranslate(point(lineCoords[i + 1]), distance, angle, { units: 'meters' })?.geometry.coordinates;
@@ -220,6 +217,21 @@ export class RouteWaypointLeg{
         }
         return lineString(offsetCoords);
     };
+
+    static normalizeLongitudeCoordinates(coordinates){
+        let prevLongitude = coordinates[0][0];
+        let currentLongitude, delta;
+        for(let i = 1; i< coordinates.length; i++){
+            currentLongitude = coordinates[i][0];
+            delta = currentLongitude - prevLongitude;
+            if(delta > 180){
+                coordinates[i][0] -= 360;
+            }else if (delta < -180){
+                coordinates[i][0] += 360;
+            }
+            prevLongitude = coordinates[i][0];
+        }
+    }
 
     static updateLegCorridors(sb,port){
         const corridorPolygons = [];
@@ -284,6 +296,8 @@ export class RouteWaypointLeg{
                 port[i].geometry.coordinates.unshift(p2.geometry.coordinates);
 
             }
+            RouteWaypointLeg.normalizeLongitudeCoordinates(sb[i].geometry.coordinates);
+            RouteWaypointLeg.normalizeLongitudeCoordinates(port[i].geometry.coordinates);
             corridorPolygons.push(RouteWaypointLeg.createCorridorPolygons(sb[i],port[i]))
         }
         return corridorPolygons;
@@ -307,5 +321,4 @@ export class RouteWaypointLeg{
             portDistance: portLine.properties.distance
         });
     }
-
 }
