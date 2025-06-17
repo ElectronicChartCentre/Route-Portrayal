@@ -3,3 +3,4 @@ node_modules
 route.json
 .DS_Store
 coverage
+/dev/
