@@ -77,9 +77,38 @@ describe('RouteWaypoint tests', () => {
         // setter methods
         waypoint.setRouteWaypointLeg("new routeWaypointLeg");
         expect(waypoint.getRouteWaypointLeg()).toBe("new routeWaypointLeg");
+
         waypoint.setCoordinates([3.0, 4.0]);
         expect(waypoint.getCoordinates()).toStrictEqual([3.0, 4.0]);
+
+        expect(()=> waypoint.setRadius("hello")).toThrowError("Invalid radius");
+        expect(()=> waypoint.setRadius(-1)).toThrowError("Invalid radius");
+        waypoint.setRadius(5.0);
+        expect(waypoint.getRadius()).toBe(5.0);
+
+        waypoint.setReference("new reference");
+        expect(waypoint.reference).toBe("new reference");
+
+        waypoint.setRouteWaypointExternalReferenceID("new external reference");
+        expect(waypoint.routeWaypointExternalReferenceID).toBe("new external reference");
+
+        waypoint.setRouteWaypointExtensions({key: "value"});
+        expect(waypoint.routeWaypointExtensions).toStrictEqual({key: "value"});
+
+        waypoint.setRouteWaypointName("new name");
+        expect(waypoint.routeWaypointName).toBe("new name");
+
     });
+
+    test('checkCoordinates method',()=>{
+        const waypoint = new RouteWaypoint(1, 'reference', "name", [1.0, 2.0],true,
+                    3.0, "routeWaypointLeg", "routeWaypointExternalReferenceID",{});
+
+        expect(() => waypoint.checkCoordinates([NaN, 2.0])).toThrowError("Invalid coordinates");
+        expect(() => waypoint.checkCoordinates([1.0, 'string'])).toThrowError("Invalid coordinates");
+        expect(() => waypoint.checkCoordinates([1.0])).toThrowError("Invalid coordinates");
+        expect(() => waypoint.checkCoordinates([1.0, 2.0])).not.toThrow();
+    })
 
     test('toGeoJSON method',()=>{
         const id = 1,
@@ -103,6 +132,11 @@ describe('RouteWaypoint tests', () => {
                 type: 'waypoint',
                 radius: 3.0,
                 routeWaypointLeg: 'routeWaypointLeg',
+                name: 'name',
+                fixed: true,
+                externalReferenceID: 'routeWaypointExternalReferenceID',
+                extensions: {},
+                reference: 'reference'
             },
             geometry: {
                 type: 'Point',

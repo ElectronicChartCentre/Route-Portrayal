@@ -221,7 +221,7 @@ describe('RouteToGeoJSON method',()=>{
 
         actionpoints.push(createActionPoint(
             "point","RTE.ACT.PT.1",1,"Actionpoint 1",[2.1,2.1],1.1,2.0,0,'',{}
-        ).toGeoJSON());
+        ));
     });
 
     test('error is thrown when no waypoints are specified',()=>{
