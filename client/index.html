@@ -28,7 +28,30 @@
     <label for="chk-xtdl">XTDL</label>
     <input type="checkbox" id="chk-cl" name="chk" checked>
     <label for="chk-cl">CL</label>
-    
+    <br>
+    <br>
+    <form id="form-edit">
+        <h4>Edit RouteWaypoint</h4>
+        <label for="wpid">Waypoint ID: </label>
+        <input id="wpid" type="text">
+        <button type="button" id="showCurrentBtn">Search for current params</button>
+        <span id="message"></span>
+        <p>Params to change (leave empty for no change)</p>
+        <div class="grid-container">
+            <label for="wpname">Name: </label>
+            <input type="text" id="wpname">
+
+            <label for="wprad">Radius: </label>
+            <input type="text" id="wprad">
+            <label for="wplong">Long: </label>
+            <input type="text" id="wplong">
+            <label for="wplat">Lat: </label>
+            <input type="text" id="wplat">
+        </div>
+        <input type="submit" value="Edit Waypoint" id="editwp">
+
+
+    </form>
     
 </body>
 </html>
