@@ -43,7 +43,6 @@ export function S421ToGeoJSON(xml) {
         return RouteToGeoJSON(waypointLegs, waypoints, actionPoints);
 
     } catch (err) {
-        console.error(err);
         return null;
     }
 }
