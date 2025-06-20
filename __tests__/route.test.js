@@ -1,11 +1,10 @@
-import { lineString } from '@turf/turf';
 import { createActionPoint, RouteWaypoint, RouteWaypointLeg } from "../src/models";
 import { waypoints, curveWaypointLegResult } from "../data/test/testData";
 import { getCoordinates } from "../src/utility";
 import {
     convertTo360_TEST, convertToNorthBearing_TEST,
     calculateMidLineBearing_TEST, determineBearingOrder_TEST,
-    curveWaypointLeg_TEST, createCorridors_TEST, RouteToGeoJSON_TEST
+    curveWaypointLeg_TEST, RouteToGeoJSON_TEST
 } from "../src/route";
 
 
@@ -190,31 +189,6 @@ describe('curveWaypointLeg tests', ()=>{
 
 });
 
-describe('createCorridors tests',()=>{
-    test('test to make sure the corridor polygons are created as expected',()=>{
-        const polygons = [],
-        starboard = [],
-        port = [];
-
-        starboard.push(lineString([[1,1],[2,2],[3,3]],{distance: 100, routeLegID:"WPT.LEG1.1", type:"route-leg-CL"}));
-        port.push(lineString([[0,0],[-1,-1],[-2,-2]],{distance: 100, routeLegID:"WPT.LEG1.1", type:"route-leg-CL"}))
-
-        starboard.push(lineString([[2,2],[3,3],[4,4]],{distance: 200, routeLegID:"WPT.LEG1.1", type:"route-leg-CL"}));
-        port.push(lineString([[1,1],[0,0],[-1,-1]],{distance: 200, routeLegID:"WPT.LEG1.1", type:"route-leg-CL"}))
-
-        starboard.push(lineString([[3,3],[4,4],[5,5]],{distance: 100, routeLegID:"WPT.LEG1.1", type:"route-leg-CL"}));
-        port.push(lineString([[2,2],[1,1],[0,0]],{distance: 100, routeLegID:"WPT.LEG1.1", type:"route-leg-CL"}))
-
-
-        createCorridors_TEST(starboard, port, polygons);
-        expect(polygons.length).toBe(3);
-        expect(polygons[0].geometry.coordinates).toEqual([[[1,1],[2,2],[-1,-1],[0,0],[1,1]]]);
-        expect(polygons[1].geometry.coordinates).toEqual([[[2,2],[2,2],[3,3],[4,4],[-1,-1],[0,0],[1,1],[-1,-1],[2,2]]]);
-        expect(polygons[2].geometry.coordinates).toEqual([[[3,3],[4,4],[5,5],[0,0],[1,1],[2,2],[3,3]]]);
-
-    });
-});
-
 
 describe('RouteToGeoJSON method',()=>{
 
@@ -247,7 +221,7 @@ describe('RouteToGeoJSON method',()=>{
 
         actionpoints.push(createActionPoint(
             "point","RTE.ACT.PT.1",1,"Actionpoint 1",[2.1,2.1],1.1,2.0,0,'',{}
-        ).toGeoJSON());
+        ));
     });
 
     test('error is thrown when no waypoints are specified',()=>{

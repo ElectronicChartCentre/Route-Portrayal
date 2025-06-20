@@ -21,3 +21,15 @@ h1{
     text-align: center;
     padding-top: 20px;
 }
+.grid-container{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 4px;
+    max-width: 300px;
+}
+.grid-container label {
+    width: 100%;
+}
+.grid-container label{
+    width: 100px;;
+}

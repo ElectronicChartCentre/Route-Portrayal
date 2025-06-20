@@ -91,7 +91,13 @@ export class SurfaceActionPoint extends RouteActionPoint{
             routeActionPointTimeToAct, routeActionPointRequiredAction, routeActionPointRequiredActionDescription,
             routeActionPointExtensions);
         this.type = 'actionpoint-surface';
-        if(coordinates.length < 3) throw new Error("Polygon must have at least 3 points");
+        if(coordinates.length < 3) {
+            if(coordinates[0]?.length < 3) {
+                throw new Error("Polygon must have at least 3 points");
+            }else{
+                coordinates = coordinates[0];
+            }
+        }
         if(coordinates[0][0] !== coordinates[coordinates.length-1][0] || 
            coordinates[0][1] !== coordinates[coordinates.length-1][1]){
             coordinates.push(coordinates[0]);

@@ -1,6 +1,6 @@
 import {
     point, bearing, transformScale, transformTranslate,
-    lineString, polygon, lineIntersect, distance, nearestPointOnLine
+    lineString, polygon, lineIntersect, distance, destination
 } from '@turf/turf';
 
 export class RouteWaypointLeg{
@@ -89,9 +89,7 @@ export class RouteWaypointLeg{
             if(distance2 < distance1){
                 this.legCoordinates.reverse();
             }
-
         }
-        
         coordinates.splice(coordinates.length-1,1);
         this.legCoordinates.unshift(...coordinates);
     }
@@ -127,48 +125,50 @@ export class RouteWaypointLeg{
         });
     }
 
-
-    starboardXTDLtoGeoJSON(){
+    starboardXTDLtoGeoJSON(index){
         const offset = this.offsetLine(this.toGeoJSON(),this.getStarboardXTDL());
         offset.properties ={
             type: "route-leg-XTDL",
             routeLegID: this.id,
             side: "starboard",
-            distance: Math.abs(this.getStarboardXTDL())
+            distance: Math.abs(this.getStarboardXTDL()),
+            index: index
         }
         return offset;
     }
 
-    portXTDLtoGeoJSON(){
+    portXTDLtoGeoJSON(index){
         const offset = this.offsetLine(this.toGeoJSON(),-this.getPortXTDL());
         offset.properties ={
             type: "route-leg-XTDL",
             routeLegID: this.id,
             side: "port",
-            distance: Math.abs(this.getPortXTDL())
+            distance: Math.abs(this.getPortXTDL()),
+            index: index
         }
         return offset;
     }
 
-
-    starboardCLtoGeoJSON(){
+    starboardCLtoGeoJSON(index){
         const offset = this.offsetLine(this.toGeoJSON(),this.getStarboardCL());
         offset.properties ={
             type: "route-leg-CL",
             routeLegID: this.id,
             side: "starboard",
-            distance: Math.abs(this.getStarboardCL())
+            distance: Math.abs(this.getStarboardCL()),
+            index: index
         }
         return offset;
     }
 
-    portCLtoGeoJSON(){
+    portCLtoGeoJSON(index){
         const offset = this.offsetLine(this.toGeoJSON(),-this.getPortCL());
         offset.properties ={
             type: "route-leg-CL",
             routeLegID: this.id,
             side: "port",
-            distance: Math.abs(this.getPortCL())
+            distance: Math.abs(this.getPortCL()),
+            index: index
         }
         return offset;
     }
@@ -179,73 +179,133 @@ export class RouteWaypointLeg{
         if (distance < 0) distance = -distance;
     
         const offsetLines = [];
-        for (let i = 0; i < lineCoords.length - 1; i++) { 
+        for (let i = 0; i < lineCoords.length - 1; i++) {
             const angle = bearing(lineCoords[i], lineCoords[i + 1]) + transformAngle;
             const firstPoint = transformTranslate(point(lineCoords[i]), distance, angle, { units:'meters' })?.geometry.coordinates;
             const secondPoint = transformTranslate(point(lineCoords[i + 1]), distance, angle, { units: 'meters' })?.geometry.coordinates;
             offsetLines.push([firstPoint, secondPoint]);
         }
         const offsetCoords = [offsetLines[0][0]]; 
+        let currentBearing, lastBearing;
+        const angleLimit = 60;
+        
         for (let i = 0; i < offsetLines.length; i++) { 
             if (offsetLines[i + 1]){
                 const firstLine = transformScale(lineString(offsetLines[i]), 25); 
                 const secondLine = transformScale(lineString(offsetLines[i + 1]), 25);
                 const intersect = lineIntersect(firstLine, secondLine);
                 if (intersect.features.length > 0) {
-                    offsetCoords.push(intersect.features[0].geometry.coordinates);
-                }else offsetCoords.push(offsetLines[i+1][0]);
-    
-            } else offsetCoords.push(offsetLines[i][1]); 
+                    currentBearing = bearing(point(offsetCoords[offsetCoords.length-1]), point(intersect.features[0].geometry.coordinates));
+                    if(!lastBearing || Math.abs(lastBearing - currentBearing) < angleLimit){
+                        lastBearing = currentBearing;
+                        offsetCoords.push(intersect.features[0].geometry.coordinates);
+                    }
+                }else{
+                    currentBearing = bearing(point(offsetCoords[offsetCoords.length-1]), point(offsetLines[i + 1][0]));
+                    if(!lastBearing || Math.abs(lastBearing - currentBearing) < angleLimit){
+                        lastBearing = currentBearing;
+                        offsetCoords.push(offsetLines[i+1][0])
+                    }
+                }
+            } else {
+                currentBearing = bearing(point(offsetCoords[offsetCoords.length-1]), point(offsetLines[i][1]));
+                if(!lastBearing || Math.abs(lastBearing - currentBearing) < angleLimit){
+                    lastBearing = currentBearing;
+                    offsetCoords.push(offsetLines[i][1])
+                }
+            }
         }
         return lineString(offsetCoords);
     };
 
-
-    static updateLegCorridors(list){
-        let last = list[list.length-1];
-        let secondLast = list[list.length-2];
-        let length, index, number;
-        const backCoordinate = point(secondLast.geometry.coordinates[secondLast.geometry.coordinates.length-1]); 
-    
-        if(last.properties.distance !== secondLast.properties.distance){
-            let secondLinePoint = point(last.geometry.coordinates[1]);
-    
-            if(distance(point(secondLast.geometry.coordinates[1]),secondLinePoint) <
-            distance(backCoordinate,secondLinePoint)){
-                length = secondLast.geometry.coordinates.length;
-                number = length-2;
-                secondLast.geometry.coordinates.splice(2,number);
+    static normalizeLongitudeCoordinates(coordinates){
+        let prevLongitude = coordinates[0][0];
+        let currentLongitude, delta;
+        for(let i = 1; i< coordinates.length; i++){
+            currentLongitude = coordinates[i][0];
+            delta = currentLongitude - prevLongitude;
+            if(delta > 180){
+                coordinates[i][0] -= 360;
+            }else if (delta < -180){
+                coordinates[i][0] += 360;
             }
-            secondLast.geometry.coordinates.push(last.geometry.coordinates[0]);
-        }
-        else{
-            const closestPoint = nearestPointOnLine(secondLast, last.geometry.coordinates[1]);
-            length = secondLast.geometry.coordinates.length;
-            index = closestPoint.properties.index;
-            number = length-index-1;
-            secondLast.geometry.coordinates.splice(index+1,number);
-            last.geometry.coordinates[0] = secondLast.geometry.coordinates[secondLast.geometry.coordinates.length-1];
+            prevLongitude = coordinates[i][0];
         }
     }
 
-    static createCorridorPolygons(starboardLine, portLine, front=null, back=true){
-        if(starboardLine.geometry?.coordinates === undefined || portLine.geometry?.coordinates === undefined
-            || starboardLine.geometry?.type !== 'LineString' || portLine.geometry?.type !== 'LineString')
-        {
-            throw new Error('Invalid input. Must be lineString.');
+    static updateLegCorridors(sb,port){
+        const corridorPolygons = [];
+        const metric = {units: 'meters'};
+        for(let i = 0; i<sb.length; i++){
+            const sbBackCoord = sb[i].geometry.coordinates[sb[i].geometry.coordinates.length-1];
+            const portBackCoord = port[i].geometry.coordinates[port[i].geometry.coordinates.length-1];
+            const angle = bearing(point(sbBackCoord), point(portBackCoord));
+            if(sb[i+1] && sb[i+1].properties.index === sb[i].properties.index + 1){
+                // If the next corridor has the same distance
+                if(sb[i].properties.distance === sb[i+1].properties.distance){
+                    sb[i+1].geometry.coordinates[0] = sbBackCoord;
+                }
+                if(port[i].properties.distance === port[i+1].properties.distance){
+                    port[i+1].geometry.coordinates[0] = portBackCoord;
+                }
+                // If the next corridor has a smaller distance
+                if (sb[i].properties.distance > sb[i+1].properties.distance ) {
+                    const distanceDifference = sb[i].properties.distance - sb[i+1].properties.distance;
+                    const p = destination(point(sbBackCoord), distanceDifference, angle, metric);
+                    sb[i+1].geometry.coordinates[0] = p.geometry.coordinates;
+                    sb[i].geometry.coordinates.push(sb[i+1].geometry.coordinates[0]);
+                }
+                if(port[i].properties.distance > port[i+1].properties.distance){
+                    const distanceDifference = port[i].properties.distance - port[i+1].properties.distance;
+                    const p = destination(point(portBackCoord), distanceDifference, angle + 180, metric);
+                    port[i+1].geometry.coordinates[0] = p.geometry.coordinates;
+                    port[i].geometry.coordinates.push(port[i+1].geometry.coordinates[0]);
+                }
+                // If the next corridor has a larger distance
+                if(sb[i].properties.distance < sb[i+1].properties.distance){
+                    const distanceDifference = sb[i+1].properties.distance - sb[i].properties.distance;
+                    const p = destination(point(sbBackCoord), distanceDifference, angle + 180, metric);
+                    sb[i+1].geometry.coordinates[0] = p.geometry.coordinates;
+                    sb[i+1].geometry.coordinates.unshift(sbBackCoord);
+                }
+                if(port[i].properties.distance < port[i+1].properties.distance){
+                    const distanceDifference = port[i+1].properties.distance - port[i].properties.distance;
+                    const p = destination(point(portBackCoord), distanceDifference, angle, metric);
+                    port[i+1].geometry.coordinates[0] = p.geometry.coordinates;
+                    port[i+1].geometry.coordinates.unshift(portBackCoord);
+
+                }
+            }
+            // The following two if statements can be removed if it is not prefereable to close the corrior lines
+            // upon reaching a leg with no corridors
+            if(sb[i+1] && sb[i+1].properties.index !== sb[i].properties.index+1){
+                const p = destination(point(sbBackCoord), sb[i].properties.distance, angle, metric);
+                sb[i].geometry.coordinates.push(p.geometry.coordinates);
+                const p2 = destination(point(portBackCoord), port[i].properties.distance, angle + 180, metric);
+                port[i].geometry.coordinates.push(p2.geometry.coordinates);
+            }
+            if(sb[i-1] && sb[i-1].properties.index !== sb[i].properties.index - 1){
+
+                const sbFirstCoord = sb[i].geometry.coordinates[0];
+                const portFirstCoord = port[i].geometry.coordinates[0];
+                const angle = bearing(point(sbFirstCoord), point(portFirstCoord));
+
+                const p = destination(point(sbFirstCoord), sb[i].properties.distance, angle, metric);
+                sb[i].geometry.coordinates.unshift(p.geometry.coordinates);
+                const p2 = destination(point(portFirstCoord), port[i].properties.distance, angle + 180, metric);
+                port[i].geometry.coordinates.unshift(p2.geometry.coordinates);
+
+            }
+            RouteWaypointLeg.normalizeLongitudeCoordinates(sb[i].geometry.coordinates);
+            RouteWaypointLeg.normalizeLongitudeCoordinates(port[i].geometry.coordinates);
+            corridorPolygons.push(RouteWaypointLeg.createCorridorPolygons(sb[i],port[i]))
         }
+        return corridorPolygons;
+    }
+
+    static createCorridorPolygons(starboardLine, portLine){
         const starboard = [...starboardLine.geometry.coordinates];
         const port = [...portLine.geometry.coordinates];
-        // If back is false, the back coordinates should be removed before
-        // drawing the polygon.
-        if(!back){
-            starboard.pop();
-            port.pop();
-        }
-        // If front has valid coordinates, they should be added to the front of the
-        // starboard and port arrays before drawing the polygon.
-        if(front?.starboard) starboard.unshift(front.starboard);
-        if(front?.port) port.unshift(front.port);
 
         const coordinates = [];
         let reverseArray = [...port].reverse();
@@ -261,5 +321,4 @@ export class RouteWaypointLeg{
             portDistance: portLine.properties.distance
         });
     }
-
 }

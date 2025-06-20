@@ -11,11 +11,7 @@ export class RouteWaypoint{
             throw new Error("Invalid id");
         }
         this.reference = reference || '';
-        if(isNaN(coordinates[0])  ||isNaN(coordinates[1]) ||
-        coordinates[0] === null || coordinates[1] === null){
-            
-            throw new Error("Invalid coordinates");
-        }
+        this.checkCoordinates(coordinates);
         this.coordinates = coordinates;
         this.routeWaypointName = routeWaypointName || '';
         this.routeWaypointFixed = routeWaypointFixed || false;
@@ -52,12 +48,44 @@ export class RouteWaypoint{
     }
 
     setCoordinates(coordinates){
+        this.checkCoordinates(coordinates);
         this.coordinates = coordinates;
     }
+
+    setRadius(radius){
+        if(isNaN(radius) || radius === null || radius < 0){
+            throw new Error("Invalid radius");
+        }
+        this.routeWaypointTurnRadius = radius;
+    }
+
+    setReference(reference){
+        this.reference = reference;
+    }
+    setRouteWaypointName(routeWaypointName){
+        this.routeWaypointName = routeWaypointName;
+    }
+    setRouteWaypointFixed(routeWaypointFixed){
+        this.routeWaypointFixed = routeWaypointFixed;
+    }
+    setRouteWaypointExternalReferenceID(routeWaypointExternalReferenceID){
+        this.routeWaypointExternalReferenceID = routeWaypointExternalReferenceID;
+    }
+    setRouteWaypointExtensions(routeWaypointExtensions){
+        this.routeWaypointExtensions = routeWaypointExtensions;
+    }
+
 
     
 
     // Ordinary methods
+    checkCoordinates(coordinates){
+        if(isNaN(coordinates[0])  ||isNaN(coordinates[1]) ||
+        coordinates[0] === null || coordinates[1] === null){
+            
+            throw new Error("Invalid coordinates");
+        }
+    }
 
     toGeoJSON(){
         return point(
