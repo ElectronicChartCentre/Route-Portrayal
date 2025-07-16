@@ -12,7 +12,7 @@ import { parseGeoJsonToJS, convertGeoJsonWaypointToRouteWaypoint,
  * @param {*} updateParams Waypoint parameters to update
  * @returns A new updated GeoJSON route
  */
-export function EditRouteWaypointFullRoute(geojson, waypointID, updateParams ){
+export function EditRouteWaypointNewRoute(geojson, waypointID, updateParams ){
     const { 
         coordinates, radius, reference, name,
         fixed, externalReferenceID, routeWaypointLeg, extensions  } = updateParams;
@@ -163,6 +163,7 @@ export function EditRouteWaypoint(geojson, waypointID, updateParams) {
 
     [w2Leg,w3Leg,w4Leg,w5Leg].forEach((leg,index) => {
         if(!leg) return;
+        RouteWaypointLeg.normalizeLongitudeCoordinates(leg.getCoordinates());
         if(leg.getStarboardXTDL() !== 0 && leg.getPortXTDL() !== 0){
                 xtdlStarboard.push(leg.starboardXTDLtoGeoJSON(index));
                 xtdlPort.push(leg.portXTDLtoGeoJSON(index));
@@ -190,6 +191,12 @@ export function EditRouteWaypoint(geojson, waypointID, updateParams) {
         connectEndSegments(clStarboard[clStarboard.length-1], starboardCL[endLegID], false);
         connectEndSegments(clPort[clPort.length-1], portCL[endLegID], false);
     }
+    [xtdlStarboard, xtdlPort, clStarboard, clPort].forEach(arr => {
+        arr.forEach(el=>{
+            if(!el) return;
+            RouteWaypointLeg.normalizeLongitudeCoordinates(el.geometry.coordinates);
+        })
+    })
 
     const xtdlPoly = [];
     const clPoly = [];

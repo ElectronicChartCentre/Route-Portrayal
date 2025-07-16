@@ -1,7 +1,7 @@
 import { S421ToGeoJSON } from './S421/index.js';
 import { createLayers, createCorridorLayers } from './layers.js';
 import { RTZtoGeoJSON } from './RTZ/index.js';
-import { EditRouteWaypoint, EditRouteWaypointFullRoute } from './geoJSON/index.js';
+import { EditRouteWaypoint, EditRouteWaypointNewRoute } from './geoJSON/index.js';
 
 
 export { 
@@ -10,5 +10,5 @@ export {
     createLayers, 
     createCorridorLayers, 
     EditRouteWaypoint,
-    EditRouteWaypointFullRoute 
+    EditRouteWaypointNewRoute 
 };
