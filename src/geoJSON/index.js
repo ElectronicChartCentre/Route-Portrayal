@@ -4,8 +4,15 @@ import { parseGeoJsonToJS, convertGeoJsonWaypointToRouteWaypoint,
      convertGeoJsonLegToRouteWaypointLeg} from "./parser.js";
 
 
-
-export function EditRouteWaypoint(geojson, waypointID, updateParams ){
+/**
+ * This function takes an existing GeoJSON route and generates a completly
+ * new route with the updated waypoint.
+ * @param {*} geojson Existing GeoJSON route data
+ * @param {*} waypointID ID of the waypoint to edit
+ * @param {*} updateParams Waypoint parameters to update
+ * @returns A new updated GeoJSON route
+ */
+export function EditRouteWaypointFullRoute(geojson, waypointID, updateParams ){
     const { 
         coordinates, radius, reference, name,
         fixed, externalReferenceID, routeWaypointLeg, extensions  } = updateParams;
@@ -36,8 +43,15 @@ export function EditRouteWaypoint(geojson, waypointID, updateParams ){
     return RouteToGeoJSON(legs, waypoints, actionpoints);
 }
 
-
-export function EditSingleRouteWaypoint(geojson, waypointID, updateParams) {
+/**
+ * This function updates only the specific waypoint and closeby
+ * features of the route. All other features remain unchanged.
+ * @param {*} geojson Existing GeoJSON route data
+ * @param {*} waypointID ID of the waypoint to edit
+ * @param {*} updateParams Waypoint parameters to update
+ * @returns A new updated GeoJSON route
+ */
+export function EditRouteWaypoint(geojson, waypointID, updateParams) {
     if (!geojson || isNaN(waypointID) || !updateParams) {
         throw new Error("Invalid parameters provided for EditSingleRouteWaypoint");
     }
@@ -111,11 +125,6 @@ export function EditSingleRouteWaypoint(geojson, waypointID, updateParams) {
         throw new Error(`Waypoint with ID ${waypointID} not found`);
     }
 
-    // TODO: Handle if waypoint is at one of the ends of the route
-    if (index === 0 || index === waypoints.length - 1) {
-        throw new Error("Cannot edit waypoint at the start or end of the route");
-    }
-
     let w1,w2,w3,w4,w5;
     if(waypoints[index - 2]) w1 = convertGeoJsonWaypointToRouteWaypoint(waypoints[index - 2]);
     if(waypoints[index - 1]) w2 = convertGeoJsonWaypointToRouteWaypoint(waypoints[index - 1]);
@@ -123,36 +132,29 @@ export function EditSingleRouteWaypoint(geojson, waypointID, updateParams) {
     if(waypoints[index + 1]) w4 = convertGeoJsonWaypointToRouteWaypoint(waypoints[index + 1]);
     if(waypoints[index + 2]) w5 = convertGeoJsonWaypointToRouteWaypoint(waypoints[index + 2]);
 
-    const startLegID = w1?.getRouteWaypointLeg() || '';
-    const endLegID = waypoints[index + 3]?.properties.routeWaypointLeg || '';
-
-
     let prevArc, arc, nextArc;
     if(w1 && w2 && w3) [prevArc] = curveWaypointLeg(w1, w2, w3);
-    [arc] = curveWaypointLeg(w2, w3, w4);
+    if(w2 && w3 && w4) [arc] = curveWaypointLeg(w2, w3, w4);
     if(w3 && w4 && w5) [nextArc] = curveWaypointLeg(w3, w4, w5);
 
     let w2Leg, w3Leg, w4Leg, w5Leg;
-    console.log('w2', w2.getRouteWaypointLeg());
-    if(w2.getRouteWaypointLeg()) w2Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w2.getRouteWaypointLeg()]);
-    w3Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w3.getRouteWaypointLeg()]);
-    w4Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w4.getRouteWaypointLeg()]);
-    if(w5) w5Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w5.getRouteWaypointLeg()]);
-
+    if(w2?.getRouteWaypointLeg()) w2Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w2.getRouteWaypointLeg()]);
+    if(w3?.getRouteWaypointLeg()) w3Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w3.getRouteWaypointLeg()]);
+    if(w4?.getRouteWaypointLeg()) w4Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w4.getRouteWaypointLeg()]);
+    if(w5?.getRouteWaypointLeg()) w5Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w5.getRouteWaypointLeg()]);
 
     w2Leg?.setCoordinates(prevArc ? prevArc.geometry.coordinates : [w2.getCoordinates()]);
-    w3Leg.setCoordinates(arc ? arc.geometry.coordinates : [w3.getCoordinates()]);
-    w4Leg.setCoordinates(nextArc ? nextArc.geometry.coordinates : [w4.getCoordinates()]);
+    w3Leg?.setCoordinates(arc ? arc.geometry.coordinates : [w3.getCoordinates()]);
+    w4Leg?.setCoordinates(nextArc ? nextArc.geometry.coordinates : [w4.getCoordinates()]);
     w5Leg?.setCoordinates(legs[w5.getRouteWaypointLeg()].geometry.coordinates);
-
 
     w2Leg?.appendLegLineCoordinates([legs[w2.getRouteWaypointLeg()].geometry.coordinates[0],
                                     legs[w2.getRouteWaypointLeg()].geometry.coordinates[0]]);
-    w3Leg.appendLegLineCoordinates([w2Leg?.getCoordinates()[w2Leg?.getCoordinates().length - 1] || w2.getCoordinates(),
+    w3Leg?.appendLegLineCoordinates([w2Leg?.getCoordinates()[w2Leg?.getCoordinates().length - 1] || w2.getCoordinates(),
                                     w2Leg?.getCoordinates()[w2Leg?.getCoordinates().length - 1] || w2.getCoordinates()]);
-    w4Leg.appendLegLineCoordinates([w3Leg.getCoordinates()[w3Leg.getCoordinates().length - 1],
-                                    w3Leg.getCoordinates()[w3Leg.getCoordinates().length - 1]]);
-    if(w5Leg) w5Leg.getCoordinates()[0] = w4Leg.getCoordinates()[w4Leg.getCoordinates().length - 1];
+    w4Leg?.appendLegLineCoordinates([w3Leg?.getCoordinates()[w3Leg?.getCoordinates().length - 1] || w3.getCoordinates(),
+                                    w3Leg?.getCoordinates()[w3Leg?.getCoordinates().length - 1] || w3.getCoordinates()]);
+    if(w5Leg) w5Leg.getCoordinates()[0] = w4Leg?.getCoordinates()[w4Leg?.getCoordinates().length - 1];
 
     const xtdlStarboard = [],
           xtdlPort = [],
@@ -174,7 +176,8 @@ export function EditSingleRouteWaypoint(geojson, waypointID, updateParams) {
     RouteWaypointLeg.updateLegCorridors(xtdlStarboard, xtdlPort);
     RouteWaypointLeg.updateLegCorridors(clStarboard, clPort);
 
-
+    const startLegID = w1?.getRouteWaypointLeg() || '';
+    const endLegID = waypoints[index + 3]?.properties.routeWaypointLeg || '';
     if(startLegID){
         connectEndSegments(starboardXTDL[startLegID], xtdlStarboard[0]);
         connectEndSegments(portXTDL[startLegID], xtdlPort[0]);
@@ -204,16 +207,11 @@ export function EditSingleRouteWaypoint(geojson, waypointID, updateParams) {
     updateCoordinates(clStarboard, starboardCL);
     updateCoordinates(clPort, portCL);
 
-    if(w2Leg) legs[w2Leg.getId()].geometry.coordinates = w2Leg.getCoordinates();
-    legs[w3Leg.getId()].geometry.coordinates = w3Leg.getCoordinates();
-    legs[w4Leg.getId()].geometry.coordinates = w4Leg.getCoordinates();
-    if(w5Leg) legs[w5Leg.getId()].geometry.coordinates = w5Leg.getCoordinates();
-
-
+    [w2Leg, w3Leg, w4Leg, w5Leg].forEach(leg => {
+        if(leg) legs[leg.getId()].geometry.coordinates = leg.getCoordinates();
+    })
     return geojson;
-
 }
-
 
 function connectEndSegments(first, second, front=true){
     if(!first || !second) return;
