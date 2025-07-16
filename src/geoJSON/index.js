@@ -1,4 +1,3 @@
-import { distance, point } from "@turf/turf";
 import { RouteWaypointLeg } from "../models/RouteWaypointLeg.js";
 import { curveWaypointLeg, RouteToGeoJSON } from "../route.js";
 import { parseGeoJsonToJS, convertGeoJsonWaypointToRouteWaypoint,
@@ -44,12 +43,10 @@ export function EditSingleRouteWaypoint(geojson, waypointID, updateParams) {
     }
     const { 
         coordinates, radius, reference, name,
-        fixed, externalReferenceID, routeWaypointLeg, extensions  } = updateParams;
+        fixed, externalReferenceID, extensions  } = updateParams;
 
-    if ([coordinates, radius, reference, name, fixed, externalReferenceID,
-         routeWaypointLeg, extensions ]
+    if ([coordinates, radius, reference, name, fixed, externalReferenceID,extensions]
          .every(param => param === undefined || param === null)) {
-            
         throw new Error("No parameters provided for update");
     }
     if (typeof geojson === 'string') {
@@ -66,7 +63,6 @@ export function EditSingleRouteWaypoint(geojson, waypointID, updateParams) {
     if(name) waypoint.properties.name = name;
     if(fixed !== undefined) waypoint.properties.fixed = fixed;
     if(externalReferenceID) waypoint.properties.externalReferenceID = externalReferenceID;
-    // if(routeWaypointLeg) waypoint.properties.routeWaypointLeg = routeWaypointLeg;
     if(extensions) waypoint.properties.extensions = extensions;
 
     if(!coordinates && !radius) return geojson;
@@ -120,45 +116,51 @@ export function EditSingleRouteWaypoint(geojson, waypointID, updateParams) {
         throw new Error("Cannot edit waypoint at the start or end of the route");
     }
 
+    let w1,w2,w3,w4,w5;
+    if(waypoints[index - 2]) w1 = convertGeoJsonWaypointToRouteWaypoint(waypoints[index - 2]);
+    if(waypoints[index - 1]) w2 = convertGeoJsonWaypointToRouteWaypoint(waypoints[index - 1]);
+    if(waypoints[index])     w3 = convertGeoJsonWaypointToRouteWaypoint(waypoints[index]);
+    if(waypoints[index + 1]) w4 = convertGeoJsonWaypointToRouteWaypoint(waypoints[index + 1]);
+    if(waypoints[index + 2]) w5 = convertGeoJsonWaypointToRouteWaypoint(waypoints[index + 2]);
 
-    const prevPrevWp = convertGeoJsonWaypointToRouteWaypoint(waypoints[index - 2]);
-    const prevWp = convertGeoJsonWaypointToRouteWaypoint(waypoints[index - 1]);
-    const wp = convertGeoJsonWaypointToRouteWaypoint(waypoints[index]);
-    const nextWp = convertGeoJsonWaypointToRouteWaypoint(waypoints[index + 1]);
-    const nextNextWp = convertGeoJsonWaypointToRouteWaypoint(waypoints[index + 2]);
-
-    const startLegID = prevPrevWp.getRouteWaypointLeg() || '';
+    const startLegID = w1?.getRouteWaypointLeg() || '';
     const endLegID = waypoints[index + 3]?.properties.routeWaypointLeg || '';
 
 
-    const [prevArc] = curveWaypointLeg(prevPrevWp, prevWp, wp);
-    const [arc] = curveWaypointLeg(prevWp, wp, nextWp);
-    const [nextArc] = curveWaypointLeg(wp, nextWp, nextNextWp);
+    let prevArc, arc, nextArc;
+    if(w1 && w2 && w3) [prevArc] = curveWaypointLeg(w1, w2, w3);
+    [arc] = curveWaypointLeg(w2, w3, w4);
+    if(w3 && w4 && w5) [nextArc] = curveWaypointLeg(w3, w4, w5);
 
-    const prevLeg = convertGeoJsonLegToRouteWaypointLeg(legs[prevWp.getRouteWaypointLeg()]);
-    const leg = convertGeoJsonLegToRouteWaypointLeg(legs[wp.getRouteWaypointLeg()]);
-    const nextLeg = convertGeoJsonLegToRouteWaypointLeg(legs[nextWp.getRouteWaypointLeg()]);
-    const nextNextLeg = convertGeoJsonLegToRouteWaypointLeg(legs[nextNextWp.getRouteWaypointLeg()]);
-
-
-    prevLeg.setCoordinates(prevArc ? prevArc.geometry.coordinates : [prevWp.getCoordinates()]);
-    leg.setCoordinates(arc ? arc.geometry.coordinates : [wp.getCoordinates()]);
-    nextLeg.setCoordinates(nextArc ? nextArc.geometry.coordinates : [nextWp.getCoordinates()]);
-    nextNextLeg.setCoordinates(legs[nextNextWp.getRouteWaypointLeg()].geometry.coordinates);
+    let w2Leg, w3Leg, w4Leg, w5Leg;
+    console.log('w2', w2.getRouteWaypointLeg());
+    if(w2.getRouteWaypointLeg()) w2Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w2.getRouteWaypointLeg()]);
+    w3Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w3.getRouteWaypointLeg()]);
+    w4Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w4.getRouteWaypointLeg()]);
+    if(w5) w5Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w5.getRouteWaypointLeg()]);
 
 
-    prevLeg.appendLegLineCoordinates([legs[prevWp.getRouteWaypointLeg()].geometry.coordinates[0],legs[prevWp.getRouteWaypointLeg()].geometry.coordinates[0]]);
-    leg.appendLegLineCoordinates([prevLeg.getCoordinates()[prevLeg.getCoordinates().length - 1],prevLeg.getCoordinates()[prevLeg.getCoordinates().length - 1]]);
-    nextLeg.appendLegLineCoordinates([leg.getCoordinates()[leg.getCoordinates().length - 1],leg.getCoordinates()[leg.getCoordinates().length - 1]]);
-    
-    nextNextLeg.getCoordinates()[0] = nextLeg.getCoordinates()[nextLeg.getCoordinates().length - 1];
+    w2Leg?.setCoordinates(prevArc ? prevArc.geometry.coordinates : [w2.getCoordinates()]);
+    w3Leg.setCoordinates(arc ? arc.geometry.coordinates : [w3.getCoordinates()]);
+    w4Leg.setCoordinates(nextArc ? nextArc.geometry.coordinates : [w4.getCoordinates()]);
+    w5Leg?.setCoordinates(legs[w5.getRouteWaypointLeg()].geometry.coordinates);
+
+
+    w2Leg?.appendLegLineCoordinates([legs[w2.getRouteWaypointLeg()].geometry.coordinates[0],
+                                    legs[w2.getRouteWaypointLeg()].geometry.coordinates[0]]);
+    w3Leg.appendLegLineCoordinates([w2Leg?.getCoordinates()[w2Leg?.getCoordinates().length - 1] || w2.getCoordinates(),
+                                    w2Leg?.getCoordinates()[w2Leg?.getCoordinates().length - 1] || w2.getCoordinates()]);
+    w4Leg.appendLegLineCoordinates([w3Leg.getCoordinates()[w3Leg.getCoordinates().length - 1],
+                                    w3Leg.getCoordinates()[w3Leg.getCoordinates().length - 1]]);
+    if(w5Leg) w5Leg.getCoordinates()[0] = w4Leg.getCoordinates()[w4Leg.getCoordinates().length - 1];
 
     const xtdlStarboard = [],
           xtdlPort = [],
           clStarboard = [],
           clPort = [];
 
-    [prevLeg,leg,nextLeg,nextNextLeg].forEach((leg,index) => {
+    [w2Leg,w3Leg,w4Leg,w5Leg].forEach((leg,index) => {
+        if(!leg) return;
         if(leg.getStarboardXTDL() !== 0 && leg.getPortXTDL() !== 0){
                 xtdlStarboard.push(leg.starboardXTDLtoGeoJSON(index));
                 xtdlPort.push(leg.portXTDLtoGeoJSON(index));
@@ -173,21 +175,21 @@ export function EditSingleRouteWaypoint(geojson, waypointID, updateParams) {
     RouteWaypointLeg.updateLegCorridors(clStarboard, clPort);
 
 
-    endsOfSegment(starboardXTDL[startLegID], xtdlStarboard[0]);
-    endsOfSegment(xtdlStarboard[xtdlStarboard.length-1], starboardXTDL[endLegID], false);
+    if(startLegID){
+        connectEndSegments(starboardXTDL[startLegID], xtdlStarboard[0]);
+        connectEndSegments(portXTDL[startLegID], xtdlPort[0]);
+        connectEndSegments(starboardCL[startLegID], clStarboard[0]);
+        connectEndSegments(portCL[startLegID], clPort[0]);
+    }
+    if(endLegID){
+        connectEndSegments(xtdlStarboard[xtdlStarboard.length-1], starboardXTDL[endLegID], false);
+        connectEndSegments(xtdlPort[xtdlPort.length-1], portXTDL[endLegID], false);
+        connectEndSegments(clStarboard[clStarboard.length-1], starboardCL[endLegID], false);
+        connectEndSegments(clPort[clPort.length-1], portCL[endLegID], false);
+    }
 
-    endsOfSegment(portXTDL[startLegID], xtdlPort[0]);
-    endsOfSegment(xtdlPort[xtdlPort.length-1], portXTDL[endLegID], false);
-
-    endsOfSegment(starboardCL[startLegID], clStarboard[0]);
-    endsOfSegment(clStarboard[clStarboard.length-1], starboardCL[endLegID], false);
-
-    endsOfSegment(portCL[startLegID], clPort[0]);
-    endsOfSegment(clPort[clPort.length-1], portCL[endLegID], false);
-
-
-    let xtdlPoly = [];
-    let clPoly = [];
+    const xtdlPoly = [];
+    const clPoly = [];
     for(let i = 0; i < xtdlStarboard.length; i++){
         xtdlPoly.push(RouteWaypointLeg.createCorridorPolygons(xtdlStarboard[i], xtdlPort[i]));
     }
@@ -195,32 +197,17 @@ export function EditSingleRouteWaypoint(geojson, waypointID, updateParams) {
         clPoly.push(RouteWaypointLeg.createCorridorPolygons(clStarboard[i], clPort[i]));
     }
 
-    xtdlPoly.forEach((p =>{
-        xtdlPolygons[p.properties.routeLegID].geometry.coordinates = p.geometry.coordinates;
-    }))
-    clPoly.forEach((p =>{
-        clPolygons[p.properties.routeLegID].geometry.coordinates = p.geometry.coordinates;
-    }))
+    updateCoordinates(xtdlPoly, xtdlPolygons);
+    updateCoordinates(clPoly, clPolygons);
+    updateCoordinates(xtdlStarboard, starboardXTDL);
+    updateCoordinates(xtdlPort, portXTDL);
+    updateCoordinates(clStarboard, starboardCL);
+    updateCoordinates(clPort, portCL);
 
-
-    xtdlStarboard.forEach(l =>{
-        starboardXTDL[l.properties.routeLegID].geometry.coordinates = l.geometry.coordinates;
-    })
-    xtdlPort.forEach(l =>{
-        portXTDL[l.properties.routeLegID].geometry.coordinates = l.geometry.coordinates;
-    })
-    clStarboard.forEach(l =>{
-        starboardCL[l.properties.routeLegID].geometry.coordinates = l.geometry.coordinates;
-    })
-    clPort.forEach(l =>{
-        portCL[l.properties.routeLegID].geometry.coordinates = l.geometry.coordinates;
-    })
-
-
-    legs[prevLeg.getId()].geometry.coordinates = prevLeg.getCoordinates();
-    legs[leg.getId()].geometry.coordinates = leg.getCoordinates();
-    legs[nextLeg.getId()].geometry.coordinates = nextLeg.getCoordinates();
-    legs[nextNextLeg.getId()].geometry.coordinates = nextNextLeg.getCoordinates();
+    if(w2Leg) legs[w2Leg.getId()].geometry.coordinates = w2Leg.getCoordinates();
+    legs[w3Leg.getId()].geometry.coordinates = w3Leg.getCoordinates();
+    legs[w4Leg.getId()].geometry.coordinates = w4Leg.getCoordinates();
+    if(w5Leg) legs[w5Leg.getId()].geometry.coordinates = w5Leg.getCoordinates();
 
 
     return geojson;
@@ -228,7 +215,7 @@ export function EditSingleRouteWaypoint(geojson, waypointID, updateParams) {
 }
 
 
-function endsOfSegment(first, second, front=true){
+function connectEndSegments(first, second, front=true){
     if(!first || !second) return;
 
     if(front){
@@ -242,5 +229,8 @@ function endsOfSegment(first, second, front=true){
             first.geometry.coordinates.push(second.geometry.coordinates[0]);
         }
     }
+}
 
+function updateCoordinates(source, target){
+    source.forEach(s => target[s.properties.routeLegID].geometry.coordinates = s.geometry.coordinates);
 }
