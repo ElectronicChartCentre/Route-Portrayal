@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 
-import {EditRouteWaypoint} from '../src/geoJSON/index.js';
+import {EditRouteWaypointNewRoute} from '../src/geoJSON/index.js';
 
-describe('EditRouteWaypoint_TEST (integration with SampleFiles)', () => {
+describe('EditRouteWaypointFullRoute_TEST (integration with SampleFiles)', () => {
   const GEOJSON_DIR = path.resolve(__dirname, '../SampleFiles/GeoJSON');
 
   const jsonfiles = fs
@@ -11,9 +11,9 @@ describe('EditRouteWaypoint_TEST (integration with SampleFiles)', () => {
     .filter(f => f.endsWith('.json'));
 
 
-    test(`${jsonfiles[0]} EditRouteWaypoint test`,()=>{
+    test(`${jsonfiles[0]} EditRouteWaypointNewRoute test`,()=>{
         const json = fs.readFileSync(path.join(GEOJSON_DIR, `${jsonfiles[0]}`), 'utf8');
-        const geojson = EditRouteWaypoint(json,4,{
+        const geojson = EditRouteWaypointNewRoute(json,4,{
             reference: 'ref-4',
             fixed: true,
             externalReferenceID: 'ext-4',
@@ -50,15 +50,15 @@ describe('EditRouteWaypoint_TEST (integration with SampleFiles)', () => {
         //Snapshot the entire output so diffs are easy
         expect(geojson).toMatchSnapshot();
 
-        expect(()=>EditRouteWaypoint(geojson,3,{})).toThrow('No parameters provided for update');
-        expect(()=>EditRouteWaypoint(geojson,1111,{name:'test'})).toThrow('No waypoint found with ID: 1111');
+        expect(()=>EditRouteWaypointNewRoute(geojson,3,{})).toThrow('No parameters provided for update');
+        expect(()=>EditRouteWaypointNewRoute(geojson,1111,{name:'test'})).toThrow('No waypoint found with ID: 1111');
 
     })
 
 
-    test(`${jsonfiles[1]} EditRouteWaypoint test`,()=>{
+    test(`${jsonfiles[1]} EditRouteWaypointNewRoute test`,()=>{
         const json = fs.readFileSync(path.join(GEOJSON_DIR, `${jsonfiles[1]}`), 'utf8');
-        const geojson = EditRouteWaypoint(json,5,{
+        const geojson = EditRouteWaypointNewRoute(json,5,{
             radius: 0.4,
             coordinates: [
                     5.56832327,
@@ -96,15 +96,15 @@ describe('EditRouteWaypoint_TEST (integration with SampleFiles)', () => {
         //Snapshot the entire output so diffs are easy
         expect(geojson).toMatchSnapshot();
 
-        expect(()=>EditRouteWaypoint(geojson,3,{})).toThrow('No parameters provided for update');
-        expect(()=>EditRouteWaypoint(geojson,1111,{name:'test'})).toThrow('No waypoint found with ID: 1111');
+        expect(()=>EditRouteWaypointNewRoute(geojson,3,{})).toThrow('No parameters provided for update');
+        expect(()=>EditRouteWaypointNewRoute(geojson,1111,{name:'test'})).toThrow('No waypoint found with ID: 1111');
 
     })
 
 
-    test(`${jsonfiles[2]} EditRouteWaypoint test`,()=>{
+    test(`${jsonfiles[2]} EditRouteWaypointNewRoute test`,()=>{
         const json = fs.readFileSync(path.join(GEOJSON_DIR, `${jsonfiles[2]}`), 'utf8');
-        const geojson = EditRouteWaypoint(json,5,{
+        const geojson = EditRouteWaypointNewRoute(json,5,{
             radius: 0.8,
             coordinates: [
                     18.744942,
@@ -147,8 +147,8 @@ describe('EditRouteWaypoint_TEST (integration with SampleFiles)', () => {
         //Snapshot the entire output so diffs are easy
         expect(geojson).toMatchSnapshot();
 
-        expect(()=>EditRouteWaypoint(geojson,3,{})).toThrow('No parameters provided for update');
-        expect(()=>EditRouteWaypoint(geojson,1111,{name:'test'})).toThrow('No waypoint found with ID: 1111');
+        expect(()=>EditRouteWaypointNewRoute(geojson,3,{})).toThrow('No parameters provided for update');
+        expect(()=>EditRouteWaypointNewRoute(geojson,1111,{name:'test'})).toThrow('No waypoint found with ID: 1111');
 
     })
 

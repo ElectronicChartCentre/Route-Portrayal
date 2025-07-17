@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EditRouteWaypoint_TEST (integration with SampleFiles) AHUS-IN-RTZ.json EditRouteWaypoint test 1`] = `
+exports[`EditRouteWaypointFullRoute_TEST (integration with SampleFiles) AHUS-IN-RTZ.json EditRouteWaypointNewRoute test 1`] = `
 {
   "features": [
     {
@@ -4651,7 +4651,7 @@ exports[`EditRouteWaypoint_TEST (integration with SampleFiles) AHUS-IN-RTZ.json 
 }
 `;
 
-exports[`EditRouteWaypoint_TEST (integration with SampleFiles) NCA_Stavanger_Feinstein_OUT-RTZ.json EditRouteWaypoint test 1`] = `
+exports[`EditRouteWaypointFullRoute_TEST (integration with SampleFiles) NCA_Stavanger_Feinstein_OUT-RTZ.json EditRouteWaypointNewRoute test 1`] = `
 {
   "features": [
     {
@@ -23094,7 +23094,7 @@ exports[`EditRouteWaypoint_TEST (integration with SampleFiles) NCA_Stavanger_Fei
 }
 `;
 
-exports[`EditRouteWaypoint_TEST (integration with SampleFiles) RTE-TEST-GFULL-S421.json EditRouteWaypoint test 1`] = `
+exports[`EditRouteWaypointFullRoute_TEST (integration with SampleFiles) RTE-TEST-GFULL-S421.json EditRouteWaypointNewRoute test 1`] = `
 {
   "features": [
     {
