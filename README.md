@@ -1,5 +1,5 @@
 # Maritime Route Portrayal
-Javascript library for client-side parsing and portrayal rendering of RTZ and S-421 route data for maplibre and leaflet. XML data in RTZ or S412 format can be passed to either ```S421toGeoJSON()``` or ```RTZtoGeoJSON()```. The output is a GeoJSON feature collection that holds all the source elements to create RouteWaypoints, RouteWaypointLegs and RouteActionPoints. A third method, ```EditRouteWaypoint()``` takes an existing GeoJSON route, and allows modifications of parameters for a specific RouteWaypoint. A forth method ```createLayers()``` takes sourceName as a mandatory parameter and layerIdPrefix as an optional parameter. The method will return layers with portrayal rules to match with the GeoJSON source. The portrayal rules follow the S421 portrayal catalogue found on [this link](https://www.cirm.org/s-421/index.html).
+Javascript library for client-side parsing and portrayal rendering of RTZ and S-421 route data for maplibre and leaflet. XML data in RTZ or S412 format can be passed to either ```S421toGeoJSON()``` or ```RTZtoGeoJSON()```. The output is a GeoJSON feature collection that holds all the source elements to create RouteWaypoints, RouteWaypointLegs and RouteActionPoints. A third method, ```EditRouteWaypoint()``` takes an existing GeoJSON route, and allows modifications of parameters for a specific RouteWaypoint. ```EditRouteWaypointNewRoute()```is a variation of the method that does the exact same, but it creates a whole new route with the updated waypoint. A forth method ```createLayers()``` takes sourceName as a mandatory parameter and layerIdPrefix as an optional parameter. The method will return layers with portrayal rules to match with the GeoJSON source. The portrayal rules follow the S421 portrayal catalogue found on [this link](https://www.cirm.org/s-421/index.html).
 
 As an extra feature, XTD(L) lines and CL lines are displayed if the data is present. A fifth method called ```createCorridorLayers()``` will return two additional layers that will style the XTDL and CL polygons in the GeoJSON source. This repository showcases the use of the library on a simulated client-side application.
 
@@ -38,14 +38,15 @@ Clone the repository and move the file to the application where it should be use
 - ```routePortrayal.RTZtoGeoJSON(xml)```
 - ```routePortrayal.createLayers(sourceName,idPrefix[optional])```
 - ```routePortrayal.createCorridorLayers(sourceName,idPrefix[optional])```
--```routePortrayal.EditRouteWaypoint(geojson,waypointID,parametersToChange)```
+- ```routePortrayal.EditRouteWaypoint(geojson,waypointID,parametersToChange)```
+- ```routePortrayal.EditRouteWaypointNewRoute(geojson,waypointID,parametersToChange)```
 
 ### CommonJS
 To use the library with CommonJS syntax in Node, include the following line in the code:
 ```const routePortrayal = require('<path to file>/routePortrayal.min.js');```. The same four methods as above become accessible.
 
 ### ES modules
-To include the library in an ES6 module, ```routePortrayal.esm.mjs``` should be used. Include this line in the code to import the five methods from the library: ```import { S412toGeoJSON, RTZtoGeoJSON, createLayers, createCorridorLayers, EditRouteWaypoint } from '<path to file>/routePortrayal.esm.mjs';```. The methods are now accessible without the library name in front. 
+To include the library in an ES6 module, ```routePortrayal.esm.mjs``` should be used. Include this line in the code to import the five methods from the library: ```import { S412toGeoJSON, RTZtoGeoJSON, createLayers, createCorridorLayers, EditRouteWaypoint, EditRouteWaypointNewRoute } from '<path to file>/routePortrayal.esm.mjs';```. The methods are now accessible without the library name in front. 
 
 
 ### Local Development
