@@ -53,7 +53,7 @@ export function EditRouteWaypointNewRoute(geojson, waypointID, updateParams ){
  */
 export function EditRouteWaypoint(geojson, waypointID, updateParams) {
     if (!geojson || isNaN(waypointID) || !updateParams) {
-        throw new Error("Invalid parameters provided for EditSingleRouteWaypoint");
+        throw new Error("Invalid parameters provided for EditRouteWaypoint");
     }
     const { 
         coordinates, radius, reference, name,
