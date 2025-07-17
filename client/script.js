@@ -197,7 +197,6 @@ map.on('mouseleave','route-leg-cl', () => {
 });
 
 map.on('mouseenter','waypoint-circle',(e) =>{
-    console.log("wp")
     map.getCanvas().style.cursor = 'pointer';
     const feature = e.features[0];
     const id = feature.properties.id;
