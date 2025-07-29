@@ -33,7 +33,7 @@ export function parseGeoJsonToJS(geojson){
 
 
 
-function convertGeoJsonWaypointToRouteWaypoint(geojson) {
+export function convertGeoJsonWaypointToRouteWaypoint(geojson) {
     if (!geojson || !geojson.properties || !geojson.geometry) {
         throw new Error('Invalid GeoJSON waypoint');
     }
@@ -62,7 +62,7 @@ function convertGeoJsonWaypointToRouteWaypoint(geojson) {
 
 }
 
-function convertGeoJsonLegToRouteWaypointLeg(geojson){
+export function convertGeoJsonLegToRouteWaypointLeg(geojson){
     if (!geojson || !geojson.properties || !geojson.geometry) {
         throw new Error('Invalid GeoJSON waypoint');
     }

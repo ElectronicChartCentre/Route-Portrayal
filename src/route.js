@@ -89,10 +89,16 @@ export function RouteToGeoJSON(waypointLegs, waypoints, actionPoints) {
     });
 
     if(xtdlStarboard.length > 0){
-        xtdlPolygons = [...RouteWaypointLeg.updateLegCorridors(xtdlStarboard,xtdlPort)];
+        RouteWaypointLeg.updateLegCorridors(xtdlStarboard,xtdlPort);
+        for(let i = 0; i < xtdlStarboard.length; i++){
+            xtdlPolygons.push(RouteWaypointLeg.createCorridorPolygons(xtdlStarboard[i], xtdlPort[i]));
+        }
     }
     if(clStarboard.length > 0){
-        clPolygons = [...RouteWaypointLeg.updateLegCorridors(clStarboard,clPort)];
+        RouteWaypointLeg.updateLegCorridors(clStarboard,clPort);
+        for(let i = 0; i < clStarboard.length; i++){
+            clPolygons.push(RouteWaypointLeg.createCorridorPolygons(clStarboard[i], clPort[i]));
+        }
     }
    
     geoJSON.features.push(...xtdlStarboard, ...xtdlPort, ...clStarboard, ...clPort, ...xtdlPolygons, ...clPolygons);

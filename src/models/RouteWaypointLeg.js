@@ -234,7 +234,6 @@ export class RouteWaypointLeg{
     }
 
     static updateLegCorridors(sb,port){
-        const corridorPolygons = [];
         const metric = {units: 'meters'};
         for(let i = 0; i<sb.length; i++){
             const sbBackCoord = sb[i].geometry.coordinates[sb[i].geometry.coordinates.length-1];
@@ -298,9 +297,7 @@ export class RouteWaypointLeg{
             }
             RouteWaypointLeg.normalizeLongitudeCoordinates(sb[i].geometry.coordinates);
             RouteWaypointLeg.normalizeLongitudeCoordinates(port[i].geometry.coordinates);
-            corridorPolygons.push(RouteWaypointLeg.createCorridorPolygons(sb[i],port[i]))
         }
-        return corridorPolygons;
     }
 
     static createCorridorPolygons(starboardLine, portLine){

@@ -255,22 +255,11 @@ describe('RouteWaypointLeg tests', () => {
             lineString([[7,2],[8,2],[9,2]],{distance: 150, index: 2, routeLegID:'RTE.WPT.LEG.3', type: 'route-leg-XTDL'})
         ]
 
-        const polygons = RouteWaypointLeg.updateLegCorridors(starboard,port);
-        expect(polygons.length).toBe(3);
-        polygons.forEach((polygon, index) => {
-            expect(polygon.geometry.type).toBe('Polygon');
-            expect(polygon.properties.type).toBe('route-leg-corridor-xtdl');
-            expect(polygon.properties.routeLegID).toBe(`RTE.WPT.LEG.${index + 1}`);
-            expect(polygon.properties.portDistance).toBe(port[index].properties.distance);
-            expect(polygon.properties.starboardDistance).toBe(starboard[index].properties.distance);
-        })
+        RouteWaypointLeg.updateLegCorridors(starboard,port);
 
         expect(starboard[1].geometry.coordinates[0]).toEqual(starboard[0].geometry.coordinates[2]);
-
         expect(starboard[2].geometry.coordinates[0]).toEqual(starboard[1].geometry.coordinates[starboard[1].geometry.coordinates.length-1]);
-
         expect(port[0].geometry.coordinates[port[0].geometry.coordinates.length-1]).toEqual(port[1].geometry.coordinates[0]);
-
         expect(port[2].geometry.coordinates[0]).toEqual(port[1].geometry.coordinates[port[1].geometry.coordinates.length-1]);
 
 
@@ -286,9 +275,21 @@ describe('RouteWaypointLeg tests', () => {
             lineString([[7,2],[8,2],[9,2]],{distance: 150, index: 4, routeLegID:'RTE.WPT.LEG.3', type: 'route-leg-XTDL'})
         ]
 
-        const polygons2 = RouteWaypointLeg.updateLegCorridors(starboard,port);
-        expect(polygons2.length).toBe(3);        
+        RouteWaypointLeg.updateLegCorridors(starboard,port);
 
+        expect(distance(starboard[1].geometry.coordinates[starboard[1].geometry.coordinates.length-1],
+                        starboard[1].geometry.coordinates[starboard[1].geometry.coordinates.length-2], {units: 'meters'}))
+                        .toBeCloseTo(200);
+        expect(distance(port[1].geometry.coordinates[port[1].geometry.coordinates.length-1],
+                        port[1].geometry.coordinates[port[1].geometry.coordinates.length-2], {units: 'meters'}))
+                        .toBeCloseTo(50);
+
+        expect(distance(starboard[1].geometry.coordinates[0],
+                        starboard[1].geometry.coordinates[1], {units: 'meters'}))
+                        .toBeCloseTo(200);
+        expect(distance(port[1].geometry.coordinates[0],
+                        port[1].geometry.coordinates[1], {units: 'meters'}))
+                        .toBeCloseTo(50);
     });
 
     test('normalizeLongitudeCoordinates method',()=>{
