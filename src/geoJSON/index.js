@@ -138,10 +138,10 @@ export function EditRouteWaypoint(geojson, waypointID, updateParams) {
     if(w3 && w4 && w5) [nextArc] = curveWaypointLeg(w3, w4, w5);
 
     let w2Leg, w3Leg, w4Leg, w5Leg;
-    if(w2?.getRouteWaypointLeg()) w2Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w2.getRouteWaypointLeg()]);
-    if(w3?.getRouteWaypointLeg()) w3Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w3.getRouteWaypointLeg()]);
-    if(w4?.getRouteWaypointLeg()) w4Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w4.getRouteWaypointLeg()]);
-    if(w5?.getRouteWaypointLeg()) w5Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w5.getRouteWaypointLeg()]);
+    if(legs[w2?.getRouteWaypointLeg()]) w2Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w2.getRouteWaypointLeg()]);
+    if(legs[w3?.getRouteWaypointLeg()]) w3Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w3.getRouteWaypointLeg()]);
+    if(legs[w4?.getRouteWaypointLeg()]) w4Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w4.getRouteWaypointLeg()]);
+    if(legs[w5?.getRouteWaypointLeg()]) w5Leg = convertGeoJsonLegToRouteWaypointLeg(legs[w5.getRouteWaypointLeg()]);
 
     w2Leg?.setCoordinates(prevArc ? prevArc.geometry.coordinates : [w2.getCoordinates()]);
     w3Leg?.setCoordinates(arc ? arc.geometry.coordinates : [w3.getCoordinates()]);
