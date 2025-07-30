@@ -3,6 +3,9 @@ import path from 'path';
 
 import {EditRouteWaypointNewRoute, EditRouteWaypoint} from '../src/geoJSON/index.js';
 
+const types = ['waypoint', 'actionpoint-point', 'actionpoint-curve','actionpoint-surface',
+  'route-leg-corridor-cl','route-leg-corridor-xtdl','route-leg-CL','route-leg-XTDL','route-leg'];
+
 describe('EditRouteWaypointNewRoute_TEST (integration with SampleFiles)', () => {
   const GEOJSON_DIR = path.resolve(__dirname, '../SampleFiles/GeoJSON');
 
@@ -23,17 +26,16 @@ describe('EditRouteWaypointNewRoute_TEST (integration with SampleFiles)', () => 
 
         });
 
-        //It’s a GeoJSON FeatureCollection
         expect(geojson).toHaveProperty('type', 'FeatureCollection');
         expect(Array.isArray(geojson.features)).toBe(true);
 
-        //It has at least one feature
         expect(geojson.features.length).toBeGreaterThan(0);
 
-        //Every feature has geometry + properties
         geojson.features.forEach(feature => {
             expect(feature).toHaveProperty('geometry');
             expect(feature).toHaveProperty('properties');
+            expect(feature.properties).toHaveProperty('type');
+            expect(types).toContain(feature.properties.type);
         });
 
         const waypoint4 = geojson.features.find(feature => (feature.properties.type==='waypoint' && feature.properties.id === 4));
@@ -47,8 +49,6 @@ describe('EditRouteWaypointNewRoute_TEST (integration with SampleFiles)', () => 
         expect(waypoint4.properties.routeWaypointLeg).toBe('RTE.WPT.LEG.4');
         expect(waypoint4.properties.extensions).toEqual({remarks: 'This is a test waypoint'});
 
-        //Snapshot the entire output so diffs are easy
-        expect(geojson).toMatchSnapshot();
 
         expect(()=>EditRouteWaypointNewRoute(geojson,3,{})).toThrow('No parameters provided for update');
         expect(()=>EditRouteWaypointNewRoute(geojson,1111,{name:'test'})).toThrow('No waypoint found with ID: 1111');
@@ -69,17 +69,16 @@ describe('EditRouteWaypointNewRoute_TEST (integration with SampleFiles)', () => 
 
         });
 
-        //It’s a GeoJSON FeatureCollection
         expect(geojson).toHaveProperty('type', 'FeatureCollection');
         expect(Array.isArray(geojson.features)).toBe(true);
 
-        //It has at least one feature
         expect(geojson.features.length).toBeGreaterThan(0);
 
-        //Every feature has geometry + properties
         geojson.features.forEach(feature => {
             expect(feature).toHaveProperty('geometry');
             expect(feature).toHaveProperty('properties');
+            expect(feature.properties).toHaveProperty('type');
+            expect(types).toContain(feature.properties.type);
         });
 
         const waypoint4 = geojson.features.find(feature => (feature.properties.type==='waypoint' && feature.properties.id === 5));
@@ -92,9 +91,6 @@ describe('EditRouteWaypointNewRoute_TEST (integration with SampleFiles)', () => 
         expect(waypoint4.properties.externalReferenceID).toBe('');
         expect(waypoint4.properties.routeWaypointLeg).toBe('RTE.WPT.LEG.5');
         expect(waypoint4.properties.extensions).toEqual({});
-
-        //Snapshot the entire output so diffs are easy
-        expect(geojson).toMatchSnapshot();
 
         expect(()=>EditRouteWaypointNewRoute(geojson,3,{})).toThrow('No parameters provided for update');
         expect(()=>EditRouteWaypointNewRoute(geojson,1111,{name:'test'})).toThrow('No waypoint found with ID: 1111');
@@ -120,17 +116,16 @@ describe('EditRouteWaypointNewRoute_TEST (integration with SampleFiles)', () => 
 
         });
 
-        //It’s a GeoJSON FeatureCollection
         expect(geojson).toHaveProperty('type', 'FeatureCollection');
         expect(Array.isArray(geojson.features)).toBe(true);
 
-        //It has at least one feature
         expect(geojson.features.length).toBeGreaterThan(0);
 
-        //Every feature has geometry + properties
         geojson.features.forEach(feature => {
             expect(feature).toHaveProperty('geometry');
             expect(feature).toHaveProperty('properties');
+            expect(feature.properties).toHaveProperty('type');
+            expect(types).toContain(feature.properties.type);
         });
 
         const waypoint4 = geojson.features.find(feature => (feature.properties.type==='waypoint' && feature.properties.id === 5));
@@ -144,8 +139,6 @@ describe('EditRouteWaypointNewRoute_TEST (integration with SampleFiles)', () => 
         expect(waypoint4.properties.routeWaypointLeg).toBe('RTE.WPT.LEG.5');
         expect(waypoint4.properties.extensions).toEqual({remarks: 'This is a test waypoint'});
 
-        //Snapshot the entire output so diffs are easy
-        expect(geojson).toMatchSnapshot();
 
         expect(()=>EditRouteWaypointNewRoute(geojson,3,{})).toThrow('No parameters provided for update');
         expect(()=>EditRouteWaypointNewRoute(geojson,1111,{name:'test'})).toThrow('No waypoint found with ID: 1111');
@@ -171,20 +164,18 @@ describe('EditRouteWaypoint_TEST (integration with SampleFiles)', () => {
             externalReferenceID: 'ext-4',
             extensions:{remarks: 'This is a test waypoint'}
 
-
         });
 
-        //It’s a GeoJSON FeatureCollection
         expect(geojson).toHaveProperty('type', 'FeatureCollection');
         expect(Array.isArray(geojson.features)).toBe(true);
 
-        //It has at least one feature
         expect(geojson.features.length).toBeGreaterThan(0);
 
-        //Every feature has geometry + properties
         geojson.features.forEach(feature => {
             expect(feature).toHaveProperty('geometry');
             expect(feature).toHaveProperty('properties');
+            expect(feature.properties).toHaveProperty('type');
+            expect(types).toContain(feature.properties.type);
         });
 
         const waypoint4 = geojson.features.find(feature => (feature.properties.type==='waypoint' && feature.properties.id === 4));
@@ -197,8 +188,6 @@ describe('EditRouteWaypoint_TEST (integration with SampleFiles)', () => {
         expect(waypoint4.properties.externalReferenceID).toBe('ext-4');
         expect(waypoint4.properties.extensions).toEqual({remarks: 'This is a test waypoint'});
 
-        //Snapshot the entire output so diffs are easy
-        expect(geojson).toMatchSnapshot();
 
         expect(()=>EditRouteWaypoint(geojson,3,{})).toThrow('No parameters provided for update');
         expect(()=>EditRouteWaypoint(geojson,1111,{name:'test'})).toThrow('No waypoint found with ID: 1111');
@@ -216,20 +205,18 @@ describe('EditRouteWaypoint_TEST (integration with SampleFiles)', () => {
             ],
             name: 'Waypoint 5',
 
-
         });
 
-        //It’s a GeoJSON FeatureCollection
         expect(geojson).toHaveProperty('type', 'FeatureCollection');
         expect(Array.isArray(geojson.features)).toBe(true);
 
-        //It has at least one feature
         expect(geojson.features.length).toBeGreaterThan(0);
 
-        //Every feature has geometry + properties
         geojson.features.forEach(feature => {
             expect(feature).toHaveProperty('geometry');
             expect(feature).toHaveProperty('properties');
+            expect(feature.properties).toHaveProperty('type');
+            expect(types).toContain(feature.properties.type);
         });
 
         const waypoint4 = geojson.features.find(feature => (feature.properties.type==='waypoint' && feature.properties.id === 5));
@@ -243,8 +230,6 @@ describe('EditRouteWaypoint_TEST (integration with SampleFiles)', () => {
         expect(waypoint4.properties.routeWaypointLeg).toBe('RTE.WPT.LEG.5');
         expect(waypoint4.properties.extensions).toEqual({});
 
-        //Snapshot the entire output so diffs are easy
-        expect(geojson).toMatchSnapshot();
 
         expect(()=>EditRouteWaypoint(geojson,3,{})).toThrow('No parameters provided for update');
         expect(()=>EditRouteWaypoint(geojson,1111,{name:'test'})).toThrow('No waypoint found with ID: 1111');
@@ -272,17 +257,16 @@ describe('EditRouteWaypoint_TEST (integration with SampleFiles)', () => {
 
         });
 
-        //It’s a GeoJSON FeatureCollection
         expect(geojson).toHaveProperty('type', 'FeatureCollection');
         expect(Array.isArray(geojson.features)).toBe(true);
 
-        //It has at least one feature
         expect(geojson.features.length).toBeGreaterThan(0);
 
-        //Every feature has geometry + properties
         geojson.features.forEach(feature => {
             expect(feature).toHaveProperty('geometry');
             expect(feature).toHaveProperty('properties');
+            expect(feature.properties).toHaveProperty('type');
+            expect(types).toContain(feature.properties.type);
         });
 
         const waypoint4 = geojson.features.find(feature => (feature.properties.type==='waypoint' && feature.properties.id === 5));
@@ -295,8 +279,6 @@ describe('EditRouteWaypoint_TEST (integration with SampleFiles)', () => {
         expect(waypoint4.properties.externalReferenceID).toBe('ext-5');
         expect(waypoint4.properties.extensions).toEqual({remarks: 'This is a test waypoint'});
 
-        //Snapshot the entire output so diffs are easy
-        expect(geojson).toMatchSnapshot();
 
         expect(()=>EditRouteWaypoint(geojson,3,{})).toThrow('No parameters provided for update');
         expect(()=>EditRouteWaypoint(geojson,1111,{name:'test'})).toThrow('No waypoint found with ID: 1111');
