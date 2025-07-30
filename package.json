@@ -10,7 +10,8 @@
   "jest": {
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
-    }
+    },
+    "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"]
   },
   "author": "Andreas Follevaag Malde",
   "license": "MIT",
