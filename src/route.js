@@ -111,6 +111,7 @@ export function RouteToGeoJSON(waypointLegs, waypoints, actionPoints) {
 
 
 export function curveWaypointLeg(W1, W2, W3) {
+    // Turn radius standard is nautical miles
     // No curve is needed if the turn radius is 0 or less
     if (W2.getRadius() <= 0.0) {
         const t1 = point(W2.getCoordinates(), {
@@ -164,7 +165,7 @@ export function curveWaypointLeg(W1, W2, W3) {
     const [b1, b2] = determineBearingOrder(cBearing1, cBearing2);
 
     // Create the lineString for the circle arc
-    const circleArc = lineArc(circleCenter, W2.getRadius(), b1, b2, { steps: 100 });
+    const circleArc = lineArc(circleCenter, W2.getRadius(), b1, b2, { steps: 100, units: "nauticalmiles" });
 
     circleArc.properties = {
         "routeWaypointLeg":W2?.getRouteWaypointLeg() || ""
@@ -206,8 +207,8 @@ function calculateCircleCenterCoordinates(midLineBearing, W2, line1, line2) {
     let previousDistance = distance * 2;
     let count = 0;
     while (true) {
-        circleCenter = destination(W2.toGeoJSON(), distance, midLineBearing);
-        circle = lineArc(circleCenter, W2.getRadius(), 0, 360, { steps: 100 });
+        circleCenter = destination(W2.toGeoJSON(), distance, midLineBearing, { units: "kilometers" });
+        circle = lineArc(circleCenter, W2.getRadius(), 0, 360, { steps: 100, units: "nauticalmiles" });
         t1 = lineIntersect(circle, line1);
         t2 = lineIntersect(circle, line2);
         difference = Math.abs(previousDistance - distance);
