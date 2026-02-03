@@ -1,13 +1,17 @@
 import { createActionPoint, RouteWaypoint, RouteWaypointLeg } from "../src/models";
-import { waypoints, curveWaypointLegResult } from "../data/test/testData";
+import { waypoints } from "../data/test/testData";
 import { getCoordinates } from "../src/utility";
 import {
-    convertTo360_TEST, convertToNorthBearing_TEST,
-    calculateMidLineBearing_TEST, determineBearingOrder_TEST,
-    curveWaypointLeg_TEST, RouteToGeoJSON_TEST
+  convertTo360_TEST,
+  convertToNorthBearing_TEST,
+  calculateMidLineBearing_TEST,
+  determineBearingOrder_TEST,
+  curveWaypointLeg_TEST,
+  RouteToGeoJSON_TEST,
+  calculateCircleCenterCoordinates_TEST,
 } from "../src/route";
 
-
+import { point, lineString, bearing, distance } from "@turf/turf";
 
 describe('convertTo360 tests', ()=>{
     test('bearings between 0 and 180 degrees stay the same',()=>{
@@ -184,7 +188,59 @@ describe('curveWaypointLeg tests', ()=>{
         let result = curveWaypointLeg_TEST(WPs[0], WPs[1], WPs[2]);
         expect(result).not.toBeNull();
         expect(result.length).toBe(3);
-        expect(result).toEqual(curveWaypointLegResult);
+
+        const [circleArc, tangent1, tangent2] = result;
+
+        expect(circleArc).not.toBeNull();
+        expect(circleArc.geometry.type).toBe("LineString");
+        expect(tangent1.geometry.type).toBe("Point");
+        expect(tangent2.geometry.type).toBe("Point");
+
+        expect(tangent1.properties.waypoint).toBe(WPs[1].getId());
+        expect(tangent1.properties.linkedTo).toBe(WPs[0].getId());
+        expect(tangent2.properties.waypoint).toBe(WPs[1].getId());
+        expect(tangent2.properties.linkedTo).toBe(WPs[2].getId());
+
+        const line1 = lineString([
+          WPs[0].getCoordinates(),
+          WPs[1].getCoordinates(),
+        ]);
+        const line2 = lineString([
+          WPs[1].getCoordinates(),
+          WPs[2].getCoordinates(),
+        ]);
+        const bearing21 = bearing(WPs[1].toGeoJSON(), WPs[0].toGeoJSON());
+        const bearing23 = bearing(WPs[1].toGeoJSON(), WPs[2].toGeoJSON());
+        const midLineBearing = calculateMidLineBearing_TEST(
+          bearing21,
+          bearing23
+        );
+
+        const [circleCenter] = calculateCircleCenterCoordinates_TEST(
+          midLineBearing,
+          WPs[1],
+          line1,
+          line2
+        );
+        expect(circleCenter).not.toBeNull();
+
+        const r = WPs[1].getRadius();
+        const d1 = distance(circleCenter, tangent1, { units: "nauticalmiles" });
+        const d2 = distance(circleCenter, tangent2, { units: "nauticalmiles" });
+
+        expect(d1).toBeCloseTo(r, 2);
+        expect(d2).toBeCloseTo(r, 2);
+
+        const arcCoords = circleArc.geometry.coordinates;
+        const arcStart = point(arcCoords[0]);
+        const arcEnd = point(arcCoords[arcCoords.length - 1]);
+
+        expect(
+          distance(arcStart, tangent1, { units: "nauticalmiles" })
+        ).toBeLessThan(0.02);
+        expect(
+          distance(arcEnd, tangent2, { units: "nauticalmiles" })
+        ).toBeLessThan(0.02);
     });
 
 });
