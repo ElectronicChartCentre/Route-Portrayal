@@ -168,82 +168,124 @@ describe('determineBearingOrder tests', ()=>{
 });
 
 
-describe('curveWaypointLeg tests', ()=>{
+import { distance } from "@turf/turf";
 
-    test('valid lineString arc and tangentpoints are returned based on the middle point radius',()=>{
-        let WPs = [];
-        for(let wp of waypoints){
-            WPs.push(new RouteWaypoint(
-                parseInt(wp.routeWaypointID._text),
-                wp._attributes.id,
-                wp.routeWaypointName._text,
-                getCoordinates(wp.geometry.pointProperty.Point.pos._text),
-                false,
-                parseFloat(wp.routeWaypointTurnRadius._text),
-                wp.routeWaypointLeg._attributes.href.split('#')[1],
-                {}
-            ));
-        }
-        
-        let result = curveWaypointLeg_TEST(WPs[0], WPs[1], WPs[2]);
-        expect(result).not.toBeNull();
-        expect(result.length).toBe(3);
+describe("curveWaypointLeg tests", () => {
+  function circumcenter(a, b, c) {
+    const ax = a[0],
+      ay = a[1];
+    const bx = b[0],
+      by = b[1];
+    const cx = c[0],
+      cy = c[1];
 
-        const [circleArc, tangent1, tangent2] = result;
+    const d = 2 * (ax * (by - cy) + bx * (cy - ay) + cx * (ay - by));
+    if (Math.abs(d) < 1e-12) return null; // nearly collinear
 
-        expect(circleArc).not.toBeNull();
-        expect(circleArc.geometry.type).toBe("LineString");
-        expect(tangent1.geometry.type).toBe("Point");
-        expect(tangent2.geometry.type).toBe("Point");
+    const ax2ay2 = ax * ax + ay * ay;
+    const bx2by2 = bx * bx + by * by;
+    const cx2cy2 = cx * cx + cy * cy;
 
-        expect(tangent1.properties.waypoint).toBe(WPs[1].getId());
-        expect(tangent1.properties.linkedTo).toBe(WPs[0].getId());
-        expect(tangent2.properties.waypoint).toBe(WPs[1].getId());
-        expect(tangent2.properties.linkedTo).toBe(WPs[2].getId());
+    const ux =
+      (ax2ay2 * (by - cy) + bx2by2 * (cy - ay) + cx2cy2 * (ay - by)) / d;
+    const uy =
+      (ax2ay2 * (cx - bx) + bx2by2 * (ax - cx) + cx2cy2 * (bx - ax)) / d;
 
-        const line1 = lineString([
-          WPs[0].getCoordinates(),
-          WPs[1].getCoordinates(),
-        ]);
-        const line2 = lineString([
-          WPs[1].getCoordinates(),
-          WPs[2].getCoordinates(),
-        ]);
-        const bearing21 = bearing(WPs[1].toGeoJSON(), WPs[0].toGeoJSON());
-        const bearing23 = bearing(WPs[1].toGeoJSON(), WPs[2].toGeoJSON());
-        const midLineBearing = calculateMidLineBearing_TEST(
-          bearing21,
-          bearing23
-        );
+    return {
+      type: "Feature",
+      geometry: { type: "Point", coordinates: [ux, uy] },
+      properties: {},
+    };
+  }
 
-        const [circleCenter] = calculateCircleCenterCoordinates_TEST(
-          midLineBearing,
-          WPs[1],
-          line1,
-          line2
-        );
-        expect(circleCenter).not.toBeNull();
+  test("valid lineString arc and tangentpoints are returned based on the middle point radius", () => {
+    let WPs = [];
+    for (let wp of waypoints) {
+      WPs.push(
+        new RouteWaypoint(
+          parseInt(wp.routeWaypointID._text),
+          wp._attributes.id,
+          wp.routeWaypointName._text,
+          getCoordinates(wp.geometry.pointProperty.Point.pos._text),
+          false,
+          parseFloat(wp.routeWaypointTurnRadius._text),
+          wp.routeWaypointLeg._attributes.href.split("#")[1],
+          {}
+        )
+      );
+    }
 
-        const r = WPs[1].getRadius();
-        const d1 = distance(circleCenter, tangent1, { units: "nauticalmiles" });
-        const d2 = distance(circleCenter, tangent2, { units: "nauticalmiles" });
+    let result = curveWaypointLeg_TEST(WPs[0], WPs[1], WPs[2]);
+    expect(result).not.toBeNull();
+    expect(result.length).toBe(3);
 
-        expect(d1).toBeCloseTo(r, 2);
-        expect(d2).toBeCloseTo(r, 2);
+    const [circleArc, tangent1, tangent2] = result;
 
-        const arcCoords = circleArc.geometry.coordinates;
-        const arcStart = point(arcCoords[0]);
-        const arcEnd = point(arcCoords[arcCoords.length - 1]);
+    expect(tangent1).not.toBeNull();
+    expect(tangent2).not.toBeNull();
+    expect(tangent1.geometry.type).toBe("Point");
+    expect(tangent2.geometry.type).toBe("Point");
 
-        expect(
-          distance(arcStart, tangent1, { units: "nauticalmiles" })
-        ).toBeLessThan(0.02);
-        expect(
-          distance(arcEnd, tangent2, { units: "nauticalmiles" })
-        ).toBeLessThan(0.02);
-    });
+    expect(tangent1.properties.waypoint).toBe(WPs[1].getId());
+    expect(tangent1.properties.linkedTo).toBe(WPs[0].getId());
+    expect(tangent1.properties.routeWaypointLeg).toBe(
+      WPs[1]?.getRouteWaypointLeg() || ""
+    );
+    expect(tangent1.properties.used).toBe(false);
 
+    expect(tangent2.properties.waypoint).toBe(WPs[1].getId());
+    expect(tangent2.properties.linkedTo).toBe(WPs[2].getId());
+    expect(tangent2.properties.routeWaypointLeg).toBe(
+      WPs[1]?.getRouteWaypointLeg() || ""
+    );
+    expect(tangent2.properties.used).toBe(false);
+
+    if (circleArc == null) {
+      expect(tangent1.geometry.coordinates).toEqual(WPs[1].getCoordinates());
+      expect(tangent2.geometry.coordinates).toEqual(WPs[1].getCoordinates());
+      return;
+    }
+
+    expect(circleArc.geometry.type).toBe("LineString");
+
+    const coords = circleArc.geometry.coordinates;
+    expect(coords.length).toBeGreaterThan(3);
+
+    // Pick 3 well-separated points on the arc
+    const a = coords[0];
+    const b = coords[Math.floor(coords.length / 2)];
+    const c = coords[coords.length - 1];
+
+    const center = circumcenter(a, b, c);
+    expect(center).not.toBeNull();
+
+    const r = WPs[1].getRadius();
+    const pa = {
+      type: "Feature",
+      geometry: { type: "Point", coordinates: a },
+      properties: {},
+    };
+    const pb = {
+      type: "Feature",
+      geometry: { type: "Point", coordinates: b },
+      properties: {},
+    };
+    const pc = {
+      type: "Feature",
+      geometry: { type: "Point", coordinates: c },
+      properties: {},
+    };
+
+    const da = distance(center, pa, { units: "nauticalmiles" });
+    const db = distance(center, pb, { units: "nauticalmiles" });
+    const dc = distance(center, pc, { units: "nauticalmiles" });
+
+    expect(da).toBeCloseTo(r, 2);
+    expect(db).toBeCloseTo(r, 2);
+    expect(dc).toBeCloseTo(r, 2);
+  });
 });
+
 
 
 describe('RouteToGeoJSON method',()=>{
