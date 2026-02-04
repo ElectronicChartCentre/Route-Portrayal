@@ -14,13 +14,19 @@ class DefaultValues{
 
 function generateRTZRouteWaypoint(waypoint, defaultValues, suggestedId){
     let wpId = parseInt(waypoint._attributes?.id) || suggestedId;
+
+    const parsedRadius = parseFloat(waypoint._attributes?.radius);
+    const radius = Number.isFinite(parsedRadius)
+        ? parsedRadius // keeps 0
+        : defaultValues.radius;
+
     return new RouteWaypoint(
         wpId,
         'RTE.WPT.'+ wpId,
         waypoint._attributes.name || '',
         [parseFloat(waypoint.position._attributes.lon), parseFloat(waypoint.position._attributes.lat)],
         false,
-        parseFloat(waypoint._attributes.radius) || defaultValues.radius,
+        radius,
         'RTE.WPT.LEG.' + wpId,
         '',
         {}
