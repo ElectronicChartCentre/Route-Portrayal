@@ -8,10 +8,8 @@ import {
   determineBearingOrder_TEST,
   curveWaypointLeg_TEST,
   RouteToGeoJSON_TEST,
-  calculateCircleCenterCoordinates_TEST,
 } from "../src/route";
 
-import { point, lineString, bearing, distance } from "@turf/turf";
 
 describe('convertTo360 tests', ()=>{
     test('bearings between 0 and 180 degrees stay the same',()=>{
