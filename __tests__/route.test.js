@@ -226,6 +226,15 @@ describe("curveWaypointLeg tests", () => {
     expect(tangent1.geometry.type).toBe("Point");
     expect(tangent2.geometry.type).toBe("Point");
 
+    if (circleArc == null) {
+      expect(tangent1.geometry.coordinates).toEqual(WPs[1].getCoordinates());
+      expect(tangent2.geometry.coordinates).toEqual(WPs[1].getCoordinates());
+      return;
+    }
+
+    expect(circleArc.geometry.type).toBe("LineString");
+
+
     expect(tangent1.properties.waypoint).toBe(WPs[1].getId());
     expect(tangent1.properties.linkedTo).toBe(WPs[0].getId());
     expect(tangent1.properties.routeWaypointLeg).toBe(
