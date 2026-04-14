@@ -164,14 +164,10 @@ export function EditRouteWaypoint(geojson, waypointID, updateParams) {
     [w2Leg,w3Leg,w4Leg,w5Leg].forEach((leg,index) => {
         if(!leg) return;
         RouteWaypointLeg.normalizeLongitudeCoordinates(leg.getCoordinates());
-        if(leg.getStarboardXTDL() !== 0 && leg.getPortXTDL() !== 0){
-                xtdlStarboard.push(leg.starboardXTDLtoGeoJSON(index));
-                xtdlPort.push(leg.portXTDLtoGeoJSON(index));
-        }
-        if(leg.getStarboardCL() !== 0 && leg.getPortCL() !== 0){
-            clStarboard.push(leg.starboardCLtoGeoJSON(index));
-            clPort.push(leg.portCLtoGeoJSON(index));
-        }
+        xtdlStarboard.push(leg.starboardXTDLtoGeoJSON(index));
+        xtdlPort.push(leg.portXTDLtoGeoJSON(index));
+        clStarboard.push(leg.starboardCLtoGeoJSON(index));
+        clPort.push(leg.portCLtoGeoJSON(index));
     })
 
     RouteWaypointLeg.updateLegCorridors(xtdlStarboard, xtdlPort);
@@ -201,9 +197,15 @@ export function EditRouteWaypoint(geojson, waypointID, updateParams) {
     const xtdlPoly = [];
     const clPoly = [];
     for(let i = 0; i < xtdlStarboard.length; i++){
+        const sbDist = Number(xtdlStarboard[i]?.properties?.distance) || 0;
+        const portDist = Number(xtdlPort[i]?.properties?.distance) || 0;
+        if(sbDist === 0 && portDist === 0) continue;
         xtdlPoly.push(RouteWaypointLeg.createCorridorPolygons(xtdlStarboard[i], xtdlPort[i]));
     }
     for(let i = 0; i < clStarboard.length; i++){
+        const sbDist = Number(clStarboard[i]?.properties?.distance) || 0;
+        const portDist = Number(clPort[i]?.properties?.distance) || 0;
+        if(sbDist === 0 && portDist === 0) continue;
         clPoly.push(RouteWaypointLeg.createCorridorPolygons(clStarboard[i], clPort[i]));
     }
 
@@ -237,5 +239,10 @@ function connectEndSegments(first, second, front=true){
 }
 
 function updateCoordinates(source, target){
-    source.forEach(s => target[s.properties.routeLegID].geometry.coordinates = s.geometry.coordinates);
+    source.forEach(s => {
+        const routeLegID = s?.properties?.routeLegID;
+        const targetFeature = target?.[routeLegID];
+        if(!routeLegID || !targetFeature?.geometry) return;
+        targetFeature.geometry.coordinates = s.geometry.coordinates;
+    });
 }
