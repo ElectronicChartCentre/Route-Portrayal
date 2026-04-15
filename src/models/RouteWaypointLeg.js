@@ -3,6 +3,17 @@ import {
     lineString, polygon, lineIntersect, distance, destination
 } from '@turf/turf';
 
+function toNumber(value, fallback = 0) {
+    if (value === null || value === undefined || value === '') return fallback;
+    const n = Number(value);
+    return Number.isFinite(n) ? n : fallback;
+}
+
+function angleDelta(a, b) {
+    let d = Math.abs(a - b) % 360;
+    return d > 180 ? 360 - d : d;
+}
+
 export class RouteWaypointLeg{
     constructor(
         id, routeWaypointLegStarboardXTDL, routeWaypointLegPortXTDL,
@@ -18,10 +29,10 @@ export class RouteWaypointLeg{
             throw new Error('Invalid id');
         }
         this.legCoordinates = [[],[]];
-        this.routeWaypointLegStarboardXTDL = routeWaypointLegStarboardXTDL || 0;
-        this.routeWaypointLegPortXTDL = routeWaypointLegPortXTDL || 0;
-        this.routeWaypointLegStarboardCL = routeWaypointLegStarboardCL || 0;
-        this.routeWaypointLegPortCL = routeWaypointLegPortCL || 0;
+        this.routeWaypointLegStarboardXTDL = toNumber(routeWaypointLegStarboardXTDL, 0);
+        this.routeWaypointLegPortXTDL = toNumber(routeWaypointLegPortXTDL, 0);
+        this.routeWaypointLegStarboardCL = toNumber(routeWaypointLegStarboardCL, 0);
+        this.routeWaypointLegPortCL = toNumber(routeWaypointLegPortCL, 0);
         this.routeWaypointLegSafetyContour = routeWaypointLegSafetyContour || 0.0;
         this.routeWaypointLegSafetyDepth = routeWaypointLegSafetyDepth || 0.0;
         this.routeWaypointLegGeometryType = routeWaypointLegGeometryType || 1;
@@ -196,20 +207,20 @@ export class RouteWaypointLeg{
                 const intersect = lineIntersect(firstLine, secondLine);
                 if (intersect.features.length > 0) {
                     currentBearing = bearing(point(offsetCoords[offsetCoords.length-1]), point(intersect.features[0].geometry.coordinates));
-                    if(!lastBearing || Math.abs(lastBearing - currentBearing) < angleLimit){
+                    if(lastBearing === undefined || lastBearing === null || angleDelta(lastBearing, currentBearing) < angleLimit){
                         lastBearing = currentBearing;
                         offsetCoords.push(intersect.features[0].geometry.coordinates);
                     }
                 }else{
                     currentBearing = bearing(point(offsetCoords[offsetCoords.length-1]), point(offsetLines[i + 1][0]));
-                    if(!lastBearing || Math.abs(lastBearing - currentBearing) < angleLimit){
+                    if(lastBearing === undefined || lastBearing === null || angleDelta(lastBearing, currentBearing) < angleLimit){
                         lastBearing = currentBearing;
                         offsetCoords.push(offsetLines[i+1][0])
                     }
                 }
             } else {
                 currentBearing = bearing(point(offsetCoords[offsetCoords.length-1]), point(offsetLines[i][1]));
-                if(!lastBearing || Math.abs(lastBearing - currentBearing) < angleLimit){
+                if(lastBearing === undefined || lastBearing === null || angleDelta(lastBearing, currentBearing) < angleLimit){
                     lastBearing = currentBearing;
                     offsetCoords.push(offsetLines[i][1])
                 }
