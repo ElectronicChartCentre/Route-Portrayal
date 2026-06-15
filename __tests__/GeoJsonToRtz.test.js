@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import { GeoJSONtoRTZ, RTZtoGeoJSON } from '../src/RTZ/index.js';
+import { GeoJSONtoRTZ, RTZtoGeoJSON, JSONtoRTZ } from '../src/RTZ/index.js';
 
 function getWaypoints(geojson) {
   return geojson.features
@@ -11,10 +11,32 @@ function getWaypoints(geojson) {
 
 describe('GeoJSONtoRTZ tests', () => {
   const GEOJSON_DIR = path.resolve(__dirname, '../SampleFiles/GeoJSON');
+  const ROUTE_JSON_SAMPLE = path.resolve(__dirname, '../SampleFiles/tekst-4C78-A988-D0-0.txt');
  // const OUTPUT_DIR = path.resolve(__dirname, '../SampleFiles/RTZ/GeneratedFromGeoJSON');
   const geojsonFiles = fs
     .readdirSync(GEOJSON_DIR)
     .filter((fileName) => fileName.endsWith('.json'));
+
+  test('accepts full route JSON payload with nested geojson', () => {
+    const routeJSON = JSON.parse(fs.readFileSync(ROUTE_JSON_SAMPLE, 'utf8'));
+    const xml = JSONtoRTZ(routeJSON);
+
+    expect(xml).toContain('<route');
+    expect(xml).toContain(`routeName="${routeJSON.routeName}"`);
+
+    const roundTripGeoJSON = RTZtoGeoJSON(xml);
+    const sourceWaypoints = getWaypoints(routeJSON.geojson);
+    const roundTripWaypoints = getWaypoints(roundTripGeoJSON);
+
+    expect(roundTripWaypoints.length).toBe(sourceWaypoints.length);
+  });
+
+  test('GeoJSONtoRTZ can consume full route JSON payload directly', () => {
+    const routeJSON = JSON.parse(fs.readFileSync(ROUTE_JSON_SAMPLE, 'utf8'));
+    const xml = GeoJSONtoRTZ(routeJSON);
+
+    expect(xml).toContain(`routeName="${routeJSON.routeName}"`);
+  });
 /*
 test('writes RTZ files from GeoJSON samples for manual inspection', () => {
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
