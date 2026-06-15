@@ -52,12 +52,49 @@ function buildLegAttributes(legProperties) {
     return attrs;
 }
 
-export function GeoJSONtoRTZ(geojson, routeName = 'Converted route') {
+function parseInputJSON(input) {
+    if (typeof input === 'string') {
+        try {
+            return JSON.parse(input);
+        } catch (error) {
+            throw new Error('Invalid JSON input');
+        }
+    }
+    return input;
+}
+
+function getGeoJSONFromInput(input) {
+    const parsed = parseInputJSON(input);
+
+    if (!parsed || typeof parsed !== 'object') {
+        throw new Error('Invalid input: expected GeoJSON or route JSON object');
+    }
+
+    // Accept plain GeoJSON FeatureCollection
+    if (parsed.type === 'FeatureCollection' && Array.isArray(parsed.features)) {
+        return { geojson: parsed, routeName: undefined };
+    }
+
+    // Accept app route JSON payloads that embed GeoJSON
+    if (parsed.geojson?.type === 'FeatureCollection' && Array.isArray(parsed.geojson.features)) {
+        return {
+            geojson: parsed.geojson,
+            routeName: typeof parsed.routeName === 'string' ? parsed.routeName : undefined
+        };
+    }
+
+    throw new Error('Invalid input: no GeoJSON FeatureCollection found');
+}
+
+export function GeoJSONtoRTZ(input, routeName = 'Converted route') {
+    const { geojson, routeName: routeNameFromInput } = getGeoJSONFromInput(input);
     const [legs, waypoints] = parseGeoJsonToJS(geojson);
 
     if (!waypoints || waypoints.length === 0) {
         throw new Error('No waypoints found in GeoJSON route');
     }
+
+    const finalRouteName = routeNameFromInput || routeName;
 
     const orderedWaypoints = [...waypoints].sort((a, b) => Number(a.getId()) - Number(b.getId()));
     const waypointElements = orderedWaypoints.map((waypoint, index) => {
@@ -100,7 +137,7 @@ export function GeoJSONtoRTZ(geojson, routeName = 'Converted route') {
             },
             routeInfo: {
                 _attributes: {
-                    routeName
+                    routeName: finalRouteName
                 }
             },
             waypoints: {
@@ -112,6 +149,10 @@ export function GeoJSONtoRTZ(geojson, routeName = 'Converted route') {
     };
 
     return js2xml(rtzObject, { compact: true, spaces: 4 });
+}
+
+export function JSONtoRTZ(routeJSON, routeName = 'Converted route') {
+    return GeoJSONtoRTZ(routeJSON, routeName);
 }
 
 
