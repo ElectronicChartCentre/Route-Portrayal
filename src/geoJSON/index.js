@@ -31,14 +31,14 @@ export function EditRouteWaypointNewRoute(geojson, waypointID, updateParams ){
         throw new Error(`No waypoint found with ID: ${waypointID}`);
     }
 
-    if(coordinates) waypoint.setCoordinates(coordinates);
-    if(radius) waypoint.setRadius(radius);
-    if(reference) waypoint.setReference(reference);
-    if(name) waypoint.setRouteWaypointName(name);
+    if(coordinates !== undefined) waypoint.setCoordinates(coordinates);
+    if(radius !== undefined) waypoint.setRadius(radius);
+    if(reference !== undefined) waypoint.setReference(reference);
+    if(name !== undefined) waypoint.setRouteWaypointName(name);
     if(fixed !== undefined) waypoint.setRouteWaypointFixed(fixed);
-    if(externalReferenceID) waypoint.setRouteWaypointExternalReferenceID(externalReferenceID);
-    if(routeWaypointLeg) waypoint.setRouteWaypointLeg(routeWaypointLeg);
-    if(extensions) waypoint.setRouteWaypointExtensions(extensions);
+    if(externalReferenceID !== undefined) waypoint.setRouteWaypointExternalReferenceID(externalReferenceID);
+    if(routeWaypointLeg !== undefined) waypoint.setRouteWaypointLeg(routeWaypointLeg);
+    if(extensions !== undefined) waypoint.setRouteWaypointExtensions(extensions);   
 
     return RouteToGeoJSON(legs, waypoints, actionpoints);
 }
@@ -71,15 +71,15 @@ export function EditRouteWaypoint(geojson, waypointID, updateParams) {
         throw new Error(`No waypoint found with ID: ${waypointID}`);
     }
 
-    if(coordinates) waypoint.geometry.coordinates = coordinates;
-    if(radius) waypoint.properties.radius = radius;
-    if(reference) waypoint.properties.reference = reference;
-    if(name) waypoint.properties.name = name;
+    if(coordinates !== undefined) waypoint.geometry.coordinates = coordinates;
+    if(radius !== undefined) waypoint.properties.radius = radius;
+    if(reference !== undefined) waypoint.properties.reference = reference;
+    if(name !== undefined) waypoint.properties.name = name;
     if(fixed !== undefined) waypoint.properties.fixed = fixed;
-    if(externalReferenceID) waypoint.properties.externalReferenceID = externalReferenceID;
-    if(extensions) waypoint.properties.extensions = extensions;
+    if(externalReferenceID !== undefined) waypoint.properties.externalReferenceID = externalReferenceID;
+    if(extensions !== undefined) waypoint.properties.extensions = extensions;
 
-    if(!coordinates && !radius) return geojson;
+    if(coordinates === undefined && radius === undefined) return geojson;
     
     const   waypoints = [],
             legs = {},
