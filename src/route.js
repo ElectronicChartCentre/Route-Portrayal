@@ -204,42 +204,46 @@ function determineBearingOrder(b1, b2) {
 
 
 function calculateCircleCenterCoordinates(midLineBearing, W2, line1, line2) {
-    let circleCenter, circle, difference, t1, t2;
-    let distance = 30; // Distance from W2 to circle center in km. Can be improved to be dynamic
-    let previousDistance = distance * 2;
-    let count = 0;
-    while (true) {
-        circleCenter = destination(W2.toGeoJSON(), distance, midLineBearing, { units: "kilometers" });
-        circle = lineArc(circleCenter, W2.getRadius(), 0, 360, { steps: 100, units: "nauticalmiles" });
-        t1 = lineIntersect(circle, line1);
-        t2 = lineIntersect(circle, line2);
-        difference = Math.abs(previousDistance - distance);
-        if (t1.features.length === 0 || t2.features.length === 0) {
-            // Decrease the distance
-            previousDistance = distance;
-            distance -= difference * 0.5;
-        } else if (t1.features.length === 1 && t2.features.length === 1) {
-            // Increase the distance
-            previousDistance = distance;
-            distance += difference * 0.5;
-        }
-        else if (t1.features.length > 1 || t2.features.length > 1) {
-            if (Math.abs(previousDistance - distance) < 1e-5) {
-                // Intersections are found that satisfy the conditions
-                break;
-            }
-            previousDistance = distance;
-            distance += difference * 0.5;
-        }
+    const coords1 = line1.geometry.coordinates;
+    const coords2 = line2.geometry.coordinates;
 
-        if (count > 60) {
-            return [null, point(W2.getCoordinates()), point(W2.getCoordinates())];
-        }
-        count++;
+    // The vertex is where line1 ends and line2 begins
+    const vertex = coords1[1];
+    const prevWp = coords1[0];
+    const nextWp = coords2[1];
 
+    // Bearings from the vertex looking backward and forward
+    const bPrev = bearing(vertex, prevWp);
+    const bNext = bearing(vertex, nextWp);
+
+    // Calculate the interior angle between the two legs
+    let interiorAngle = Math.abs(bPrev - bNext) % 360;
+    interiorAngle = interiorAngle > 180 ? 360 - interiorAngle : interiorAngle;
+
+    // Gracefully fallback to straight lines for 180° straight paths or 0° U-turns
+    if (interiorAngle > 179.9 || interiorAngle < 0.1) {
+      return [null, point(vertex), point(vertex)];
     }
-    return [circleCenter, t1.features[0], t2.features[0]];
 
+    const halfAngleRad = (interiorAngle / 2) * (Math.PI / 180);
+    const R = W2.getRadius(); // Radius in nautical miles
+
+    // Direct trigonometric distance calculations
+    const distToCenter = R / Math.sin(halfAngleRad);
+    const distToTangent = R / Math.tan(halfAngleRad);
+
+    // Project the points exactly
+    const circleCenter = destination(vertex, distToCenter, midLineBearing, {
+      units: "nauticalmiles",
+    });
+    const t1 = destination(vertex, distToTangent, bPrev, {
+      units: "nauticalmiles",
+    });
+    const t2 = destination(vertex, distToTangent, bNext, {
+      units: "nauticalmiles",
+    });
+
+    return [circleCenter, t1, t2];
 }
 
 function calculateMidLineBearing(bearing1, bearing2) {
