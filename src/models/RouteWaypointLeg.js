@@ -202,6 +202,18 @@ export class RouteWaypointLeg{
         
         for (let i = 0; i < offsetLines.length; i++) { 
             if (offsetLines[i + 1]){
+                const b1 = bearing(offsetLines[i][0], offsetLines[i][1]);
+                const b2 = bearing(offsetLines[i + 1][0], offsetLines[i + 1][1]);
+
+                if (angleDelta(b1, b2) < 2) {
+                    currentBearing = bearing(point(offsetCoords[offsetCoords.length-1]), point(offsetLines[i + 1][0]));
+                    if(lastBearing === undefined || lastBearing === null || angleDelta(lastBearing, currentBearing) < angleLimit){
+                        lastBearing = currentBearing;
+                        offsetCoords.push(offsetLines[i + 1][0]);
+                    }
+                    continue;
+                }
+
                 const firstLine = transformScale(lineString(offsetLines[i]), 25); 
                 const secondLine = transformScale(lineString(offsetLines[i + 1]), 25);
                 const intersect = lineIntersect(firstLine, secondLine);
