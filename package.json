@@ -18,7 +18,7 @@
   "dependencies": {
     "@turf/turf": "^7.0.0",
     "esm": "^3.2.25",
-    "maplibre-gl": "^4.4.1",
+    "maplibre-gl": "^6.4.1",
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
