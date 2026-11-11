@@ -3,14 +3,37 @@ import { RouteToGeoJSON } from '../route.js';
 import { parseRTZtoJS } from './parser.js';
 import { parseGeoJsonToJS } from '../geoJSON/parser.js';
 import { js2xml } from 'xml-js';
+import { repairRTZText } from './repairText.js';
 
 
 
-export function RTZtoGeoJSON(xml){
-    const route = parseXML(xml).route;
+export function RTZtoGeoJSON(xml, { onWarning = warning => console.warn(warning.message) } = {}){
+    let parsed;
+    let repairs = [];
+    try {
+        parsed = parseXML(xml);
+    } catch (error) {
+        if (typeof xml !== 'string') throw error;
+        const repaired = repairRTZText(xml);
+        if (!repaired.repairs.length) throw error;
+        parsed = parseXML(repaired.xml);
+        repairs = repaired.repairs;
+    }
+    if (!parsed || !parsed.route) {
+        throw new Error('Invalid RTZ file: expected a <route> root element.');
+    }
+    const route = parsed.route;
     const [legs, waypoints, actionpoints] = parseRTZtoJS(route)
   
-    return RouteToGeoJSON(legs,waypoints,actionpoints);
+    const geojson = RouteToGeoJSON(legs,waypoints,actionpoints);
+    if (repairs.length) {
+        onWarning({
+            code: 'RTZ_TEXT_REPAIRED',
+            message: 'Repaired unescaped ampersands in route/waypoint names or descriptions. Navigation fields were not changed.',
+            repairs
+        });
+    }
+    return geojson;
 }
 
 function formatCoordinate(value) {
@@ -154,5 +177,3 @@ export function GeoJSONtoRTZ(input, routeName = 'Converted route') {
 export function JSONtoRTZ(routeJSON, routeName = 'Converted route') {
     return GeoJSONtoRTZ(routeJSON, routeName);
 }
-
-
