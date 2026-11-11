@@ -1,4 +1,6 @@
 const xmlName = '[A-Za-z_][\\w.:-]*';
+// Preserve any &token; candidate; the XML parser decides whether it is a valid entity.
+const bareAmpersand = /&(?!(?:[^\s&<>"';]+);)/g;
 const attribute = `${xmlName}\\s*=\\s*(?:"[^"<]*"|'[^'<]*')`;
 const tokenPattern = new RegExp(
     `<!--[\\s\\S]*?-->|<!\\[CDATA\\[[\\s\\S]*?\\]\\]>|<\\?[\\s\\S]*?\\?>|</${xmlName}\\s*>|<${xmlName}(?:\\s+${attribute})*\\s*/?>|[^<]+`,
@@ -16,20 +18,31 @@ export function repairRTZText(xml) {
     let result = '';
     let offset = 0;
     let token;
+    let locationOffset = 0;
+    let locationLine = 1;
+    let locationColumn = 1;
 
     function escapeAmpersands(text, position, field) {
         let count = 0;
         // Keep entity references intact, including unknown ones that must still fail validation.
-        const escaped = text.replace(/&(?!(?:[A-Za-z_:][\w.:-]*|#\d+|#x[\da-fA-F]+);)/g, () => {
+        const escaped = text.replace(bareAmpersand, () => {
             count++;
             return '&amp;';
         });
         if (count) {
-            const preceding = xml.slice(0, position);
+            while (locationOffset < position) {
+                if (xml[locationOffset] === '\n') {
+                    locationLine++;
+                    locationColumn = 1;
+                } else {
+                    locationColumn++;
+                }
+                locationOffset++;
+            }
             repairs.push({
                 field,
-                line: preceding.split('\n').length,
-                column: position - preceding.lastIndexOf('\n'),
+                line: locationLine,
+                column: locationColumn,
                 count
             });
         }

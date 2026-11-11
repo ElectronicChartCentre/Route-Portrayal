@@ -16,6 +16,48 @@ const route = (name = 'First &amp; Second', extra = '') => `<route version="1.0"
 </route>`;
 
 describe('conservative RTZ text repair', () => {
+  test.each(['\n', '\r\n'])('tracks original field locations across same-line and multiline repairs (%j)', newline => {
+    const xml = [
+      '<route><routeInfo routeName="Route & name" description="Route & description">',
+      '<description>Text & description</description></routeInfo>',
+      '<waypoints><waypoint name="Valid &amp; name"/>',
+      '<waypoint name="Multiline',
+      'name & text" description="Waypoint & description">',
+      '<description>Waypoint & text</description></waypoint></waypoints></route>'
+    ].join(newline);
+    const values = [
+      ['routeName', 'Route & name'],
+      ['description', 'Route & description'],
+      ['description', 'Text & description'],
+      ['name', `Multiline${newline}name & text`],
+      ['description', 'Waypoint & description'],
+      ['description', 'Waypoint & text']
+    ];
+    const expected = values.map(([field, value]) => {
+      const position = xml.indexOf(value);
+      const prefix = xml.slice(0, position);
+      return {
+        field,
+        line: prefix.split('\n').length,
+        column: position - prefix.lastIndexOf('\n'),
+        count: 1
+      };
+    });
+    expect(repairRTZText(xml).repairs).toEqual(expected);
+  });
+
+  test('tracks every repaired field in a large route', () => {
+    const count = 10000;
+    const xml = '<route><waypoints>\n' +
+      Array.from({ length: count }, () => '<waypoint name="A & B"/>').join('\n') +
+      '\n</waypoints></route>';
+    const repaired = repairRTZText(xml);
+    expect(repaired.repairs).toEqual(Array.from({ length: count }, (_, index) => ({
+      field: 'name', line: index + 2, column: 17, count: 1
+    })));
+    expect(repaired.xml).toBe(xml.replace(/A & B/g, 'A &amp; B'));
+  });
+
   test('repairs bare ampersands without changing route geometry or properties', () => {
     const onWarning = jest.fn();
     const input = route('First & Second &amp; Third &#38; Fourth &#x26; Fifth');
@@ -44,6 +86,28 @@ describe('conservative RTZ text repair', () => {
     RTZtoGeoJSON(input, { onWarning });
     expect(onWarning).not.toHaveBeenCalled();
     expect(repairRTZText(input)).toEqual({ xml: input, repairs: [] });
+  });
+
+  test.each([
+    '&\u00e9;',
+    '&\u540d;',
+    '&e\u0301;',
+    '&name\u00b7suffix;',
+    '&\u{10000};',
+    '&bad!;',
+    '&#invalid;',
+    '&#xZZ;'
+  ])('preserves entity-like reference %s for parser rejection', entity => {
+    const input = route().replace('Test route', `A ${entity} B`);
+    const onWarning = jest.fn();
+    expect(repairRTZText(input)).toEqual({ xml: input, repairs: [] });
+    expect(() => RTZtoGeoJSON(input, { onWarning })).toThrow(/Failed to parse XML/);
+    expect(onWarning).not.toHaveBeenCalled();
+
+    const mixed = input.replace('First &amp; Second', 'First & Second');
+    expect(repairRTZText(mixed).xml).toBe(input);
+    expect(() => RTZtoGeoJSON(mixed, { onWarning })).toThrow(/Failed to parse XML/);
+    expect(onWarning).not.toHaveBeenCalled();
   });
 
   test.each([
