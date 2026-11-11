@@ -29,7 +29,7 @@ export function parseXML(xml) {
         recursiveNamespaceTrimmer(object);
         return object;
     }catch (e){
-        return null;
+        throw new Error(`Failed to parse XML: ${e.message}`);
     }
 }
 
