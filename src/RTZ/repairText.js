@@ -31,10 +31,11 @@ export function repairRTZText(xml) {
         });
         if (count) {
             while (locationOffset < position) {
-                if (xml[locationOffset] === '\n') {
+                if (xml[locationOffset] === '\r' ||
+                    (xml[locationOffset] === '\n' && xml[locationOffset - 1] !== '\r')) {
                     locationLine++;
                     locationColumn = 1;
-                } else {
+                } else if (xml[locationOffset] !== '\n') {
                     locationColumn++;
                 }
                 locationOffset++;
